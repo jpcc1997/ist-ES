@@ -7,4 +7,6 @@ To run tests execute: mvn clean install
 78024, Pedro Sousa, pedrosousa95@outlook.com, pedroblackjsousa
 81365, Ana Leitao, mschclar@gmail.com, ist181365
 81647, Manuel Galamba, mrgalamba@gmail.com, ist181647
+81061, Miguel Renda, miguel.renda@tecnico.ulisboa.pt, MiguelRenda
+80967, Daniel Correia, dduarte96@hotmail.com, danielcorreia96
 80789, Joao Silveira, joao.pinto.silveira@gmail.com, nowitworks
