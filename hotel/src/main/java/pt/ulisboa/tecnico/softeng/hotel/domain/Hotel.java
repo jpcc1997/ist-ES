@@ -21,6 +21,7 @@ public class Hotel {
 
 		this.code = code;
 		this.name = name;
+
 		Hotel.hotels.add(this);
 	}
 
@@ -28,6 +29,12 @@ public class Hotel {
 		if (code.length() != Hotel.CODE_SIZE) {
 			throw new HotelException();
 		}
+
+		//Verify if the code already exists
+		for(Hotel h : hotels)
+			if((h.getCode()).equals(code)) {
+				throw new HotelException();
+			}
 	}
 
 	public Room hasVacancy(Room.Type type, LocalDate arrival, LocalDate departure) {
