@@ -4,6 +4,7 @@ import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import pt.ulisboa.tecnico.softeng.broker.exception.BrokerException;
 import pt.ulisboa.tecnico.softeng.broker.interfaces.ActivityInterface;
 import pt.ulisboa.tecnico.softeng.broker.interfaces.BankInterface;
 import pt.ulisboa.tecnico.softeng.broker.interfaces.HotelInterface;
@@ -26,17 +27,59 @@ public class Adventure {
 	private String activityBooking;
 
 	public Adventure(Broker broker, LocalDate begin, LocalDate end, int age, String IBAN, int amount) {
+		checkBroker(broker);
 		this.ID = broker.getCode() + Integer.toString(++counter);
 		this.broker = broker;
+		
+		checkDate(begin, end);
 		this.begin = begin;
 		this.end = end;
+		
+		checkAge(age);
 		this.age = age;
+		
+		checkIBAN(IBAN);
 		this.IBAN = IBAN;
+		
+		checkAmount(amount);
 		this.amount = amount;
 
 		broker.addAdventure(this);
 	}
 
+	public void checkBroker(Broker broker){
+		if (broker == null) {
+			throw new BrokerException();
+		}
+	}
+	
+	public void checkDate(LocalDate begin, LocalDate end){
+		if (begin == null || end == null) {
+			throw new BrokerException();
+		}
+		if (begin.isAfter(end) || begin.isEqual(end)) {
+			throw new BrokerException();
+		}
+	}
+	
+	public void checkAge(int age){
+		if (age < 18 || age >= 100) {
+			throw new BrokerException();
+		}
+	}
+	
+	public void checkIBAN(String IBAN){
+		if (IBAN == null || IBAN.trim().length() == 0) {
+			throw new BrokerException();
+		}
+	}
+	
+	public void checkAmount(int amount){
+		if (amount <= 0) {
+			throw new BrokerException();
+		}
+	}
+	
 	public String getID() {
 		return this.ID;
 	}
@@ -76,7 +119,7 @@ public class Adventure {
 	public String getActivityBooking() {
 		return this.activityBooking;
 	}
-
+	
 	public void process() {
 		logger.debug("process ID:{} ", this.ID);
 		this.bankPayment = BankInterface.processPayment(this.IBAN, this.amount);
