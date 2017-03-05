@@ -82,17 +82,6 @@ public class AdventureConstructorMethodTest {
 	}
 	
 	@Test
-	public void sameBeginAndEndDate(){
-		try {
-			new Adventure(this.broker, this.begin, this.begin, 20, "BK011234567", 300);
-			Assert.fail();
-		} 
-		catch (BrokerException e) {
-			Assert.assertEquals(0, this.broker.getNumberOfAdventures());
-		}
-	}
-	
-	@Test
 	public void nullIBAN(){
 		try {	
 			new Adventure(this.broker, this.begin, this.end, 20, null, 300);

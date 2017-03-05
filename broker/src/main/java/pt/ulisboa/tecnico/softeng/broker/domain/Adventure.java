@@ -57,7 +57,7 @@ public class Adventure {
 		if (begin == null || end == null) {
 			throw new BrokerException();
 		}
-		if (begin.isAfter(end) || begin.isEqual(end)) {
+		if (begin.isAfter(end)) {
 			throw new BrokerException();
 		}
 	}
