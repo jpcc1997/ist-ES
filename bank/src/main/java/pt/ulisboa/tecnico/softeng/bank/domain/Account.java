@@ -11,6 +11,7 @@ public class Account {
 	private int balance;
 
 	public Account(Bank bank, Client client) {
+		checkArgs(bank,client);
 		this.bank = bank;
 		this.IBAN = bank.getCode() + Integer.toString(++Account.counter);
 		this.client = client;
@@ -24,7 +25,7 @@ public class Account {
 		if(bank == null || client == null){
 			throw new BankException();
 		}
-		if (!bank.hasClient(client)){
+		else if (bank.hasClient(client) == false){
 			throw new BankException();
 		}
 	}
