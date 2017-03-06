@@ -67,6 +67,15 @@ public class Bank {
 
 	public Account getAccount(String IBAN) {
 		for (Account account : this.accounts) {
+			if (accounts.isEmpty()){
+				throw new BankException();
+			}
+			
+			if (IBAN == null || IBAN.trim().length()<1){
+				
+				throw new BankException();
+				
+			}
 			if (account.getIBAN().equals(IBAN)) {
 				return account;
 			}

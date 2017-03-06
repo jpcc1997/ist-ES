@@ -19,6 +19,17 @@ public class Account {
 		bank.addAccount(this);
 	}
 
+	public void checkArgs(Bank bank,Client client){
+		
+		if(bank == null || client == null){
+			throw new BankException();
+		}
+		if (!bank.hasClient(client)){
+			throw new BankException();
+		}
+	}
+
+	
 	Bank getBank() {
 		return this.bank;
 	}
