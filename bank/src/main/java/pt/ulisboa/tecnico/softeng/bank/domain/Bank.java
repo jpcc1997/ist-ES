@@ -7,6 +7,7 @@ import java.util.Set;
 
 import pt.ulisboa.tecnico.softeng.bank.exception.BankException;
 
+
 public class Bank {
 	public static Set<Bank> banks = new HashSet<>();
 
@@ -20,7 +21,7 @@ public class Bank {
 
 	public Bank(String name, String code) {
 		checkCode(code);
-
+		checkName(name);
 		this.name = name;
 		this.code = code;
 
@@ -28,11 +29,27 @@ public class Bank {
 	}
 
 	private void checkCode(String code) {
+		if (code == null || code.trim().length() == 0) {
+			throw new BankException();
+		}
+
 		if (code.length() != Bank.CODE_SIZE) {
 			throw new BankException();
 		}
+		
+		for (Bank bank : Bank.banks) {
+			if (bank.getCode().equals(code)) {
+				throw new BankException();
+			}
+		}
 	}
 
+	private void checkName(String name) {
+		if (name == null || name.trim().length() == 0) {
+			throw new BankException();
+		}
+	}
+	
 	String getName() {
 		return this.name;
 	}
