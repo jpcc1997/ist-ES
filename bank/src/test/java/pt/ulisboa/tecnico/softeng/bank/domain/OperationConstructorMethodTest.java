@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import pt.ulisboa.tecnico.softeng.bank.domain.Operation.Type;
+import pt.ulisboa.tecnico.softeng.bank.exception.BankException;
 
 public class OperationConstructorMethodTest {
 	private final Logger logger = LoggerFactory.getLogger(OperationConstructorMethodTest.class);
@@ -35,6 +36,45 @@ public class OperationConstructorMethodTest {
 		Assert.assertEquals(operation, this.bank.getOperation(operation.getReference()));
 	}
 
+	
+	@Test
+	public void nullType() {
+		try {
+			new Operation(null, this.account, 1000);
+			Assert.fail();
+		} catch (BankException b) {
+			
+		}
+	}
+
+	@Test
+	public void nullAccount() {
+		try {
+			new Operation(Type.DEPOSIT, null, 1000);
+			Assert.fail();
+		} catch (BankException b) {
+
+		}
+	}
+	
+	@Test
+	public void zeroValue() {
+		try{
+			new Operation(Type.DEPOSIT, this.account, 0);
+		} catch (BankException b) {
+			
+		}
+	}
+	
+	@Test
+	public void negativeValue() {
+		try{
+			new Operation(Type.DEPOSIT, this.account, -1000);
+		} catch (BankException b) {
+			
+		}
+	}
+	
 	@After
 	public void tearDown() {
 		Bank.banks.clear();
