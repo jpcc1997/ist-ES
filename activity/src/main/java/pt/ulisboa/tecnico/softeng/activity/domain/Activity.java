@@ -5,6 +5,8 @@ import java.util.Set;
 
 import org.joda.time.LocalDate;
 
+import pt.ulisboa.tecnico.softeng.activity.domain.exception.ActivityException;
+
 public class Activity {
 	private static int counter = 0;
 
@@ -16,6 +18,9 @@ public class Activity {
 	private final Set<ActivityOffer> offers = new HashSet<>();
 
 	public Activity(ActivityProvider provider, String name, int minAge, int maxAge, int capacity) {
+		if((minAge < 18) || (maxAge > 100) || (minAge>maxAge) || (capacity<1)) {
+			throw new ActivityException();
+		}
 		this.code = provider.getCode() + Integer.toString(++Activity.counter);
 		this.name = name;
 		this.minAge = minAge;
@@ -66,5 +71,6 @@ public class Activity {
 	boolean matchAge(int age) {
 		return age >= this.minAge && age <= this.maxAge;
 	}
+	
 
 }
