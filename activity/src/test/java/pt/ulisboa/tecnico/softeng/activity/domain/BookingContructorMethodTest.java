@@ -45,6 +45,15 @@ public class BookingContructorMethodTest {
 			Assert.assertEquals(25, this.offer.getNumberOfBookings());
 		}
 	}
+	
+	@Test
+	public void limitNoOfReservationsTest() {
+		
+		for(int i = 0; i < 25; i++)
+			new Booking(this.provider, this.offer);
+		
+		Assert.assertEquals(25, this.offer.getNumberOfBookings());
+	}
 
 	@After
 	public void tearDown() {
