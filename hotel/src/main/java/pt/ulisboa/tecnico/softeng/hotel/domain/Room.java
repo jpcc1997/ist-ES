@@ -22,11 +22,28 @@ public class Room {
 	private final Set<Booking> bookings = new HashSet<>();
 
 	public Room(Hotel hotel, String number, Type type) {
+		checkNumber(number, hotel);
 		this.hotel = hotel;
 		this.number = number;
 		this.type = type;
 
 		this.hotel.addRoom(this);
+	}
+	
+	private void checkNumber(String number, Hotel hotel) {
+		//Verify if the number already exists
+		for(Room r : hotel.getRooms()){
+			if((r.getNumber()).equals(number)) {
+				throw new HotelException();
+			}
+		}
+		//Verify if the number is an actual number
+		try{  
+			Integer.parseInt(number);  
+		}  
+		catch(NumberFormatException nfe){  
+		    throw new HotelException();  
+		}
 	}
 
 	Hotel getHotel() {

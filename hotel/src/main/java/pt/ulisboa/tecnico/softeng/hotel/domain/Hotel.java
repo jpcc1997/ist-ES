@@ -45,6 +45,10 @@ public class Hotel {
 		}
 		return null;
 	}
+	
+	Set<Room> getRooms(){
+		return this.rooms;
+	}
 
 	String getCode() {
 		return this.code;
