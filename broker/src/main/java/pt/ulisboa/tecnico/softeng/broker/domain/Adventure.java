@@ -47,13 +47,13 @@ public class Adventure {
 		broker.addAdventure(this);
 	}
 
-	public void checkBroker(Broker broker){
+	private void checkBroker(Broker broker){
 		if (broker == null) {
 			throw new BrokerException();
 		}
 	}
 	
-	public void checkDate(LocalDate begin, LocalDate end){
+	private void checkDate(LocalDate begin, LocalDate end){
 		if (begin == null || end == null) {
 			throw new BrokerException();
 		}
@@ -62,19 +62,19 @@ public class Adventure {
 		}
 	}
 	
-	public void checkAge(int age){
+	private void checkAge(int age){
 		if (age < 18 || age >= 100) {
 			throw new BrokerException();
 		}
 	}
 	
-	public void checkIBAN(String IBAN){
+	private void checkIBAN(String IBAN){
 		if (IBAN == null || IBAN.trim().length() == 0) {
 			throw new BrokerException();
 		}
 	}
 	
-	public void checkAmount(int amount){
+	private void checkAmount(int amount){
 		if (amount <= 0) {
 			throw new BrokerException();
 		}

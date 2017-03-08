@@ -95,6 +95,17 @@ public class AdventureConstructorMethodTest {
 	@Test
 	public void emptyIBAN(){
 		try {	
+			new Adventure(this.broker, this.begin, this.end, 20, "", 300);
+			Assert.fail();
+		} 
+		catch (BrokerException e) {
+			Assert.assertEquals(0, this.broker.getNumberOfAdventures());
+		}
+	}
+	
+	@Test
+	public void blanksIBAN(){
+		try {	
 			new Adventure(this.broker, this.begin, this.end, 20, "    ", 300);
 			Assert.fail();
 		} 
@@ -137,6 +148,23 @@ public class AdventureConstructorMethodTest {
 	}
 	
 	@Test
+	public void equalsMaximumAge(){
+		Adventure adventure = new Adventure(this.broker, this.begin, this.end, 99, "BK011234567", 300);
+		
+		Assert.assertEquals(this.broker, adventure.getBroker());
+		Assert.assertEquals(this.begin, adventure.getBegin());
+		Assert.assertEquals(this.end, adventure.getEnd());
+		Assert.assertEquals(99, adventure.getAge());
+		Assert.assertEquals("BK011234567", adventure.getIBAN());
+		Assert.assertEquals(300, adventure.getAmount());
+		Assert.assertTrue(this.broker.hasAdventure(adventure));
+
+		Assert.assertNull(adventure.getBankPayment());
+		Assert.assertNull(adventure.getActivityBooking());
+		Assert.assertNull(adventure.getRoomBooking());
+	}
+	
+	@Test
 	public void belowMinimumAge(){
 		try {
 			new Adventure(this.broker, this.begin, this.end, 17, "BK011234567", 300);
@@ -145,6 +173,23 @@ public class AdventureConstructorMethodTest {
 		catch (BrokerException e) {
 			Assert.assertEquals(0, this.broker.getNumberOfAdventures());
 		}
+	}
+	
+	@Test
+	public void equalsMinimumAge(){
+		Adventure adventure = new Adventure(this.broker, this.begin, this.end, 18, "BK011234567", 300);
+	
+		Assert.assertEquals(this.broker, adventure.getBroker());
+		Assert.assertEquals(this.begin, adventure.getBegin());
+		Assert.assertEquals(this.end, adventure.getEnd());
+		Assert.assertEquals(18, adventure.getAge());
+		Assert.assertEquals("BK011234567", adventure.getIBAN());
+		Assert.assertEquals(300, adventure.getAmount());
+		Assert.assertTrue(this.broker.hasAdventure(adventure));
+
+		Assert.assertNull(adventure.getBankPayment());
+		Assert.assertNull(adventure.getActivityBooking());
+		Assert.assertNull(adventure.getRoomBooking());
 	}
 	
 	@After
