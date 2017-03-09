@@ -45,7 +45,7 @@ public class ActivityConstructorMethodTest {
 	public void maxAgeTest() {
 		
 		try {
-			new Activity(this.provider, "Bush Walking", 18, 101, 25);
+			new Activity(this.provider, "Bush Walking", 18, 100, 25);
 			Assert.fail();
 		}
 		catch(ActivityException e) {
@@ -70,6 +70,40 @@ public class ActivityConstructorMethodTest {
 		
 		try {
 			new Activity(this.provider, "Bush Walking", 30, 80, 0);
+			Assert.fail();
+		}
+		catch(ActivityException e) {
+			Assert.assertEquals(0, this.provider.getNumberOfActivities());
+		}
+	}
+	
+	@Test
+	public void nullProvTest() {
+		
+		try {
+			new Activity(null, "Bush Walking", 18, 99, 25);
+			Assert.fail();
+		}
+		catch(ActivityException e) {}
+	}
+	
+	@Test
+	public void nullNameTest() {
+		
+		try {
+			new Activity(this.provider, null, 18, 99, 25);
+			Assert.fail();
+		}
+		catch(ActivityException e) {
+			Assert.assertEquals(0, this.provider.getNumberOfActivities());
+		}
+	}
+	
+	@Test
+	public void emptyNameTest() {
+		
+		try {
+			new Activity(this.provider, "", 18, 99, 25);
 			Assert.fail();
 		}
 		catch(ActivityException e) {

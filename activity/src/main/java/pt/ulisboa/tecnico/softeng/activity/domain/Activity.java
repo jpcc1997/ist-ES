@@ -18,9 +18,13 @@ public class Activity {
 	private final Set<ActivityOffer> offers = new HashSet<>();
 
 	public Activity(ActivityProvider provider, String name, int minAge, int maxAge, int capacity) {
-		if((minAge < 18) || (maxAge > 100) || (minAge>maxAge) || (capacity<1)) {
-			throw new ActivityException();
-		}
+		checkProvider(provider);
+		checkName(name);
+		checkMinAge(minAge);
+		checkMaxAge(maxAge);
+		checkMinMaxAge(minAge, maxAge);
+		checkCapacity(capacity);
+		
 		this.code = provider.getCode() + Integer.toString(++Activity.counter);
 		this.name = name;
 		this.minAge = minAge;
@@ -70,6 +74,36 @@ public class Activity {
 
 	boolean matchAge(int age) {
 		return age >= this.minAge && age <= this.maxAge;
+	}
+	
+	void checkProvider(ActivityProvider provider) {
+		if (provider == null)
+			throw new ActivityException();
+	}
+	
+	void checkName(String name) {
+		if ((name == null) || (name == ""))
+			throw new ActivityException();
+	}
+	
+	void checkMinAge(int minAge) {
+		if (minAge < 18)
+			throw new ActivityException();
+	}
+	
+	void checkMaxAge(int maxAge) {
+		if (maxAge >= 100)
+			throw new ActivityException();
+	}
+	
+	void checkMinMaxAge(int minAge, int maxAge) {
+		if (minAge>maxAge)
+			throw new ActivityException();
+	}
+	
+	void checkCapacity(int capacity) {
+		if (capacity<1)
+			throw new ActivityException();
 	}
 	
 
