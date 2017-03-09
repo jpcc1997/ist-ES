@@ -8,8 +8,9 @@ public class Booking {
 	private final String reference;
 
 	public Booking(ActivityProvider provider, ActivityOffer offer) {
-		if (!offer.hasVacancy())
-			throw new ActivityException();
+		checkProvider(provider);
+		checkOffer(offer);
+		checkCapacity(offer);
 		
 		this.reference = provider.getCode() + Integer.toString(++Booking.counter);
 
@@ -18,5 +19,20 @@ public class Booking {
 
 	public String getReference() {
 		return this.reference;
+	}
+	
+	private void checkProvider(ActivityProvider provider) {
+		if (provider == null)
+			throw new ActivityException();
+	}
+	
+	private void checkOffer(ActivityOffer offer) {
+		if (offer == null)
+			throw new ActivityException();
+	}
+	
+	private void checkCapacity(ActivityOffer offer) {
+		if (!offer.hasVacancy())
+			throw new ActivityException();
 	}
 }

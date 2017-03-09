@@ -54,6 +54,24 @@ public class BookingContructorMethodTest {
 		
 		Assert.assertEquals(25, this.offer.getNumberOfBookings());
 	}
+	
+	@Test
+	public void nullOfferTest() {
+		try {
+			new Booking(this.provider, null);
+		}
+		catch(ActivityException e) {}
+	}
+	
+	@Test
+	public void nullProviderTest() {
+		try{
+			new Booking(null, this.offer);
+		}
+		catch(ActivityException e) {
+			Assert.assertEquals(0, this.offer.getNumberOfBookings());
+		}
+	}
 
 	@After
 	public void tearDown() {
