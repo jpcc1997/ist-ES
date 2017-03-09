@@ -16,12 +16,12 @@ public class ActivityProvider {
 	private final String code;
 	private final Set<Activity> activities = new HashSet<>();
 
+
 	public ActivityProvider(String code, String name) {
 		checkCode(code);
-
+		checkName(name);
 		this.code = code;
 		this.name = name;
-
 		ActivityProvider.providers.add(this);
 	}
 
@@ -29,7 +29,19 @@ public class ActivityProvider {
 		if (code.length() != ActivityProvider.CODE_SIZE) {
 			throw new ActivityException();
 		}
+		for(ActivityProvider a : providers)
+			if((a.getCode()).equals(code)) {
+				throw new ActivityException();
+			}
+
 	}
+	private void checkName(String name){
+		for(ActivityProvider a : providers)
+				if((a.getName()).equals(name)) {
+					throw new ActivityException();
+				}
+		}
+
 
 	String getName() {
 		return this.name;
