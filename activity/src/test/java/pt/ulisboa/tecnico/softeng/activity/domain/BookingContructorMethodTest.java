@@ -59,6 +59,7 @@ public class BookingContructorMethodTest {
 	public void nullOfferTest() {
 		try {
 			new Booking(this.provider, null);
+			Assert.fail();
 		}
 		catch(ActivityException e) {}
 	}
@@ -67,6 +68,7 @@ public class BookingContructorMethodTest {
 	public void nullProviderTest() {
 		try{
 			new Booking(null, this.offer);
+			Assert.fail();
 		}
 		catch(ActivityException e) {
 			Assert.assertEquals(0, this.offer.getNumberOfBookings());
