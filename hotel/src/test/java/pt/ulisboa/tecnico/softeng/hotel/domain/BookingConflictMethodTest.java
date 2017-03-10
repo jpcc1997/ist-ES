@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import pt.ulisboa.tecnico.softeng.hotel.exception.HotelException;
+
 public class BookingConflictMethodTest {
 	Booking booking;
 
@@ -33,7 +35,7 @@ public class BookingConflictMethodTest {
 
 		Assert.assertFalse(this.booking.conflict(arrival, departure));
 	}
-
+	
 	@After
 	public void tearDown() {
 		Hotel.hotels.clear();

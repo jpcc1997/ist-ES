@@ -2,6 +2,8 @@ package pt.ulisboa.tecnico.softeng.hotel.domain;
 
 import org.joda.time.LocalDate;
 
+import pt.ulisboa.tecnico.softeng.hotel.exception.HotelException;
+
 public class Booking {
 	private static int counter = 0;
 
@@ -10,9 +12,14 @@ public class Booking {
 	private final LocalDate departure;
 
 	Booking(Hotel hotel, LocalDate arrival, LocalDate departure) {
+		
 		this.reference = hotel.getCode() + Integer.toString(++Booking.counter);
 		this.arrival = arrival;
 		this.departure = departure;
+		
+		if(conflict(arrival, departure)){
+			throw new HotelException();
+		}
 	}
 
 	public String getReference() {
