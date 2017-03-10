@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import pt.ulisboa.tecnico.softeng.activity.domain.exception.ActivityException;
+
 public class ActivityOfferConstructorMethodTest {
 	private Activity activity;
 
@@ -27,7 +29,74 @@ public class ActivityOfferConstructorMethodTest {
 		Assert.assertEquals(1, this.activity.getNumberOfOffers());
 		Assert.assertEquals(0, offer.getNumberOfBookings());
 	}
+	
+	@Test
+	public void sameDateTest() {
+		LocalDate begin = new LocalDate(2016, 12, 19);
+		LocalDate end = new LocalDate(2016, 12, 19);
 
+		ActivityOffer offer = new ActivityOffer(this.activity, begin, end);
+
+		Assert.assertEquals(begin, offer.getBegin());
+		Assert.assertEquals(end, offer.getEnd());
+		Assert.assertEquals(1, this.activity.getNumberOfOffers());
+		Assert.assertEquals(0, offer.getNumberOfBookings());
+	}
+	
+	@Test
+	public void endBeforeBeginTest() {
+		LocalDate begin = new LocalDate(2016, 12, 19);
+		LocalDate end = new LocalDate(2016, 12, 10);
+
+		try {
+			new ActivityOffer(this.activity, begin, end);
+			Assert.fail();
+		}
+		catch(ActivityException e) {
+			Assert.assertEquals(0, this.activity.getNumberOfOffers());
+		}
+	}
+	
+	@Test
+	public void nullBeginTest() {
+		LocalDate end = new LocalDate(2016, 12, 10);
+
+		try {
+			new ActivityOffer(this.activity, null, end);
+			Assert.fail();
+		}
+		catch(ActivityException e) {
+			Assert.assertEquals(0, this.activity.getNumberOfOffers());
+		}
+	}
+
+	@Test
+	public void nullEndTest() {
+		LocalDate begin = new LocalDate(2016, 12, 19);
+
+		try {
+			new ActivityOffer(this.activity, begin, null);
+			Assert.fail();
+		}
+		catch(ActivityException e) {
+			Assert.assertEquals(0, this.activity.getNumberOfOffers());
+		}
+	}
+	
+	@Test
+	public void nullActivityTest() {
+		LocalDate begin = new LocalDate(2016, 12, 19);
+		LocalDate end = new LocalDate(2016, 12, 24);
+
+		try {
+			new ActivityOffer(null, begin, end);
+			Assert.fail();
+		}
+		catch(ActivityException e) {
+			Assert.assertEquals(0, this.activity.getNumberOfOffers());
+		}
+	}
+	
 	@After
 	public void tearDown() {
 		ActivityProvider.providers.clear();

@@ -5,6 +5,8 @@ import java.util.Set;
 
 import org.joda.time.LocalDate;
 
+import pt.ulisboa.tecnico.softeng.activity.domain.exception.ActivityException;
+
 public class ActivityOffer {
 	private final LocalDate begin;
 	private final LocalDate end;
@@ -12,6 +14,9 @@ public class ActivityOffer {
 	private final Set<Booking> bookings = new HashSet<>();
 
 	public ActivityOffer(Activity activity, LocalDate begin, LocalDate end) {
+		checkActivity(activity);
+		checkDates(begin,end);
+		
 		this.begin = begin;
 		this.end = end;
 		this.capacity = activity.getCapacity();
@@ -46,6 +51,16 @@ public class ActivityOffer {
 
 	boolean hasVacancy() {
 		return this.capacity > getNumberOfBookings();
+	}
+	
+	private void checkActivity(Activity activity){
+		if(activity == null)
+			throw new ActivityException();
+	}
+	
+	private void checkDates(LocalDate begin, LocalDate end){
+		if(begin == null || end == null || end.isBefore(begin))
+			throw new ActivityException();
 	}
 
 }
