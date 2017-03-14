@@ -125,6 +125,12 @@ public class Adventure {
 		this.bankPayment = BankInterface.processPayment(this.IBAN, this.amount);
 		this.roomBooking = HotelInterface.reserveHotel(Room.Type.SINGLE, this.begin, this.end);
 		this.activityBooking = ActivityInterface.reserveActivity(this.begin, this.end, this.age);
+		if (this.bankPayment == null || this.roomBooking == null || this.activityBooking == null) {
+			this.bankPayment = null;
+			this.roomBooking = null;
+			this.activityBooking = null;
+			throw new BrokerException();
+		}
 	}
 
 }
