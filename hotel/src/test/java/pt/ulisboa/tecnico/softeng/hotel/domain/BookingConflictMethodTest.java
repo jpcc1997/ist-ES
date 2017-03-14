@@ -51,12 +51,21 @@ public class BookingConflictMethodTest {
 	}
 	
 	@Test
-	public void ConflictDateNotMatching() {
+	public void ConflictDateBigger() {
 		LocalDate arrival = new LocalDate(2016, 12, 16);
 		LocalDate departure = new LocalDate(2016, 12, 27);
 		
 		Assert.assertTrue(this.booking.conflict(arrival, departure));
 	}
+	
+	@Test
+	public void ConflictDateSmaller() {
+		LocalDate arrival = new LocalDate(2016, 12, 20);
+		LocalDate departure = new LocalDate(2016, 12, 22);
+		
+		Assert.assertTrue(this.booking.conflict(arrival, departure));
+	}
+	
 	
 	@After
 	public void tearDown() {
