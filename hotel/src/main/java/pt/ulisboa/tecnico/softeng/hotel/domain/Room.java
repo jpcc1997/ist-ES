@@ -22,7 +22,9 @@ public class Room {
 	private final Set<Booking> bookings = new HashSet<>();
 
 	public Room(Hotel hotel, String number, Type type) {
+		checkHotel(hotel);
 		checkNumber(number, hotel);
+		checkType(type);
 		this.hotel = hotel;
 		this.number = number;
 		this.type = type;
@@ -43,6 +45,20 @@ public class Room {
 		}  
 		catch(NumberFormatException nfe){  
 		    throw new HotelException();  
+		}
+	}
+	
+	private void checkHotel(Hotel hotel){
+		//checks if hotel is not null
+		if (hotel == null){
+			throw new HotelException();
+		}
+	}
+	
+	private void checkType(Type type){
+		//checks if type is not null
+		if (type == null){
+			throw new HotelException();
 		}
 	}
 
