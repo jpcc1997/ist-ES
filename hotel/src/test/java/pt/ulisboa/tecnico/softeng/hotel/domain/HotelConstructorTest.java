@@ -34,6 +34,11 @@ public class HotelConstructorTest {
 	public void codeLengthError() {
 		Hotel hotel = new Hotel("XPTO12", "Londres");
 	}
+	
+	@Test(expected = HotelException.class) 
+	public void nullArguments() {
+		Hotel hotel3 = new Hotel(null, null);
+	}
 
 	//test if code is unique
 	@Test(expected = HotelException.class)
