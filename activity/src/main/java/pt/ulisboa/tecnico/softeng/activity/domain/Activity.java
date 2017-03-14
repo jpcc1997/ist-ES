@@ -73,7 +73,7 @@ public class Activity {
 	}
 
 	boolean matchAge(int age) {
-		return age >= this.minAge && age <= this.maxAge;
+		return age >= this.minAge && age <= this.maxAge && age >= 18 && age <100;
 	}
 	
 	void checkProvider(ActivityProvider provider) {
