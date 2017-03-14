@@ -37,7 +37,7 @@ public class HotelConstructorTest {
 	
 	@Test(expected = HotelException.class) 
 	public void nullArguments() {
-		Hotel hotel3 = new Hotel(null, null);
+		Hotel hotel = new Hotel(null, null);
 	}
 
 	//test if code is unique

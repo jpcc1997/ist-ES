@@ -18,7 +18,7 @@ public class Hotel {
 
 	public Hotel(String code, String name) {
 		if (code == null || name == null) {
-			throw new HotelException;
+			throw new HotelException();
 		}
 		
 		checkCode(code);
