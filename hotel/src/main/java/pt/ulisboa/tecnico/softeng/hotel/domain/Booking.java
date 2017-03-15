@@ -13,7 +13,7 @@ public class Booking {
 
 	Booking(Hotel hotel, LocalDate arrival, LocalDate departure) {
 		
-		
+		argsnotnull(hotel,arrival,departure);
 		checkDates(arrival, departure);
 		
 		this.reference = hotel.getCode() + Integer.toString(++Booking.counter);
@@ -35,7 +35,10 @@ public class Booking {
 	LocalDate getDeparture() {
 		return this.departure;
 	}
-	
+	private void argsnotnull(Hotel hotel,LocalDate arrival, LocalDate departure){
+		if (hotel == null || arrival == null || departure == null)
+			throw new HotelException();
+	}
 	private void checkDates(LocalDate arrival, LocalDate departure){
 		if (arrival.isAfter(departure) && !(arrival.isEqual(departure)))
 			 throw new HotelException();
