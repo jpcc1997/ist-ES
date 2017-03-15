@@ -55,7 +55,70 @@ import pt.ulisboa.tecnico.softeng.activity.domain.exception.ActivityException;
 				Assert.assertEquals("XtremX", this.provider.getCode());
 			}
 		}
-
+		
+		@Test
+		public void NullName() {
+			try {
+				new ActivityProvider("123436",null);
+				Assert.fail();
+			}
+			catch(ActivityException nullname) {
+				Assert.assertEquals("Adventure++",this.provider.getName());;
+			}
+		}
+		@Test
+		public void BlankName() {
+			try {
+				new ActivityProvider("123436"," ");
+				Assert.fail();
+			}
+			catch(ActivityException blankname) {
+				Assert.assertEquals("Adventure++",this.provider.getName());;
+			}
+		}
+		
+		@Test
+		public void NostringName() {
+			try {
+				new ActivityProvider("123436","");
+				Assert.fail();
+			}
+			catch(ActivityException nostringname) {
+				Assert.assertEquals("Adventure++",this.provider.getName());;
+			}
+		}
+		@Test
+		public void NullCode() {
+			try {
+				new ActivityProvider(null, "Adventure02");
+				Assert.fail();
+			}
+			catch(ActivityException nullcode) {
+				Assert.assertEquals("XtremX",this.provider.getCode());;
+			}
+		}		
+		@Test
+		public void BlankCode() {
+			try {
+				new ActivityProvider(" ","Adventure++");
+				Assert.fail();
+			}
+			catch(ActivityException blankcode) {
+				Assert.assertEquals("XtremX",this.provider.getCode());;
+			}
+		}
+		
+		@Test
+		public void NostringCode() {
+			try {
+				new ActivityProvider("","Adventure++");
+				Assert.fail();
+			}
+			catch(ActivityException nostringcode) {
+				Assert.assertEquals("XtremX",this.provider.getCode());;
+			}
+		}
+		
 		@After
 		public void tearDown() {
 			ActivityProvider.providers.clear();

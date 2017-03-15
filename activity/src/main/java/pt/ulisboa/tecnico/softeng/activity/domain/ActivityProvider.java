@@ -26,6 +26,15 @@ public class ActivityProvider {
 	}
 
 	private void checkCode(String code) {
+		if (code == null){
+			throw new ActivityException();
+		}
+		else if (code == ""){
+			throw new ActivityException();
+		}
+		else if (code == " "){
+			throw new ActivityException();
+		}
 		if (code.length() != ActivityProvider.CODE_SIZE) {
 			throw new ActivityException();
 		}
@@ -36,11 +45,20 @@ public class ActivityProvider {
 
 	}
 	private void checkName(String name){
+		if (name == null){
+			throw new ActivityException();
+		}
+		else if (name == ""){
+			throw new ActivityException();
+		}
+		else if (name == " "){
+			throw new ActivityException();
+		}
 		for(ActivityProvider a : providers)
 				if((a.getName()).equals(name)) {
 					throw new ActivityException();
 				}
-		}
+	}
 
 
 	String getName() {
