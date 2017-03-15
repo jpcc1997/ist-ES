@@ -17,6 +17,8 @@ public class BookingConflictMethodTest {
 
 		LocalDate arrival = new LocalDate(2016, 12, 19);
 		LocalDate departure = new LocalDate(2016, 12, 24);
+		
+		System.out.println(booking);
 		this.booking = new Booking(hotel, arrival, departure);
 	}
 	
@@ -62,6 +64,14 @@ public class BookingConflictMethodTest {
 	public void ConflictDateSmaller() {
 		LocalDate arrival = new LocalDate(2016, 12, 20);
 		LocalDate departure = new LocalDate(2016, 12, 22);
+		
+		Assert.assertTrue(this.booking.conflict(arrival, departure));
+	}
+	
+	@Test
+	public void ConflictMatching() {
+		LocalDate arrival = new LocalDate(2016, 12, 19);
+		LocalDate departure = new LocalDate(2016, 12, 24);
 		
 		Assert.assertTrue(this.booking.conflict(arrival, departure));
 	}

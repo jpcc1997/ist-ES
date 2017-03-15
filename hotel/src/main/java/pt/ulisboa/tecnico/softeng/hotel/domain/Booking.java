@@ -16,10 +16,6 @@ public class Booking {
 		this.reference = hotel.getCode() + Integer.toString(++Booking.counter);
 		this.arrival = arrival;
 		this.departure = departure;
-		
-		if(conflict(arrival, departure)){
-			throw new HotelException();
-		}
 	}
 
 	public String getReference() {
@@ -50,7 +46,11 @@ public class Booking {
 		if (arrival.isAfter(this.arrival) && departure.isBefore(this.departure)) {
 			return true;
 		}
-				
+		
+		if (arrival.isEqual(this.arrival) && departure.isEqual(this.departure)) {
+			return true;
+		}
+						
 		return false;
 	}
 
