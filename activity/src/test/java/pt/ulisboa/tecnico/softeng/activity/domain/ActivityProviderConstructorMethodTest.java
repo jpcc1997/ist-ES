@@ -69,7 +69,7 @@ import pt.ulisboa.tecnico.softeng.activity.domain.exception.ActivityException;
 		@Test
 		public void BlankName() {
 			try {
-				new ActivityProvider("123436"," ");
+				new ActivityProvider("123436","    ");
 				Assert.fail();
 			}
 			catch(ActivityException blankname) {
@@ -100,7 +100,7 @@ import pt.ulisboa.tecnico.softeng.activity.domain.exception.ActivityException;
 		@Test
 		public void BlankCode() {
 			try {
-				new ActivityProvider(" ","Adventure++");
+				new ActivityProvider("      ","Adventure++");
 				Assert.fail();
 			}
 			catch(ActivityException blankcode) {

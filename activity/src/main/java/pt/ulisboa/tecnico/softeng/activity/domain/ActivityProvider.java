@@ -32,7 +32,7 @@ public class ActivityProvider {
 		else if (code == ""){
 			throw new ActivityException();
 		}
-		else if (code == " "){
+		else if (code.trim().length() == 0){
 			throw new ActivityException();
 		}
 		if (code.length() != ActivityProvider.CODE_SIZE) {
@@ -51,7 +51,7 @@ public class ActivityProvider {
 		else if (name == ""){
 			throw new ActivityException();
 		}
-		else if (name == " "){
+		else if (name.trim().length() == 0){
 			throw new ActivityException();
 		}
 		for(ActivityProvider a : providers)
