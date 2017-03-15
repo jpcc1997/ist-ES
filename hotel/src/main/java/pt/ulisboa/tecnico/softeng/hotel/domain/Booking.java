@@ -13,9 +13,15 @@ public class Booking {
 
 	Booking(Hotel hotel, LocalDate arrival, LocalDate departure) {
 		
+		
+		checkDates(arrival, departure);
+		
 		this.reference = hotel.getCode() + Integer.toString(++Booking.counter);
 		this.arrival = arrival;
 		this.departure = departure;
+		
+		
+		
 	}
 
 	public String getReference() {
@@ -29,7 +35,11 @@ public class Booking {
 	LocalDate getDeparture() {
 		return this.departure;
 	}
-
+	
+	private void checkDates(LocalDate arrival, LocalDate departure){
+		if (arrival.isAfter(departure) && !(arrival.isEqual(departure)))
+			 throw new HotelException();
+	}
 	boolean conflict(LocalDate arrival, LocalDate departure) {
 		if (arrival.isAfter(this.arrival) && arrival.isBefore(this.departure)) {
 			return true;
