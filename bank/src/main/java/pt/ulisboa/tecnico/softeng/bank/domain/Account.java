@@ -61,10 +61,18 @@ public class Account {
 		if (amount > this.balance) {
 			throw new BankException();
 		}
+		
+		checkAmount(amount);
 
 		this.balance = this.balance - amount;
 
 		return new Operation(Operation.Type.WITHDRAW, this, amount).getReference();
+	}
+	
+	public void checkAmount(int amount){
+		if(amount<=0){
+			throw new BankException();
+		}
 	}
 
 }

@@ -12,6 +12,7 @@ import pt.ulisboa.tecnico.softeng.activity.domain.ActivityProvider;
 import pt.ulisboa.tecnico.softeng.bank.domain.Account;
 import pt.ulisboa.tecnico.softeng.bank.domain.Bank;
 import pt.ulisboa.tecnico.softeng.bank.domain.Client;
+import pt.ulisboa.tecnico.softeng.broker.exception.BrokerException;
 import pt.ulisboa.tecnico.softeng.hotel.domain.Hotel;
 import pt.ulisboa.tecnico.softeng.hotel.domain.Room;
 import pt.ulisboa.tecnico.softeng.hotel.domain.Room.Type;
@@ -25,23 +26,22 @@ public class AdventureProcessMethodTest {
 	@Before
 	public void setUp() {
 		this.broker = new Broker("BR01", "eXtremeADVENTURE");
-
 		Bank bank = new Bank("Money", "BK01");
 		Client client = new Client(bank, "António");
 		Account account = new Account(bank, client);
 		this.IBAN = account.getIBAN();
 		account.deposit(1000);
+	}
 
+	@Test
+	public void success() {
 		Hotel hotel = new Hotel("XPTO123", "Paris");
 		new Room(hotel, "01", Type.SINGLE);
 
 		ActivityProvider provider = new ActivityProvider("XtremX", "ExtremeAdventure");
 		Activity activity = new Activity(provider, "Bush Walking", 18, 80, 3);
 		new ActivityOffer(activity, this.begin, this.end);
-	}
-
-	@Test
-	public void success() {
+		
 		Adventure adventure = new Adventure(this.broker, this.begin, this.end, 20, this.IBAN, 300);
 
 		adventure.process();
@@ -50,7 +50,99 @@ public class AdventureProcessMethodTest {
 		Assert.assertNotNull(adventure.getRoomBooking());
 		Assert.assertNotNull(adventure.getActivityBooking());
 	}
+	
+	@Test
+	public void noHotels(){
+		ActivityProvider provider = new ActivityProvider("XtremX", "ExtremeAdventure");
+		Activity activity = new Activity(provider, "Bush Walking", 18, 80, 3);
+		new ActivityOffer(activity, this.begin, this.end);
+		
+		Adventure adventure = new Adventure(this.broker, this.begin, this.end, 20, this.IBAN, 300);
+		try {
+			adventure.process();
+			Assert.fail();
+		} catch (BrokerException e) {
+			Assert.assertNull(adventure.getBankPayment());
+			Assert.assertNull(adventure.getRoomBooking());
+			Assert.assertNull(adventure.getActivityBooking());
+		}
+	}
+	
+	@Test
+	public void noRooms(){
+		new Hotel("XPTO123", "Paris");
+		
+		ActivityProvider provider = new ActivityProvider("XtremX", "ExtremeAdventure");
+		Activity activity = new Activity(provider, "Bush Walking", 18, 80, 3);
+		new ActivityOffer(activity, this.begin, this.end);
 
+		Adventure adventure = new Adventure(this.broker, this.begin, this.end, 20, this.IBAN, 300);
+		try {
+			adventure.process();
+			Assert.fail();
+		} catch (BrokerException e) {
+			Assert.assertNull(adventure.getBankPayment());
+			Assert.assertNull(adventure.getRoomBooking());
+			Assert.assertNull(adventure.getActivityBooking());
+		}
+	}
+	
+	@Test
+	public void noProviders(){
+		Hotel hotel = new Hotel("XPTO123", "Paris");
+		new Room(hotel, "01", Type.SINGLE);
+
+		Adventure adventure = new Adventure(this.broker, this.begin, this.end, 20, this.IBAN, 300);
+
+		try {
+			adventure.process();
+			Assert.fail();
+		} catch (BrokerException e) {
+			Assert.assertNull(adventure.getBankPayment());
+			Assert.assertNull(adventure.getRoomBooking());
+			Assert.assertNull(adventure.getActivityBooking());
+		}
+	}
+	
+	@Test
+	public void noActivities(){
+		Hotel hotel = new Hotel("XPTO123", "Paris");
+		new Room(hotel, "01", Type.SINGLE);
+		
+		new ActivityProvider("XtremX", "ExtremeAdventure");
+
+		Adventure adventure = new Adventure(this.broker, this.begin, this.end, 20, this.IBAN, 300);
+
+		try {
+			adventure.process();
+			Assert.fail();
+		} catch (BrokerException e) {
+			Assert.assertNull(adventure.getBankPayment());
+			Assert.assertNull(adventure.getRoomBooking());
+			Assert.assertNull(adventure.getActivityBooking());
+		}
+	}
+
+	@Test
+	public void noActivityOffers(){
+		Hotel hotel = new Hotel("XPTO123", "Paris");
+		new Room(hotel, "01", Type.SINGLE);
+		
+		ActivityProvider provider = new ActivityProvider("XtremX", "ExtremeAdventure");
+		new Activity(provider, "Bush Walking", 18, 80, 3);
+
+		Adventure adventure = new Adventure(this.broker, this.begin, this.end, 20, this.IBAN, 300);
+
+		try {
+			adventure.process();
+			Assert.fail();
+		} catch (BrokerException e) {
+			Assert.assertNull(adventure.getBankPayment());
+			Assert.assertNull(adventure.getRoomBooking());
+			Assert.assertNull(adventure.getActivityBooking());
+		}
+	}
+	
 	@After
 	public void tearDown() {
 		Bank.banks.clear();

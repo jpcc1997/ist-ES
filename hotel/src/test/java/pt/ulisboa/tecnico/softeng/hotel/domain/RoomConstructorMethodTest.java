@@ -37,6 +37,21 @@ public class RoomConstructorMethodTest {
 	}
 	
 	@Test(expected = HotelException.class)
+	public void isnotnull() {
+		Room room = new Room(null, "1", Type.DOUBLE);
+	}
+	
+	@Test(expected = HotelException.class)
+	public void isnotnull2() {
+		Room room = new Room(this.hotel, null, Type.DOUBLE);
+	}
+	
+	@Test(expected = HotelException.class)
+	public void isnotnull3() {
+		Room room = new Room(this.hotel, "2", null);
+	}
+	
+	@Test(expected = HotelException.class)
 	public void isuniquenumber() {
 		Room room = new Room(this.hotel, "25", Type.DOUBLE);
 		Room room2 = new Room(this.hotel, "25", Type.DOUBLE);

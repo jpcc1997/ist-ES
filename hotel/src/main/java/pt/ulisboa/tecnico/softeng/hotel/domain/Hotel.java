@@ -17,6 +17,10 @@ public class Hotel {
 	private final Set<Room> rooms = new HashSet<>();
 
 	public Hotel(String code, String name) {
+		if (code == null || name == null) {
+			throw new HotelException();
+		}
+		
 		checkCode(code);
 
 		this.code = code;
