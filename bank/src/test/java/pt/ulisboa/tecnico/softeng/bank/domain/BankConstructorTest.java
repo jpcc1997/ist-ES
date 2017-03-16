@@ -26,7 +26,6 @@ public class BankConstructorTest {
 		Assert.assertEquals(0, bank.getNumberOfClients());
 	}
 
-	// // // //
 	
 	@Test
 	public void nullCode() {
@@ -38,8 +37,20 @@ public class BankConstructorTest {
 		}
 	}
 
+	
 	@Test
 	public void emptyCode() {
+		try {
+			new Bank("Money", "");
+			Assert.fail();
+		} catch (BankException b) {
+			Assert.assertEquals(0, Bank.banks.size());
+		}
+	}
+	
+	
+	@Test
+	public void blankCode() {
 		try {
 			new Bank("Money", "    ");
 			Assert.fail();
@@ -48,6 +59,7 @@ public class BankConstructorTest {
 		}
 	}
 
+	
 	@Test
 	public void uniqueCode() {
 		Bank bank = new Bank("Money", "BK01");
@@ -61,6 +73,7 @@ public class BankConstructorTest {
 		}
 	}
 	
+	
 	@Test
 	public void bigCode() {
 		try {
@@ -70,6 +83,7 @@ public class BankConstructorTest {
 			Assert.assertEquals(0, Bank.banks.size());
 		}
 	}
+	
 	
 	@Test
 	public void smallCode() {
@@ -91,8 +105,20 @@ public class BankConstructorTest {
 		}
 	}
 
+	
 	@Test
 	public void emptyName() {
+		try {
+			new Bank("", "BK01");
+			Assert.fail();
+		} catch (BankException b) {
+			Assert.assertEquals(0, Bank.banks.size());
+		}
+	}
+	
+	
+	@Test
+	public void blankName() {
 		try {
 			new Bank("    ", "BK01");
 			Assert.fail();
