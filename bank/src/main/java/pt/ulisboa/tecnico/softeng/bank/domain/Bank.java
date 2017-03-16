@@ -88,12 +88,11 @@ public class Bank {
 				throw new BankException();
 			}
 			
-			if (IBAN == null || IBAN.trim().length()<1){
-				
+			else if (IBAN == null || IBAN.trim().length() == 0){
 				throw new BankException();
 				
 			}
-			if (account.getIBAN().equals(IBAN)) {
+			else if (account.getIBAN().equals(IBAN)) {
 				return account;
 			}
 		}
