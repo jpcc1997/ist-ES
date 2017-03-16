@@ -17,8 +17,7 @@ public class BookingConflictMethodTest {
 
 		LocalDate arrival = new LocalDate(2016, 12, 19);
 		LocalDate departure = new LocalDate(2016, 12, 24);
-		
-		System.out.println(booking);
+	
 		this.booking = new Booking(hotel, arrival, departure);
 	}
 	
