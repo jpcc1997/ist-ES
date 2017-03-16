@@ -48,9 +48,19 @@ public class ClientContructorMethodTest {
 	}
 
 	@Test
+	public void blankName() {
+		try {
+			new Client(this.bank, "      ");
+			Assert.fail();
+		} catch (BankException be) {
+			Assert.assertEquals(0, this.bank.getNumberOfClients());
+		}
+	}
+	
+	@Test
 	public void emptyName() {
 		try {
-			new Client(this.bank, "  ");
+			new Client(this.bank, "");
 			Assert.fail();
 		} catch (BankException be) {
 			Assert.assertEquals(0, this.bank.getNumberOfClients());
