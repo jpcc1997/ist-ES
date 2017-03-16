@@ -47,7 +47,7 @@ public class RoomConstructorMethodTest {
 	}
 	
 	@Test(expected = HotelException.class)
-	public void testNnull3() {
+	public void testNull3() {
 		Room room = new Room(this.hotel, "2", null);
 	}
 	
