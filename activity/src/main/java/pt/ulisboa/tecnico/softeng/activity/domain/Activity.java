@@ -82,7 +82,7 @@ public class Activity {
 	}
 	
 	void checkName(String name) {
-		if ((name == null) || (name == ""))
+		if ((name == null) || (name.trim().length() == 0))
 			throw new ActivityException();
 	}
 	

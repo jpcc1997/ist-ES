@@ -64,6 +64,16 @@ public class ActivityConstructorMethodTest {
 			Assert.assertEquals(0, this.provider.getNumberOfActivities());
 		}
 	}
+	
+	@Test
+	public void AgeLimTest() {
+		
+		Activity activity = new Activity(this.provider, "Bush Walking", 18, 99, 10);
+		Assert.assertEquals(18, activity.getMinAge());
+		Assert.assertEquals(99, activity.getMaxAge());
+		Assert.assertEquals(1, this.provider.getNumberOfActivities());
+
+	}
 
 	@Test
 	public void capacityTest() {
@@ -75,6 +85,15 @@ public class ActivityConstructorMethodTest {
 		catch(ActivityException e) {
 			Assert.assertEquals(0, this.provider.getNumberOfActivities());
 		}
+	}
+	
+	@Test
+	public void capacityLimTest() {
+		
+		Activity activity = new Activity(this.provider, "Bush Walking", 30, 80, 1);
+		Assert.assertEquals(1, activity.getCapacity());
+		Assert.assertEquals(1, this.provider.getNumberOfActivities());
+
 	}
 	
 	@Test
