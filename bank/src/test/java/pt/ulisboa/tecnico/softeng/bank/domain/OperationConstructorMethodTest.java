@@ -37,42 +37,28 @@ public class OperationConstructorMethodTest {
 	}
 
 	
-	@Test
+	@Test(expected = BankException.class)
 	public void nullType() {
-		try {
 			new Operation(null, this.account, 1000);
 			Assert.fail();
-		} catch (BankException b) {
-			
-		}
 	}
 
-	@Test
+	@Test(expected = BankException.class)
 	public void nullAccount() {
-		try {
 			new Operation(Type.DEPOSIT, null, 1000);
 			Assert.fail();
-		} catch (BankException b) {
-
-		}
 	}
 	
-	@Test
+	@Test(expected = BankException.class)
 	public void zeroValue() {
-		try{
 			new Operation(Type.DEPOSIT, this.account, 0);
-		} catch (BankException b) {
-			
-		}
+			Assert.fail();
 	}
 	
-	@Test
+	@Test(expected = BankException.class)
 	public void negativeValue() {
-		try{
 			new Operation(Type.DEPOSIT, this.account, -1000);
-		} catch (BankException b) {
-			
-		}
+			Assert.fail();
 	}
 	
 	@After
