@@ -89,6 +89,11 @@ public class Room {
 	}
 
 	public Booking reserve(Type type, LocalDate arrival, LocalDate departure) {
+		if ((type == null) || (arrival == null) || (departure == null))
+		{	
+			throw new HotelException();
+		}
+		
 		if (!isFree(type, arrival, departure)) {
 			throw new HotelException();
 		}
