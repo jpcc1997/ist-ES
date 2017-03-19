@@ -28,49 +28,34 @@ public class BankHasAccountMethodTest {
 	}
 	
 	
-	@Test
+	@Test(expected = BankException.class)
 	public void nullArgs(){
-		try{
 			this.bank.getAccount(null);		
-			Assert.fail();			
-			}	catch (BankException be){}
-		}
-
-	@Test
+			Assert.fail();}
+	
+	@Test(expected = BankException.class)
 	public void emptyArgs(){
-		try{
 			this.bank.getAccount("");
-			Assert.fail();
-			}	catch (BankException be){}
-		}
+			Assert.fail();}
 	
-	@Test
+	@Test(expected = BankException.class)
 	public void blankArgs(){
-		try{
 			this.bank.getAccount("   ");
-			Assert.fail();
-			}	catch (BankException be){}
-		}
+			Assert.fail();}
 	
 	
-	@Test 
+	@Test(expected = BankException.class)
 	public void wrongIBAN(){
-		try{
 			new Account(this.bank, this.client);
 			new Account(this.bank, new Client(this.bank,"Pedro"));
 			new Account(this.bank, new Client(this.bank, "Diogo"));
 			this.bank.getAccount("BK019923");
-			Assert.fail();
-		}	catch (BankException be){} 
-	}
+			Assert.fail(); }
 	
-	@Test
+	@Test(expected = BankException.class)
 	public void emptyBank(){
-		try{
 			this.bank.getAccount("BK021");
-			Assert.fail();
-		}	catch (BankException be){}
-	}
+			Assert.fail();}
 	
 
 	@After
