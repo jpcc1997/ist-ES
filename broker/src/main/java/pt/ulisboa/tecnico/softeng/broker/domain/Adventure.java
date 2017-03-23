@@ -157,6 +157,7 @@ public class Adventure {
 	public State getState() {
 		switch (this.oldState) {
 		case PROCESS_PAYMENT:
+			return this.state.getState();
 		case RESERVE_ACTIVITY:
 		case BOOK_ROOM:
 		case UNDO:
