@@ -10,7 +10,7 @@ To check test coverage execute: mvn clean cobertura:cobertura
 | 81151      | Pedro Orvalho 	         | pmorvalho@gmail.com 				        | pmorvalho  		     |   3   |
 | 80789      | João Silveira 	         | joao.pinto.silveira@gmail.com 	    | nowitworks         |   4   |
 | 80967      | Daniel Correia 	       | dduarte96@hotmail.com 			        | danielcorreia96    |   5   |
-|            |                         |                                    |                    |   6   |
+| 81061      | Miguel Renda            | miguel.renda@tecnico.ulisboa.pt    | MiguelRenda        |   6   |
 |            |                         |                                    |                    |   7   |
 |            |                         |                                    |                    |   8   |
 |            |                         |                                    |                    |   9   |
