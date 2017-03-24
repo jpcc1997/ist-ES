@@ -160,11 +160,8 @@ public class Adventure {
 			return this.state.getState();
 		case RESERVE_ACTIVITY:
 		case BOOK_ROOM:
-			return this.state.getState();
 		case UNDO:
-			return this.state.getState();
 		case CONFIRMED:
-			return this.oldState;
 		case CANCELLED:
 			return this.state.getState();
 		default:
@@ -189,7 +186,7 @@ public class Adventure {
 			this.state = new UndoState();
 			break;
 		case CONFIRMED:
-			this.state = null;
+			this.state = new ConfirmedState();
 			break;
 		case CANCELLED:
 			this.state = new CancelledState();
@@ -235,60 +232,6 @@ public class Adventure {
 			this.state.process(this);
 			break;
 		case CONFIRMED:
-			BankOperationData operation;
-			try {
-				operation = BankInterface.getOperationData(getPaymentConfirmation());
-			} catch (BankException be) {
-				// increment number of errors
-				// if (number of errors == 5) {
-				// adventure.setState(State.UNDO);
-				// }
-				// return;
-			} catch (RemoteAccessException rae) {
-				// increment number of errors
-				// if (number of errors == 20) {
-				// adventure.setState(State.UNDO);
-				// }
-				// return;
-			}
-			// reset number of errors
-
-			ActivityReservationData reservation;
-			try {
-				reservation = ActivityInterface.getActivityReservationData(getActivityConfirmation());
-			} catch (ActivityException ae) {
-				setState(State.UNDO);
-				return;
-			} catch (RemoteAccessException rae) {
-				// increment number of errors
-				// if (number of errors == 20) {
-				// adventure.setState(State.UNDO);
-				// }
-				// return;
-			}
-			// reset number of errors
-
-			if (getRoomConfirmation() != null) {
-				RoomBookingData booking;
-				try {
-					booking = HotelInterface.getRoomBookingData(getRoomConfirmation());
-				} catch (HotelException he) {
-					setState(State.UNDO);
-					return;
-				} catch (RemoteAccessException rae) {
-					// increment number of errors
-					// if (number of errors == 20) {
-					// adventure.setState(State.UNDO);
-					// }
-					// return;
-				}
-				// reset number of errors
-			}
-
-			// TODO: prints the complete Adventure file, the info in operation,
-			// reservation and booking
-
-			break;
 		case CANCELLED:
 			this.state.process(this);
 			break;
