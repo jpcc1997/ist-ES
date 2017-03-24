@@ -81,6 +81,14 @@ public class ActivityProvider {
 
 	public static String cancelReservation(String activityConfirmation) {
 		// TODO implement
+		
+		//fazer um activity provider
+		//add activity
+		//add offers a activity
+		//reservar activity/offer
+		//isso deve criar um booking na ActivityOffer
+		//remover o booking
+		
 		throw new ActivityException();
 	}
 
