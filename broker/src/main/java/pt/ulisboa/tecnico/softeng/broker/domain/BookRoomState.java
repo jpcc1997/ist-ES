@@ -27,11 +27,11 @@ public class BookRoomState extends AdventureState {
 		} catch (HotelException rae) {
 			adventure.setState(State.UNDO);
 		} catch (RemoteAccessException rae) {
-			// increment number of errors
-			// if (number of errors == 10) {
-			// adventure.setState(State.UNDO);
-			// }
-			// return;
+			this.incNumOfRemoteErrors();
+			if (this.getNumOfRemoteErrors()== 10) {
+				adventure.setState(State.UNDO);
+			}
+			return;
 		}
 
 		adventure.setState(State.CONFIRMED);
