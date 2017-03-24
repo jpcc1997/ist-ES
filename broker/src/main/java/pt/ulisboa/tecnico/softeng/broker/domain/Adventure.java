@@ -161,8 +161,8 @@ public class Adventure {
 		case RESERVE_ACTIVITY:
 		case BOOK_ROOM:
 		case UNDO:
-		case CONFIRMED:
 			return this.oldState;
+		case CONFIRMED:
 		case CANCELLED:
 			return this.state.getState();
 		default:
@@ -187,7 +187,7 @@ public class Adventure {
 			this.state = null;
 			break;
 		case CONFIRMED:
-			this.state = null;
+			this.state = new ConfirmedState();
 			break;
 		case CANCELLED:
 			this.state = new CancelledState();
@@ -272,60 +272,6 @@ public class Adventure {
 			}
 			break;
 		case CONFIRMED:
-			BankOperationData operation;
-			try {
-				operation = BankInterface.getOperationData(getPaymentConfirmation());
-			} catch (BankException be) {
-				// increment number of errors
-				// if (number of errors == 5) {
-				// adventure.setState(State.UNDO);
-				// }
-				// return;
-			} catch (RemoteAccessException rae) {
-				// increment number of errors
-				// if (number of errors == 20) {
-				// adventure.setState(State.UNDO);
-				// }
-				// return;
-			}
-			// reset number of errors
-
-			ActivityReservationData reservation;
-			try {
-				reservation = ActivityInterface.getActivityReservationData(getActivityConfirmation());
-			} catch (ActivityException ae) {
-				setState(State.UNDO);
-				return;
-			} catch (RemoteAccessException rae) {
-				// increment number of errors
-				// if (number of errors == 20) {
-				// adventure.setState(State.UNDO);
-				// }
-				// return;
-			}
-			// reset number of errors
-
-			if (getRoomConfirmation() != null) {
-				RoomBookingData booking;
-				try {
-					booking = HotelInterface.getRoomBookingData(getRoomConfirmation());
-				} catch (HotelException he) {
-					setState(State.UNDO);
-					return;
-				} catch (RemoteAccessException rae) {
-					// increment number of errors
-					// if (number of errors == 20) {
-					// adventure.setState(State.UNDO);
-					// }
-					// return;
-				}
-				// reset number of errors
-			}
-
-			// TODO: prints the complete Adventure file, the info in operation,
-			// reservation and booking
-
-			break;
 		case CANCELLED:
 			this.state.process(this);
 			break;
