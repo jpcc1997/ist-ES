@@ -63,6 +63,14 @@ public class RoomReserveMethodTest {
 			Assert.assertEquals(1, this.room.getNumberOfBookings());
 		}
 	}
+	
+	@Test(expected = HotelException.class)
+	public void less1Day() {
+		LocalDate arrival2 = new LocalDate(2017, 2, 2);
+		LocalDate departure2 = new LocalDate(2017, 2, 2);
+		
+		this.room.reserve(Type.SINGLE, arrival2, departure2);
+	}
 
 	@After
 	public void tearDown() {
