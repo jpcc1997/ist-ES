@@ -15,7 +15,9 @@ public class Hotel {
 
 	private final String code;
 	private final String name;
-	private final Set<Room> rooms = new HashSet<>();
+	private final static Set<Room> rooms = new HashSet<>();
+	
+	private static RoomBookingData roomBookingData = new RoomBookingData();
 
 	public Hotel(String code, String name) {
 		checkArguments(code, name);
@@ -23,6 +25,9 @@ public class Hotel {
 		this.code = code;
 		this.name = name;
 		Hotel.hotels.add(this);
+		
+		roomBookingData.setHotelCode(code);
+		roomBookingData.setHotelName(name);
 	}
 
 	private void checkArguments(String code, String name) {
@@ -99,7 +104,18 @@ public class Hotel {
 	}
 
 	public static RoomBookingData getRoomBookingData(String reference) {
-		// TODO implement
+		Booking b = null;
+		for(Room r : rooms) {
+			b = r.getBooking(reference);
+			if(b != null) {
+				roomBookingData.setArrival(b.getArrival());
+				roomBookingData.setDeparture(b.getDeparture());
+				roomBookingData.setReference(reference);
+				roomBookingData.setRoomNumber(r.getNumber());
+				roomBookingData.setRoomType(r.getType().toString());
+				return roomBookingData;
+			}		
+		}
 		throw new HotelException();
 	}
 

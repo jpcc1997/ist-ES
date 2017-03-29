@@ -48,6 +48,13 @@ public class Room {
 	Type getType() {
 		return this.type;
 	}
+	
+	Booking getBooking(String reference) {
+		for(Booking b : bookings) 
+			if(reference.equals(b.getReference()))
+				return b;
+		return null;
+	}
 
 	int getNumberOfBookings() {
 		return this.bookings.size();
