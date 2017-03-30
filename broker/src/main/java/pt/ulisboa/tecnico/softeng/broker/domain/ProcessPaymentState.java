@@ -25,10 +25,10 @@ public class ProcessPaymentState extends AdventureState {
 		} catch (BankException be) {
 			adventure.setState(State.CANCELLED);
 		} catch (RemoteAccessException rae) {
-			// increment number of errors
-			// if (number of errors == 3) {
-			// setState(State.CANCELLED);
-			// }
+			numOfRemoteErrors++;
+			if (numOfRemoteErrors == 3) {
+				adventure.setState(State.CANCELLED);
+			}
 			return;
 		}
 		
