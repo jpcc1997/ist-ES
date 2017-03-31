@@ -49,7 +49,7 @@ public class BookRoomStateProcessMethodTest {
 	}
 	
 	@Test
-	public void BookRoomeRemoteAccessException(@Mocked final HotelInterface hotelInterface) {
+	public void BookRoomTenRemoteAccessException(@Mocked final HotelInterface hotelInterface) {
 
 		new Expectations() {
 			{
@@ -66,19 +66,20 @@ public class BookRoomStateProcessMethodTest {
 	}
 
 	@Test
-	public void BookRoomeTwoRemoteAccessException(@Mocked final HotelInterface hotelInterface) {
+	public void BookRoomNineRemoteAccessException(@Mocked final HotelInterface hotelInterface) {
 
 		new Expectations() {
 			{
 				HotelInterface.reserveRoom(Room.Type.SINGLE, adventure.getBegin(), adventure.getEnd());
+				this.result = new RemoteAccessException();
 			}
 		};
 
-		for(int i=0; i<2; i++)
+		for(int i=0; i<9; i++)
 			this.adventure.process();
 		
 		
-		Assert.assertEquals(Adventure.State.CONFIRMED, this.adventure.getState());
+		Assert.assertEquals(Adventure.State.BOOK_ROOM, this.adventure.getState());
 	}	
 
 	
