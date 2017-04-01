@@ -40,8 +40,6 @@ public class Adventure {
 	private String activityConfirmation;
 	private String activityCancellation;
 
-	private State oldState; // to be removed once all states are refactored as
-							// subclasses of AdventureState
 	private AdventureState state;
 
 	public Adventure(Broker broker, LocalDate begin, LocalDate end, int age, String IBAN, int amount) {
@@ -155,29 +153,16 @@ public class Adventure {
 	}
 
 	public State getState() {
-		switch (this.oldState) {
-		case PROCESS_PAYMENT:
-			return this.state.getState();
-		case RESERVE_ACTIVITY:
-		case BOOK_ROOM:
-		case UNDO:
-		case CONFIRMED:
-		case CANCELLED:
-			return this.state.getState();
-		default:
-			new BrokerException();
-			return null;
-		}
+		return this.state.getState();
 	}
 
 	public void setState(State state) {
-		this.oldState = state;
 		switch (state) {
 		case PROCESS_PAYMENT:
 			this.state = new ProcessPaymentState();
 			break;
 		case RESERVE_ACTIVITY:
-			this.state = null;
+			this.state = new ReserveActivityState();
 			break;
 		case BOOK_ROOM:
 			this.state = new BookRoomState();
@@ -199,45 +184,8 @@ public class Adventure {
 	}
 
 	public void process() {
-		logger.debug("process ID:{}, state:{} ", this.ID, this.oldState.name());
-
-		switch (this.oldState) {
-		case PROCESS_PAYMENT:
-			this.state.process(this);
-			break;
-		case RESERVE_ACTIVITY:
-			try {
-				this.activityConfirmation = ActivityInterface.reserveActivity(this.begin, this.end, this.age);
-			} catch (ActivityException ae) {
-				setState(State.UNDO);
-			} catch (RemoteAccessException rae) {
-				// increment number of errors
-				// if (number of errors == 5) {
-				// adventure.setState(State.UNDO);
-				// }
-				// return;
-			}
-
-			if (this.begin.equals(this.end)) {
-				setState(State.CONFIRMED);
-			} else {
-				setState(State.BOOK_ROOM);
-			}
-
-			break;
-		case BOOK_ROOM:
-			this.state.process(this);
-			break;
-		case UNDO:
-			this.state.process(this);
-			break;
-		case CONFIRMED:
-		case CANCELLED:
-			this.state.process(this);
-			break;
-		default:
-			throw new BrokerException();
-		}
+		//logger.debug("process ID:{}, state:{} ", this.ID, this.oldState.name());
+		this.state.process(this);
 	}
 
 	public boolean cancelRoom() {
