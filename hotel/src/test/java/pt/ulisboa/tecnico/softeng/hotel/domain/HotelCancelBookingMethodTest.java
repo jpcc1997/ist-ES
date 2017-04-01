@@ -36,6 +36,7 @@ public class HotelCancelBookingMethodTest {
 		Hotel.cancelBooking(confirmation);
 		Assert.assertEquals("cancelled" + confirmation, booking.getCancellation());
 		Assert.assertEquals(this.room.getNCancelledBookings(), 1);
+		Assert.assertTrue((this.room.isFree(Type.SINGLE, this.arrival, this.departure)));
 	}
 	
 	@Test(expected = HotelException.class)
