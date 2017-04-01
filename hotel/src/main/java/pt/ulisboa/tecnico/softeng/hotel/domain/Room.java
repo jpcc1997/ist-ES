@@ -61,7 +61,7 @@ public class Room {
 		return cancelledBookings;
 	}
 	int getNumberOfBookings() {
-		return this.bookings.size();
+		return this.bookings.size() - cancelledBookings;
 	}
 
 	boolean isFree(Type type, LocalDate arrival, LocalDate departure) {
@@ -70,7 +70,7 @@ public class Room {
 		}
 
 		for (Booking booking : this.bookings) {
-			if (booking.conflict(arrival, departure)) {
+			if (booking.conflict(arrival, departure) && booking.getCancellation()== "") {
 				return false;
 			}
 		}
