@@ -15,6 +15,7 @@ public class Room {
 	private final Hotel hotel;
 	private final String number;
 	private final Type type;
+	private int cancelledBookings = 0;
 	private final Set<Booking> bookings = new HashSet<>();
 
 	public Room(Hotel hotel, String number, Type type) {
@@ -48,9 +49,19 @@ public class Room {
 	Type getType() {
 		return this.type;
 	}
+	
 
+	Set<Booking> getBookings() {
+		return this.bookings;
+	}
+	void setNCancelledBookings(){
+		cancelledBookings = cancelledBookings +1;
+	}
+	int getNCancelledBookings(){
+		return cancelledBookings;
+	}
 	int getNumberOfBookings() {
-		return this.bookings.size();
+		return this.bookings.size() - cancelledBookings;
 	}
 
 	boolean isFree(Type type, LocalDate arrival, LocalDate departure) {
@@ -59,7 +70,7 @@ public class Room {
 		}
 
 		for (Booking booking : this.bookings) {
-			if (booking.conflict(arrival, departure)) {
+			if (booking.conflict(arrival, departure) && booking.getCancellation()== "") {
 				return false;
 			}
 		}
