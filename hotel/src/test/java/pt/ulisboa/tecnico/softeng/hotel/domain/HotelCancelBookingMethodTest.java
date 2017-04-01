@@ -34,8 +34,8 @@ public class HotelCancelBookingMethodTest {
 	public void success() {
 		String confirmation = booking.getReference();
 		Hotel.cancelBooking(confirmation);
-		Assert.assertEquals(0,room.getNumberOfBookings());
-		Assert.assertTrue(room.isFree(Type.SINGLE, this.arrival, this.departure));	
+		Assert.assertEquals("cancelled" + confirmation, booking.getCancellation());
+		Assert.assertEquals(this.room.getNCancelledBookings(), 1);
 	}
 	
 	@Test(expected = HotelException.class)
@@ -58,6 +58,12 @@ public class HotelCancelBookingMethodTest {
 		Hotel.cancelBooking("      ");
 	}
 	
+	@Test(expected = HotelException.class)
+	public void doubleCancelation() {
+		String confirmation = booking.getReference();
+		Hotel.cancelBooking(confirmation);
+		Hotel.cancelBooking(confirmation);
+	}
 	@After
 	public void tearDown() {
 		Hotel.hotels.clear();
