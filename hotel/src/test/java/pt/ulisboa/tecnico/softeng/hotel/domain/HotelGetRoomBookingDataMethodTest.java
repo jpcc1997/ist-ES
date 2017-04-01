@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-
+import pt.ulisboa.tecnico.softeng.hotel.exception.*;
 import pt.ulisboa.tecnico.softeng.hotel.domain.Room.Type;
 import pt.ulisboa.tecnico.softeng.hotel.dataobjects.RoomBookingData;
 
@@ -28,6 +28,12 @@ public class HotelGetRoomBookingDataMethodTest {
 		RoomBookingData b = Hotel.getRoomBookingData(booking.getReference());
 		
 		Assert.assertEquals(b.getReference(), booking.getReference());
+	}
+	
+	@Test(expected=HotelException.class)
+	public void insuccess() {
+		room.reserve(Type.SINGLE, this.arrival, this.departure);
+		System.out.println(Hotel.getRoomBookingData("AOAOSJD"));
 	}
 	
 	@Test
