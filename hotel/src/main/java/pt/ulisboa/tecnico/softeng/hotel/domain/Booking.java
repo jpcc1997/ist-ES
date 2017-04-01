@@ -43,6 +43,10 @@ public class Booking {
 	LocalDate getDeparture() {
 		return this.departure;
 	}
+	
+	LocalDate getCancellationDate() {
+		return this.cancellationDate;
+	}
 
 	boolean conflict(LocalDate arrival, LocalDate departure) {
 		if (departure.isBefore(arrival)) {
