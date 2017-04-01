@@ -6,6 +6,7 @@ import java.util.Set;
 import org.joda.time.LocalDate;
 
 import pt.ulisboa.tecnico.softeng.hotel.dataobjects.RoomBookingData;
+import pt.ulisboa.tecnico.softeng.hotel.domain.Room.Type;
 import pt.ulisboa.tecnico.softeng.hotel.exception.HotelException;
 
 public class Hotel {
@@ -149,13 +150,56 @@ public class Hotel {
 		}
 		throw new HotelException();
 	}
+	
+	public int getNumberOfFreeRooms(LocalDate arrival, LocalDate departure) {
+		int number = 0;
+		for (Room r : this.rooms) {
+			if (r.isFree(r.getType(), arrival, departure))
+				number++;
+		}
+		return number;
+	}
+	
+	public static int getTotalNumberOfFreeRooms(LocalDate arrival, LocalDate departure) {
+		int number = 0;
+		for (Hotel h : Hotel.hotels) {
+			number += h.getNumberOfFreeRooms(arrival, departure);
+		}
+		return number;
+	}
 
 	public static Set<String> bulkBooking(int number, LocalDate arrival, LocalDate departure) {
-		// TODO: verify consistency of arguments, return the
-		// references for 'number' new bookings, it does not matter if they are
-		// single of double. If there aren't enough rooms available it throws a
-		// hotel exception
-		throw new HotelException();
+		// Check arguments
+		if (number <= 0)
+			throw new HotelException();
+		if (arrival == null || departure == null)
+			throw new HotelException();
+		if (departure.isBefore(arrival))
+			throw new HotelException();
+		
+		//Check if there are enough free rooms
+		if (Hotel.getTotalNumberOfFreeRooms(arrival, departure) < number)
+			throw new HotelException();
+		
+		Set<String> result = new HashSet<>();
+		
+		try {
+			while (number > 0) {
+				// this will throw an HotelException if there are not enough SINGLE rooms
+				String ref = Hotel.reserveRoom(Type.SINGLE, arrival, departure);
+				result.add(ref);
+				number--;
+			}
+		} catch (HotelException e) {
+			// if there are not enough SINGLE rooms, then we book DOUBLE rooms for the rest
+			while (number > 0) {
+				String ref = Hotel.reserveRoom(Type.DOUBLE, arrival, departure);
+				result.add(ref);
+				number--;
+			}
+		}
+
+		return result;
 	}
 
 }
