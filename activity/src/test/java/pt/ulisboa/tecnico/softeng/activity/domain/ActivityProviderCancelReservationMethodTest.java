@@ -50,7 +50,7 @@ public class ActivityProviderCancelReservationMethodTest {
 	
 	@Test(expected = ActivityException.class)
 	public void nonExistingReservationConfirmation() {
-		ActivityProvider.cancelReservation('res');
+		ActivityProvider.cancelReservation("res");
 	}
 	
 	@After
