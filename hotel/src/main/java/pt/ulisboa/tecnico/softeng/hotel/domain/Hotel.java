@@ -17,8 +17,6 @@ public class Hotel {
 	private final String code;
 	private final String name;
 	private final Set<Room> rooms = new HashSet<>();
-	
-	private static RoomBookingData rbd = new RoomBookingData();
 
 	public Hotel(String code, String name) {
 		checkArguments(code, name);
@@ -131,6 +129,7 @@ public class Hotel {
 	}
 
 	public static RoomBookingData getRoomBookingData(String reference) {
+		RoomBookingData rbd = new RoomBookingData();
 		Booking b = null;
 		for(Hotel hotel : Hotel.hotels) {
 			if(hotel.getCode().equals(reference.substring(0,7)))
@@ -141,6 +140,8 @@ public class Hotel {
 						rbd.setHotelName(hotel.getName());
 						rbd.setArrival(b.getArrival());
 						rbd.setDeparture(b.getDeparture());
+						rbd.setCancellation(b.getCancellation());
+						rbd.setCancellationDate(b.getCancellationDate());
 						rbd.setReference(reference);
 						rbd.setRoomNumber(r.getNumber());
 						rbd.setRoomType(r.getType().toString());

@@ -28,6 +28,14 @@ public class HotelGetRoomBookingDataMethodTest {
 		RoomBookingData b = Hotel.getRoomBookingData(booking.getReference());
 		
 		Assert.assertEquals(b.getReference(), booking.getReference());
+		Assert.assertEquals(b.getHotelCode(), this.hotel.getCode());
+		Assert.assertEquals(b.getHotelName(), this.hotel.getName());
+		Assert.assertEquals(b.getRoomNumber(), this.room.getNumber());
+		Assert.assertEquals(b.getRoomType(), this.room.getType().toString());
+		Assert.assertEquals(b.getArrival(), booking.getArrival());
+		Assert.assertEquals(b.getDeparture(), booking.getDeparture());
+		Assert.assertEquals(b.getCancellation(), booking.getCancellation());
+		Assert.assertEquals(b.getCancellationDate(), booking.getCancellationDate());
 	}
 	
 	@Test(expected=HotelException.class)
@@ -49,6 +57,8 @@ public class HotelGetRoomBookingDataMethodTest {
 		Assert.assertEquals(b.getRoomType(), this.room.getType().toString());
 		Assert.assertEquals(b.getArrival(), booking.getArrival());
 		Assert.assertEquals(b.getDeparture(), booking.getDeparture());
+		Assert.assertEquals(b.getCancellation(), booking.getCancellation());
+		Assert.assertEquals(b.getCancellationDate(), booking.getCancellationDate());
 	}
 	
 	@Test
@@ -66,6 +76,8 @@ public class HotelGetRoomBookingDataMethodTest {
 		Assert.assertEquals(b.getRoomType(), roomBooking.getType().toString());
 		Assert.assertEquals(b.getArrival(), booking.getArrival());
 		Assert.assertEquals(b.getDeparture(), booking.getDeparture());
+		Assert.assertEquals(b.getCancellation(), booking.getCancellation());
+		Assert.assertEquals(b.getCancellationDate(), booking.getCancellationDate());
 	}
 	
 	@Test
@@ -82,6 +94,8 @@ public class HotelGetRoomBookingDataMethodTest {
 		Assert.assertEquals(b.getRoomType(), this.room.getType().toString());
 		Assert.assertEquals(b.getArrival(), booking.getArrival());
 		Assert.assertEquals(b.getDeparture(), booking.getDeparture());
+		Assert.assertEquals(b.getCancellation(), booking.getCancellation());
+		Assert.assertEquals(b.getCancellationDate(), booking.getCancellationDate());
 	}
 	
 	@Test
@@ -98,6 +112,8 @@ public class HotelGetRoomBookingDataMethodTest {
 		Assert.assertEquals(b.getRoomType(), this.room.getType().toString());
 		Assert.assertEquals(b.getArrival(), booking.getArrival());
 		Assert.assertEquals(b.getDeparture(), booking.getDeparture());
+		Assert.assertEquals(b.getCancellation(), booking.getCancellation());
+		Assert.assertEquals(b.getCancellationDate(), booking.getCancellationDate());
 	}
 
 	@After
