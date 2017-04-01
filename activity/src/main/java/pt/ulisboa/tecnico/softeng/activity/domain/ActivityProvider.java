@@ -80,7 +80,20 @@ public class ActivityProvider {
 	}
 
 	public static String cancelReservation(String activityConfirmation) {
-		// TODO implement
+		for (ActivityProvider provider : ActivityProvider.providers) {
+			for (Activity activity : provider.activities) {
+				for (ActivityOffer offer : activity.getOffers()) {
+					for (Booking booking : offer.getBookings()) {
+						if (booking.getReference() == activityConfirmation) {
+							booking.setCancelled("canceled_"+activityConfirmation);
+							booking.setCancellationDate(LocalDate.now());
+							return booking.getCancelled();
+						}
+					}
+				}
+			}
+			
+		}
 		throw new ActivityException();
 	}
 
