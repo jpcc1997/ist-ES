@@ -25,9 +25,6 @@ public class Hotel {
 		this.code = code;
 		this.name = name;
 		Hotel.hotels.add(this);
-		
-		rbd.setHotelCode(code);
-		rbd.setHotelName(name);
 	}
 
 	private void checkArguments(String code, String name) {
@@ -109,17 +106,22 @@ public class Hotel {
 
 	public static RoomBookingData getRoomBookingData(String reference) {
 		Booking b = null;
-		for(Hotel hotel : Hotel.hotels)
-			if(hotel.getCode().equals(rbd.getHotelCode()) && hotel.getName().equals(rbd.getHotelName()))
+		for(Hotel hotel : Hotel.hotels) {
+			if(hotel.getCode().equals(reference.substring(0,7)))
 				for(Room r : hotel.rooms) {
 					b = r.getBooking(reference);
-					rbd.setArrival(b.getArrival());
-					rbd.setDeparture(b.getDeparture());
-					rbd.setReference(reference);
-					rbd.setRoomNumber(r.getNumber());
-					rbd.setRoomType(r.getType().toString());
-					return rbd;
+					if(b != null) {
+						rbd.setHotelCode(hotel.getCode());
+						rbd.setHotelName(hotel.getName());
+						rbd.setArrival(b.getArrival());
+						rbd.setDeparture(b.getDeparture());
+						rbd.setReference(reference);
+						rbd.setRoomNumber(r.getNumber());
+						rbd.setRoomType(r.getType().toString());
+						return rbd;
+					}
 				}
+		}
 		throw new HotelException();
 	}
 

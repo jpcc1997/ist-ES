@@ -70,6 +70,10 @@ public class Activity {
 	int getNumberOfOffers() {
 		return this.offers.size();
 	}
+	
+	Set<ActivityOffer> getOffers() {
+		return this.offers;
+	}
 
 	void addOffer(ActivityOffer offer) {
 		this.offers.add(offer);
