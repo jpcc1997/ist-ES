@@ -86,10 +86,4 @@ public class Room {
 		return booking;
 	}
 
-	public Booking getBooking(String reference) {
-		for(Booking b : bookings)
-			if(b.getReference().equals(reference))
-				return b;
-		return null;
-	}
 }
