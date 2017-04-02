@@ -450,6 +450,7 @@ public class AdventureSequenceTest {
 				
 				HotelInterface.cancelBooking(ROOM_CONFIRMATION);
 				this.result = ROOM_CANCELLATION;
+				this.times = 1;
       }
 		};
 		
@@ -500,6 +501,7 @@ public class AdventureSequenceTest {
 				
 				HotelInterface.cancelBooking(ROOM_CONFIRMATION);
 				this.result = ROOM_CANCELLATION;
+				this.times = 1;
 			
 			}
 		};
@@ -555,6 +557,7 @@ public class AdventureSequenceTest {
 				
 				HotelInterface.cancelBooking(ROOM_CONFIRMATION);
 				this.result = ROOM_CANCELLATION;
+				this.times = 1;
 			}
 		};
 		
@@ -599,7 +602,7 @@ public class AdventureSequenceTest {
 				this.result = new ActivityReservationData();
 				this.times = 1;
 				
-				HotelInterface.getRoomBookingData(this.anyString);
+				HotelInterface.getRoomBookingData(ROOM_CONFIRMATION);
 				this.result = new HotelException();
 				this.times = 1;
 				
@@ -613,6 +616,7 @@ public class AdventureSequenceTest {
 				
 				HotelInterface.cancelBooking(ROOM_CONFIRMATION);
 				this.result = ROOM_CANCELLATION;
+				this.times = 1;
 			
 			}
 		};
