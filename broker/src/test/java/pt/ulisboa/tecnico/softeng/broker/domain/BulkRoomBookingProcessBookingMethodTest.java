@@ -37,6 +37,15 @@ public class BulkRoomBookingProcessBookingMethodTest {
 		this.bulkroombooking = new BulkRoomBooking(number,begin, end); 
 		
 	}
+	@Test
+	public void trueCancelled()
+	{
+		this.bulkroombooking.setCancelled(true);
+		this.bulkroombooking.processBooking();
+		Assert.assertEquals(0, bulkroombooking.getNumberOfRemoteErrors());
+		Assert.assertEquals(0, bulkroombooking.getNumberOfHotelExceptions());
+		Assert.assertEquals(0, bulkroombooking.getReferences().size());
+	}
 
 	@Test
 	public void onehotelexception(@Mocked final HotelInterface hotelInterface) {
