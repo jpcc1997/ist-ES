@@ -26,12 +26,11 @@ public class BulkRoomBooking {
 		this.arrival = arrival;
 		this.departure = departure;
 	}
-	public int getNHotelsExceptions()
+	public int getNumberOfHotelExceptions()
 	{
 		return this.numberOfHotelExceptions;
 	}
-	public int getNRemoteErrors()
-	{
+	public int getNumberOfRemoteErrors(){
 		return this.numberOfRemoteErrors;
 	}
 	public Set<String> getReferences() {

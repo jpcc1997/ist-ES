@@ -49,9 +49,9 @@ public class BulkRoomBookingProcessBookingMethodTest {
 		};
 		
 		this.bulkroombooking.processBooking();
-		Assert.assertEquals(1, bulkroombooking.getNHotelsExceptions());
+		Assert.assertEquals(1, bulkroombooking.getNumberOfHotelExceptions());
 		Assert.assertEquals(false, bulkroombooking.getCancelled());
-		Assert.assertEquals(0, bulkroombooking.getNRemoteErrors());
+		Assert.assertEquals(0, bulkroombooking.getNumberOfRemoteErrors());
 
 
 	}
@@ -69,8 +69,8 @@ public class BulkRoomBookingProcessBookingMethodTest {
 		
 		this.bulkroombooking.processBooking();
 		
-		Assert.assertEquals(1, bulkroombooking.getNRemoteErrors());
-		Assert.assertEquals(0, bulkroombooking.getNHotelsExceptions());
+		Assert.assertEquals(1, bulkroombooking.getNumberOfRemoteErrors());
+		Assert.assertEquals(0, bulkroombooking.getNumberOfHotelExceptions());
 		Assert.assertEquals(false, bulkroombooking.getCancelled());
 
 	}
@@ -88,8 +88,8 @@ public class BulkRoomBookingProcessBookingMethodTest {
 		for(int i = 0; i<9; i++) {this.bulkroombooking.processBooking();}
 		
 		Assert.assertEquals(false, bulkroombooking.getCancelled());
-		Assert.assertEquals(0, bulkroombooking.getNHotelsExceptions());
-		Assert.assertEquals(9, bulkroombooking.getNRemoteErrors());
+		Assert.assertEquals(0, bulkroombooking.getNumberOfHotelExceptions());
+		Assert.assertEquals(9, bulkroombooking.getNumberOfRemoteErrors());
 
 	}
 	@Test
@@ -106,8 +106,8 @@ public class BulkRoomBookingProcessBookingMethodTest {
 		for(int i = 0; i<10; i++) {this.bulkroombooking.processBooking();}
 		
 		Assert.assertEquals(true, bulkroombooking.getCancelled());
-		Assert.assertEquals(0, bulkroombooking.getNHotelsExceptions());
-		Assert.assertEquals(10, bulkroombooking.getNRemoteErrors());
+		Assert.assertEquals(0, bulkroombooking.getNumberOfHotelExceptions());
+		Assert.assertEquals(10, bulkroombooking.getNumberOfRemoteErrors());
 
 	}
 	@Test
@@ -125,8 +125,8 @@ public class BulkRoomBookingProcessBookingMethodTest {
 		
 		
 		Assert.assertEquals(false, bulkroombooking.getCancelled());
-		Assert.assertEquals(2, bulkroombooking.getNHotelsExceptions());
-		Assert.assertEquals(0, bulkroombooking.getNRemoteErrors());
+		Assert.assertEquals(2, bulkroombooking.getNumberOfHotelExceptions());
+		Assert.assertEquals(0, bulkroombooking.getNumberOfRemoteErrors());
 		
 
 	}
@@ -145,8 +145,8 @@ public class BulkRoomBookingProcessBookingMethodTest {
 		for(int i = 0; i<3; i++) {this.bulkroombooking.processBooking();}
 		
 		Assert.assertEquals(true, bulkroombooking.getCancelled());
-		Assert.assertEquals(0, bulkroombooking.getNRemoteErrors());
-		Assert.assertEquals(3, bulkroombooking.getNHotelsExceptions());
+		Assert.assertEquals(0, bulkroombooking.getNumberOfRemoteErrors());
+		Assert.assertEquals(3, bulkroombooking.getNumberOfHotelExceptions());
 		
 
 	}
@@ -165,8 +165,8 @@ public class BulkRoomBookingProcessBookingMethodTest {
 		
 		Assert.assertEquals(10, bulkroombooking.getReferences().size());
 		Assert.assertEquals(false, bulkroombooking.getCancelled());
-		Assert.assertEquals(0, bulkroombooking.getNRemoteErrors());
-		Assert.assertEquals(0, bulkroombooking.getNHotelsExceptions());
+		Assert.assertEquals(0, bulkroombooking.getNumberOfRemoteErrors());
+		Assert.assertEquals(0, bulkroombooking.getNumberOfHotelExceptions());
 	}
 	
 	
