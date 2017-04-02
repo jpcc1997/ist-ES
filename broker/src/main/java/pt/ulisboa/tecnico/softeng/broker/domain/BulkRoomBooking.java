@@ -27,7 +27,7 @@ public class BulkRoomBooking {
 		this.arrival = arrival;
 		this.departure = departure;
 	}
-  
+
 	public int getNumberOfRemoteErrors(){
 		return this.numberOfRemoteErrors;
 	}
