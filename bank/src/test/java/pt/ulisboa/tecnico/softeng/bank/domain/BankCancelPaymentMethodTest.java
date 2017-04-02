@@ -68,14 +68,6 @@ public class BankCancelPaymentMethodTest{
 		Bank.cancelPayment(reference);
 	}
 	
-	@Test(expected = BankException.class)
-	public void noAccounts() {
-		String reference = this.account.withdraw(100);
-		Bank.banks.clear();
-		Bank bank = new Bank("Money", "BK01");
-		Bank.cancelPayment(reference);
-	}
-
 
 	@After
 	public void tearDown() {
