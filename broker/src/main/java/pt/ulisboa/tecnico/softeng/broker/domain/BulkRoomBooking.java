@@ -32,7 +32,7 @@ public class BulkRoomBooking {
 		return this.numberOfRemoteErrors;
 	}
   
-	public int getNumberHotelsExceptions(){
+	public int getNumberOfHotelExceptions(){
 		return this.numberOfHotelExceptions;
 	}
 
