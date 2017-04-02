@@ -48,8 +48,12 @@ public class BulkRoomBooking {
 		return this.number;
 	}
 	
-  public boolean getCancelled(){
+	public boolean getCancelled(){
 		return this.cancelled;
+	}
+	
+	public void setCancelled(boolean b){
+		this.cancelled = b;
 	}
 	
 	public LocalDate getArrival() {
