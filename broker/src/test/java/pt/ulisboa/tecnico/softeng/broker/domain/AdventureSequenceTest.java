@@ -12,12 +12,14 @@ import mockit.Injectable;
 import mockit.Mocked;
 import mockit.StrictExpectations;
 import mockit.integration.junit4.JMockit;
+import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
 import pt.ulisboa.tecnico.softeng.bank.exception.BankException;
 import pt.ulisboa.tecnico.softeng.broker.domain.Adventure.State;
 import pt.ulisboa.tecnico.softeng.broker.exception.RemoteAccessException;
 import pt.ulisboa.tecnico.softeng.broker.interfaces.ActivityInterface;
 import pt.ulisboa.tecnico.softeng.broker.interfaces.BankInterface;
 import pt.ulisboa.tecnico.softeng.broker.interfaces.HotelInterface;
+import pt.ulisboa.tecnico.softeng.hotel.domain.Room;
 
 @RunWith(JMockit.class)
 public class AdventureSequenceTest {
@@ -42,12 +44,15 @@ public class AdventureSequenceTest {
 	}
 
 	@Test
-	public void reserve_activity_confirmedTest(@Mocked final BankInterface bankInterface) {
+	public void reserve_activity_confirmedTest(@Mocked final BankInterface bankInterface, @Mocked final ActivityInterface activityInterface, @Mocked final HotelInterface hotelInterface) {
 		
 		new Expectations() {
 			{
 				BankInterface.processPayment(IBAN, AMOUNT);
 				this.result = PAYMENT_CONFIRMATION; 
+				
+				ActivityInterface.reserveActivity(adventure.getBegin(),adventure.getEnd(), adventure.getAge());
+				this.result = ACTIVITY_CONFIRMATION;
 			}
 		};
 		
@@ -58,7 +63,7 @@ public class AdventureSequenceTest {
 	}
 	
 	@Test
-	public void book_room_confirmedTest(@Mocked final BankInterface bankInterface, @Mocked final HotelInterface hotelInterface) {
+	public void book_room_confirmedTest(@Mocked final BankInterface bankInterface, @Mocked final ActivityInterface activityInterface, @Mocked final HotelInterface hotelInterface) {
 		
 		this.adventure = new Adventure(this.broker, this.begin, this.end, 20, IBAN, 300);
 		
@@ -66,6 +71,12 @@ public class AdventureSequenceTest {
 			{
 				BankInterface.processPayment(IBAN, AMOUNT);
 				this.result = PAYMENT_CONFIRMATION; 
+				
+				ActivityInterface.reserveActivity(adventure.getBegin(),adventure.getEnd(), adventure.getAge());
+				this.result = ACTIVITY_CONFIRMATION;
+				
+				HotelInterface.reserveRoom(Room.Type.SINGLE, adventure.getBegin(), adventure.getEnd());
+				this.result = ROOM_CONFIRMATION;
 			}
 		};
 		
