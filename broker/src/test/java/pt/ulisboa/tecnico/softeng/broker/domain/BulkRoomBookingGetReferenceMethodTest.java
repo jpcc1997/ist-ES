@@ -162,5 +162,13 @@ public class BulkRoomBookingGetReferenceMethodTest {
 	public void null_argument(){
 		this.bulkroombooking.getReference(null);
 	}
+	
+	@Test 
+	public void cancelled_true(){
+		this.bulkroombooking.setCancelled(true);
+		String a = this.bulkroombooking.getReference("SINGLE");
+		Assert.assertNull(a);
+		Assert.assertEquals(0, this.bulkroombooking.getNumberOfRemoteErrors());
+	}
 
 }
