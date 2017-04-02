@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.joda.time.LocalDate;
 
+import pt.ulisboa.tecnico.softeng.broker.exception.BrokerException;
 import pt.ulisboa.tecnico.softeng.broker.exception.RemoteAccessException;
 import pt.ulisboa.tecnico.softeng.broker.interfaces.HotelInterface;
 import pt.ulisboa.tecnico.softeng.hotel.dataobjects.RoomBookingData;
@@ -15,16 +16,26 @@ public class BulkRoomBooking {
 	private final int number;
 	private final LocalDate arrival;
 	private final LocalDate departure;
-	private final boolean cancelled = false;
+	private boolean cancelled = false;
+	private int numberOfRemoteErrors = 0;
+	private static final int MAX_REMOTE_ERRORS = 10;
 
 	public BulkRoomBooking(int number, LocalDate arrival, LocalDate departure) {
 		this.number = number;
 		this.arrival = arrival;
 		this.departure = departure;
 	}
+	
+	public boolean getCancelled(){
+		return cancelled;
+	}
 
 	public Set<String> getReferences() {
 		return this.references;
+	}
+	
+	public void addReference(String ref){
+		this.references.add(ref);
 	}
 
 	public int getNumber() {
@@ -37,6 +48,14 @@ public class BulkRoomBooking {
 
 	public LocalDate getDeparture() {
 		return this.departure;
+	}
+	
+	public int getNumberOfRemoteErrors(){
+		return this.numberOfRemoteErrors;
+	}
+	
+	public void setNumberOfRemoteErrors(int n){
+		this.numberOfRemoteErrors = n;
 	}
 
 	public void processBooking() {
@@ -67,6 +86,10 @@ public class BulkRoomBooking {
 	}
 
 	public String getReference(String type) {
+		if (type == null){
+			throw new BrokerException();
+		}
+		
 		if (this.cancelled) {
 			return null;
 		}
@@ -75,14 +98,14 @@ public class BulkRoomBooking {
 			RoomBookingData data = null;
 			try {
 				data = HotelInterface.getRoomBookingData(reference);
-				// this.numberOfRemoteErrors = 0;
+				this.numberOfRemoteErrors = 0;
 			} catch (HotelException he) {
-				// this.numberOfRemoteErrors = 0;
+				this.numberOfRemoteErrors = 0;
 			} catch (RemoteAccessException rae) {
-				// this.numberOfRemoteErrors++;
-				// if (this.numberOfRemoteErrors == MAX_REMOTE_ERRORS) {
-				// this.cancelled = true;
-				// }
+				this.numberOfRemoteErrors++;
+				if (this.numberOfRemoteErrors == MAX_REMOTE_ERRORS) {
+					this.cancelled = true;
+				}
 			}
 
 			if (data != null && data.getRoomType().equals(type)) {
