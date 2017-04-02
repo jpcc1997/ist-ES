@@ -25,6 +25,7 @@ public class ReserveActivityState extends AdventureState {
 			adventure.setActivityConfirmation(ActivityInterface.reserveActivity(adventure.getBegin(),adventure.getEnd(), adventure.getAge()));
 			} catch (ActivityException ae) {
 			adventure.setState(State.UNDO);
+			return;
 		} catch (RemoteAccessException rae) {
 			this.incNumOfRemoteErrors();
 			if (this.getNumOfRemoteErrors()== 5) {
