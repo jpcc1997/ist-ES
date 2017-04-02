@@ -43,6 +43,11 @@ public class ConfirmedState extends AdventureState {
 			}
 			return;
 		}
+		
+		System.out.println("Payment confirmation: " + operation.getReference());
+		System.out.println("Type: " + operation.getType());
+		System.out.println("Value: " + operation.getValue());
+		
 		resetNumOfRemoteErrors();
 
 		ActivityReservationData reservation;
@@ -58,6 +63,13 @@ public class ConfirmedState extends AdventureState {
 			}
 			return;
 		}
+		
+		System.out.println("Activity confirmation: " + reservation.getReference());
+		System.out.println("Begin: " + reservation.getBegin());
+		System.out.println("End: " + reservation.getEnd());
+		System.out.println("Activity cancellation: " + reservation.getCancellation());
+		System.out.println("Cancellation date: " + reservation.getCancellationDate());
+		
 		resetNumOfRemoteErrors();
 
 		if (adventure.getRoomConfirmation() != null) {
@@ -74,11 +86,15 @@ public class ConfirmedState extends AdventureState {
 				}
 				return;
 			}
+			
+			System.out.println("Room confirmation: " + booking.getReference());
+			System.out.println("Arrival: " + booking.getArrival());
+			System.out.println("Departure: " + booking.getDeparture());
+			System.out.println("Room cancellation: " + booking.getCancellation());
+			System.out.println("Cancellation date: " + booking.getCancellationDate());
+			
 			resetNumOfRemoteErrors();
 		}
-
-		// TODO: prints the complete Adventure file, the info in operation,
-		// reservation and booking
 
 	}
 

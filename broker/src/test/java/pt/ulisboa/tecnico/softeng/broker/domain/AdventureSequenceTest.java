@@ -6,10 +6,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
+import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Mocked;
 import mockit.StrictExpectations;
 import mockit.integration.junit4.JMockit;
+
 import pt.ulisboa.tecnico.softeng.bank.exception.BankException;
 import pt.ulisboa.tecnico.softeng.bank.dataobjects.BankOperationData;
 import pt.ulisboa.tecnico.softeng.broker.exception.RemoteAccessException;
@@ -20,9 +23,8 @@ import pt.ulisboa.tecnico.softeng.broker.interfaces.HotelInterface;
 import pt.ulisboa.tecnico.softeng.hotel.exception.HotelException;
 import pt.ulisboa.tecnico.softeng.activity.dataobjects.ActivityReservationData;
 import pt.ulisboa.tecnico.softeng.hotel.domain.Room.Type;
-
-
-
+import pt.ulisboa.tecnico.softeng.broker.domain.Adventure.State;
+import pt.ulisboa.tecnico.softeng.hotel.domain.Room;
 
 @RunWith(JMockit.class)
 public class AdventureSequenceTest {
@@ -45,6 +47,77 @@ public class AdventureSequenceTest {
 	public void setUp() {
 		this.adventure = new Adventure(this.broker, this.begin, this.end, 20, IBAN, 300);
 	}
+  
+  /*Sequence tests to CONFIRMED state*/
+
+  
+  @Test
+	public void reserve_activity_confirmedTest(@Mocked final BankInterface bankInterface, @Mocked final ActivityInterface activityInterface, @Mocked final HotelInterface hotelInterface) {
+		this.adventure = new Adventure(this.broker, this.begin, this.begin, 20, IBAN, 300);
+  
+		new Expectations() {
+			{
+				BankInterface.processPayment(IBAN, AMOUNT);
+				this.result = PAYMENT_CONFIRMATION; 
+				
+				ActivityInterface.reserveActivity(adventure.getBegin(),adventure.getEnd(), adventure.getAge());
+				this.result = ACTIVITY_CONFIRMATION;
+			}
+		};
+		
+		this.adventure.process();
+		Assert.assertEquals(Adventure.State.RESERVE_ACTIVITY, this.adventure.getState());
+    this.adventure.process();
+		Assert.assertEquals(Adventure.State.CONFIRMED, this.adventure.getState());
+	}
+  
+  @Test
+	public void book_room_confirmedTest(@Mocked final BankInterface bankInterface, @Mocked final ActivityInterface activityInterface, @Mocked final HotelInterface hotelInterface) {
+				
+		new Expectations() {
+			{
+				BankInterface.processPayment(IBAN, AMOUNT);
+				this.result = PAYMENT_CONFIRMATION; 
+				
+				ActivityInterface.reserveActivity(adventure.getBegin(),adventure.getEnd(), adventure.getAge());
+				this.result = ACTIVITY_CONFIRMATION;
+				
+				HotelInterface.reserveRoom(Room.Type.SINGLE, adventure.getBegin(), adventure.getEnd());
+				this.result = ROOM_CONFIRMATION;
+			}
+		};
+		
+		this.adventure.process();
+		Assert.assertEquals(Adventure.State.RESERVE_ACTIVITY, this.adventure.getState());
+    this.adventure.process();
+		Assert.assertEquals(Adventure.State.BOOK_ROOM, this.adventure.getState());
+		this.adventure.process();
+		Assert.assertEquals(Adventure.State.CONFIRMED, this.adventure.getState());
+	}
+  
+  @Test
+	public void confirmedTest(@Mocked final BankInterface bankInterface, @Mocked final ActivityInterface activityInterface, @Mocked final HotelInterface hotelInterface) {
+		this.adventure = new Adventure(this.broker, this.begin, this.begin, 20, IBAN, 300);
+    
+    new StrictExpectations() {
+			{
+				BankInterface.processPayment(IBAN, AMOUNT);
+				this.result = PAYMENT_CONFIRMATION; 
+				
+				ActivityInterface.reserveActivity(adventure.getBegin(),adventure.getEnd(), adventure.getAge());
+				this.result = ACTIVITY_CONFIRMATION;
+				
+				BankInterface.getOperationData(PAYMENT_CONFIRMATION);
+				this.result = new BankException();
+				this.times = 4;
+			}
+		};
+		
+		for(int i = 0; i < 6; i++) this.adventure.process();
+		Assert.assertEquals(Adventure.State.CONFIRMED, this.adventure.getState());
+	}
+
+  /*Sequence tests to CANCELLED state*/
 	
 	@Test
 	public void  processPaymentBankException(@Mocked final BankInterface bankInterface) {
@@ -377,8 +450,7 @@ public class AdventureSequenceTest {
 				
 				HotelInterface.cancelBooking(ROOM_CONFIRMATION);
 				this.result = ROOM_CANCELLATION;
-			
-			}
+      }
 		};
 		
 		this.adventure.process();
@@ -396,7 +468,7 @@ public class AdventureSequenceTest {
 		this.adventure.process();
 		Assert.assertEquals(Adventure.State.CANCELLED, this.adventure.getState());
 	}
-	
+
 	@Test
 	public void bookRoomConfirmedRemoteAccessException(@Mocked final BankInterface bankInterface, @Mocked final ActivityInterface activityInterface, @Mocked final HotelInterface hotelInterface) {
 				
@@ -483,7 +555,6 @@ public class AdventureSequenceTest {
 				
 				HotelInterface.cancelBooking(ROOM_CONFIRMATION);
 				this.result = ROOM_CANCELLATION;
-			
 			}
 		};
 		
@@ -501,8 +572,8 @@ public class AdventureSequenceTest {
 		
 		this.adventure.process();
 		Assert.assertEquals(Adventure.State.CANCELLED, this.adventure.getState());
-	}
-	
+	}   
+					
 	@Test
 	public void bookRoomConfirmedHotelException(@Mocked final BankInterface bankInterface, @Mocked final ActivityInterface activityInterface, @Mocked final HotelInterface hotelInterface) {
 				
@@ -561,5 +632,4 @@ public class AdventureSequenceTest {
 		this.adventure.process();
 		Assert.assertEquals(Adventure.State.CANCELLED, this.adventure.getState());
 	}
-	
 }
