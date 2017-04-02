@@ -11,13 +11,15 @@ public class BankCancelPaymentMethodTest{
 	Bank bank;
 	Client client;
 	Account account;
+	String reference_deposit;
 	
 	@Before
 	public void setUp() { 
 		this.bank = new Bank("Money", "BK01");
 		this.client = new Client(this.bank, "António");
 		this.account = new Account(this.bank, this.client);
-		this.account.deposit(200);
+		this.reference_deposit = this.account.deposit(200);
+		
 	}
 
 	@Test
@@ -54,11 +56,7 @@ public class BankCancelPaymentMethodTest{
 	
 	@Test(expected = BankException.class)
 	public void cancelPaymentWithReferenceToDeposit() {
-		Bank bank = new Bank("Money", "BK01");
-		Client client = new Client(bank, "Pedro");
-		Account account = new Account(bank,client);
-		String op = account.deposit(100);
-		Bank.cancelPayment(op);
+		Bank.cancelPayment(this.reference_deposit);
 	}
 	
 	@Test(expected = BankException.class)
