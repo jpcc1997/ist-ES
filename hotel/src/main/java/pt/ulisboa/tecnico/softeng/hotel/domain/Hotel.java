@@ -107,9 +107,6 @@ public class Hotel {
 		else if(roomConfirmation.trim().equals("")){
 			throw new HotelException();
 		}
-		else if(roomConfirmation.trim().equals("")){
-			throw new HotelException();
-		}
 			for (Hotel hotel : Hotel.hotels) {
 				for (Room room : hotel.rooms) {
 					for(Booking booking : room.getBookings() )
