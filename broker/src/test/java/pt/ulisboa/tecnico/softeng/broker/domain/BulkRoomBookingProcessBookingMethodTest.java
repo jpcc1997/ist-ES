@@ -50,6 +50,10 @@ public class BulkRoomBookingProcessBookingMethodTest {
 		
 		this.bulkroombooking.processBooking();
 		Assert.assertEquals(1, bulkroombooking.getNHotelsExceptions());
+		Assert.assertEquals(false, bulkroombooking.getCancelled());
+		Assert.assertEquals(0, bulkroombooking.getNRemoteErrors());
+
+
 	}
 	
 	
@@ -66,6 +70,9 @@ public class BulkRoomBookingProcessBookingMethodTest {
 		this.bulkroombooking.processBooking();
 		
 		Assert.assertEquals(1, bulkroombooking.getNRemoteErrors());
+		Assert.assertEquals(0, bulkroombooking.getNHotelsExceptions());
+		Assert.assertEquals(false, bulkroombooking.getCancelled());
+
 	}
 	@Test
 	public void  nineRemoteErrors(@Mocked final HotelInterface hotelinterface) {
@@ -81,6 +88,9 @@ public class BulkRoomBookingProcessBookingMethodTest {
 		for(int i = 0; i<9; i++) {this.bulkroombooking.processBooking();}
 		
 		Assert.assertEquals(false, bulkroombooking.getCancelled());
+		Assert.assertEquals(0, bulkroombooking.getNHotelsExceptions());
+		Assert.assertEquals(9, bulkroombooking.getNRemoteErrors());
+
 	}
 	@Test
 	public void  tenRemoteErrors(@Mocked final HotelInterface hotelinterface) {
@@ -96,6 +106,9 @@ public class BulkRoomBookingProcessBookingMethodTest {
 		for(int i = 0; i<10; i++) {this.bulkroombooking.processBooking();}
 		
 		Assert.assertEquals(true, bulkroombooking.getCancelled());
+		Assert.assertEquals(0, bulkroombooking.getNHotelsExceptions());
+		Assert.assertEquals(10, bulkroombooking.getNRemoteErrors());
+
 	}
 	@Test
 	public void  twoHotelExceptions(@Mocked final HotelInterface hotelinterface) {
@@ -110,7 +123,12 @@ public class BulkRoomBookingProcessBookingMethodTest {
 		
 		for(int i = 0; i<2; i++) {this.bulkroombooking.processBooking();}
 		
+		
 		Assert.assertEquals(false, bulkroombooking.getCancelled());
+		Assert.assertEquals(2, bulkroombooking.getNHotelsExceptions());
+		Assert.assertEquals(0, bulkroombooking.getNRemoteErrors());
+		
+
 	}
 	
 	@Test
@@ -127,6 +145,10 @@ public class BulkRoomBookingProcessBookingMethodTest {
 		for(int i = 0; i<3; i++) {this.bulkroombooking.processBooking();}
 		
 		Assert.assertEquals(true, bulkroombooking.getCancelled());
+		Assert.assertEquals(0, bulkroombooking.getNRemoteErrors());
+		Assert.assertEquals(3, bulkroombooking.getNHotelsExceptions());
+		
+
 	}
 	@Test
 	public void  noExceptions(@Mocked final HotelInterface hotelinterface) {
