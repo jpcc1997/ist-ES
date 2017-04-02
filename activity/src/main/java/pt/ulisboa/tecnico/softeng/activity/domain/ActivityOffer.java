@@ -42,8 +42,19 @@ public class ActivityOffer {
 	}
 
 	int getNumberOfBookings() {
-		return this.bookings.size();
+		int count = 0;
+		for (Booking booking : this.bookings) {
+			if (booking.getCancelled() != null) {
+				count++;
+			}
+		}
+		return this.bookings.size() - count;
 	}
+	
+	Set<Booking> getBookings() {
+		return this.bookings;
+	}
+	
 
 	void addBooking(Booking booking) {
 		if (this.capacity == this.bookings.size()) {

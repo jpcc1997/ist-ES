@@ -80,13 +80,57 @@ public class ActivityProvider {
 	}
 
 	public static String cancelReservation(String activityConfirmation) {
-		// TODO implement
+		for (ActivityProvider provider : ActivityProvider.providers) {
+			for (Activity activity : provider.activities) {
+				for (ActivityOffer offer : activity.getOffers()) {
+					for (Booking booking : offer.getBookings()) {
+						if ((booking.getReference() == activityConfirmation) && (booking.getCancelled() == null)) {
+							booking.setCancelled("canceled_"+activityConfirmation);
+							booking.setCancellationDate(LocalDate.now());
+							return booking.getCancelled();
+						}
+					}
+				}
+			}
+			
+		}
 		throw new ActivityException();
 	}
 
 	public static ActivityReservationData getActivityReservationData(String reference) {
-		// TODO implement
-		throw new ActivityException();
-	}
+
+
+		String cancellation = null;
+		String name = null;
+		String code = null;
+		LocalDate begin = null;
+		LocalDate end = null;
+		LocalDate cancellationDate = null;
+		
+			for (ActivityProvider provider : ActivityProvider.providers)
+			{
+				for (Activity activity : provider.activities)
+				{
+					name = activity.getName();
+					code = activity.getCode();
+					for (ActivityOffer offer : activity.getOffers())
+					{
+						begin = offer.getBegin();
+						end = offer.getEnd();
+						for (Booking booking : offer.getBookings())
+						{
+							if(booking.getReference()== reference)
+							{
+								cancellation = booking.getCancelled();
+								cancellationDate = booking.getCancellationDate();
+								return new ActivityReservationData(reference,cancellation,name,code,begin,end, cancellationDate);
+							}
+
+						}
+					}
+				}
+			}
+			throw new ActivityException();
+		}
 
 }

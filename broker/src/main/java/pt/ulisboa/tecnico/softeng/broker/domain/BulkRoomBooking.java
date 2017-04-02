@@ -18,22 +18,28 @@ public class BulkRoomBooking {
 	private final LocalDate departure;
 	private boolean cancelled = false;
 	private int numberOfRemoteErrors = 0;
+	private int numberOfHotelExceptions = 0;
 	private static final int MAX_REMOTE_ERRORS = 10;
+	private static final int MAX_HOTEL_EXCEPTIONS = 3;
 
 	public BulkRoomBooking(int number, LocalDate arrival, LocalDate departure) {
 		this.number = number;
 		this.arrival = arrival;
 		this.departure = departure;
 	}
-	
-	public boolean getCancelled(){
-		return cancelled;
+  
+	public int getNumberOfRemoteErrors(){
+		return this.numberOfRemoteErrors;
+	}
+  
+	public int getNumberHotelsExceptions(){
+		return this.numberOfHotelExceptions;
 	}
 
 	public Set<String> getReferences() {
 		return this.references;
 	}
-	
+  
 	public void addReference(String ref){
 		this.references.add(ref);
 	}
@@ -41,7 +47,11 @@ public class BulkRoomBooking {
 	public int getNumber() {
 		return this.number;
 	}
-
+	
+  public boolean getCancelled(){
+		return this.cancelled;
+	}
+	
 	public LocalDate getArrival() {
 		return this.arrival;
 	}
@@ -50,42 +60,40 @@ public class BulkRoomBooking {
 		return this.departure;
 	}
 	
-	public int getNumberOfRemoteErrors(){
-		return this.numberOfRemoteErrors;
-	}
-	
 	public void setNumberOfRemoteErrors(int n){
 		this.numberOfRemoteErrors = n;
 	}
 
-	public void processBooking() {
+	
+  public void processBooking() {
 		if (this.cancelled) {
 			return;
 		}
 
 		try {
 			this.references.addAll(HotelInterface.bulkBooking(this.number, this.arrival, this.departure));
-			// this.numberOfHotelExceptions = 0;
-			// this.numberOfRemoteErrors = 0;
+			this.numberOfHotelExceptions = 0;
+			this.numberOfRemoteErrors = 0;
 			return;
 		} catch (HotelException he) {
-			// this.numberOfHotelExceptions++;
-			// if (this.numberOfHotelExceptions == MAX_HOTEL_EXCEPTIONS) {
-			// this.cancelled = true;
-			// }
-			// this.numberOfRemoteErrors = 0;
+			this.numberOfHotelExceptions++;
+			if (this.numberOfHotelExceptions == MAX_HOTEL_EXCEPTIONS) {
+				this.cancelled = true;
+			}
+			this.numberOfRemoteErrors = 0;
 			return;
 		} catch (RemoteAccessException rae) {
-			// this.numberOfRemoteErrors++;
-			// if (this.numberOfRemoteErrors == MAX_REMOTE_ERRORS) {
-			// this.cancelled = true;
-			// }
-			// this.numberOfHotelExceptions = 0;
+			 this.numberOfRemoteErrors++;
+			 if (this.numberOfRemoteErrors == MAX_REMOTE_ERRORS) {
+				this.cancelled = true;
+			}
+			this.numberOfHotelExceptions = 0;
 			return;
 		}
 	}
 
-	public String getReference(String type) {
+	
+  public String getReference(String type) {
 		if (type == null){
 			throw new BrokerException();
 		}
