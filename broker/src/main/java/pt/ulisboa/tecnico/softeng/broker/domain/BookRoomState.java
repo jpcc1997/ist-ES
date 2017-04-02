@@ -26,6 +26,7 @@ public class BookRoomState extends AdventureState {
 			adventure.setRoomConfirmation(HotelInterface.reserveRoom(Room.Type.SINGLE, adventure.getBegin(), adventure.getEnd()));
 		} catch (HotelException rae) {
 			adventure.setState(State.UNDO);
+			return;
 		} catch (RemoteAccessException rae) {
 			this.incNumOfRemoteErrors();
 			if (this.getNumOfRemoteErrors()== 10) {

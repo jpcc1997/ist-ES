@@ -6,6 +6,7 @@ import java.util.Set;
 import org.joda.time.LocalDate;
 
 import pt.ulisboa.tecnico.softeng.hotel.dataobjects.RoomBookingData;
+import pt.ulisboa.tecnico.softeng.hotel.domain.Room.Type;
 import pt.ulisboa.tecnico.softeng.hotel.exception.HotelException;
 
 public class Hotel {
@@ -16,8 +17,6 @@ public class Hotel {
 	private final String code;
 	private final String name;
 	private final Set<Room> rooms = new HashSet<>();
-	
-	private static RoomBookingData rbd = new RoomBookingData();
 
 	public Hotel(String code, String name) {
 		checkArguments(code, name);
@@ -100,11 +99,37 @@ public class Hotel {
 	}
 
 	public static String cancelBooking(String roomConfirmation) {
+
 		// TODO implement
+		if(roomConfirmation == null){
+			throw new HotelException();
+		}
+		else if(roomConfirmation.trim().equals("")){
+			throw new HotelException();
+		}
+		else if(roomConfirmation.trim().equals("")){
+			throw new HotelException();
+		}
+			for (Hotel hotel : Hotel.hotels) {
+				for (Room room : hotel.rooms) {
+					for(Booking booking : room.getBookings() )
+						if (booking.getReference() == roomConfirmation) {
+							if (booking.getCancellation() != "" ){
+								throw new HotelException();
+							}
+							booking.setCancellation();
+							LocalDate cancellationdate = LocalDate.now();
+							booking.setCancellationDate(cancellationdate);
+							room.setNCancelledBookings();
+							return booking.getCancellation();
+						}	
+				}
+			}
 		throw new HotelException();
 	}
 
 	public static RoomBookingData getRoomBookingData(String reference) {
+		RoomBookingData rbd = new RoomBookingData();
 		Booking b = null;
 		for(Hotel hotel : Hotel.hotels) {
 			if(hotel.getCode().equals(reference.substring(0,7)))
@@ -115,6 +140,8 @@ public class Hotel {
 						rbd.setHotelName(hotel.getName());
 						rbd.setArrival(b.getArrival());
 						rbd.setDeparture(b.getDeparture());
+						rbd.setCancellation(b.getCancellation());
+						rbd.setCancellationDate(b.getCancellationDate());
 						rbd.setReference(reference);
 						rbd.setRoomNumber(r.getNumber());
 						rbd.setRoomType(r.getType().toString());
@@ -124,13 +151,56 @@ public class Hotel {
 		}
 		throw new HotelException();
 	}
+	
+	public int getNumberOfFreeRooms(LocalDate arrival, LocalDate departure) {
+		int number = 0;
+		for (Room r : this.rooms) {
+			if (r.isFree(r.getType(), arrival, departure))
+				number++;
+		}
+		return number;
+	}
+	
+	public static int getTotalNumberOfFreeRooms(LocalDate arrival, LocalDate departure) {
+		int number = 0;
+		for (Hotel h : Hotel.hotels) {
+			number += h.getNumberOfFreeRooms(arrival, departure);
+		}
+		return number;
+	}
 
 	public static Set<String> bulkBooking(int number, LocalDate arrival, LocalDate departure) {
-		// TODO: verify consistency of arguments, return the
-		// references for 'number' new bookings, it does not matter if they are
-		// single of double. If there aren't enough rooms available it throws a
-		// hotel exception
-		throw new HotelException();
+		// Check arguments
+		if (number <= 0)
+			throw new HotelException();
+		if (arrival == null || departure == null)
+			throw new HotelException();
+		if (departure.isBefore(arrival))
+			throw new HotelException();
+		
+		//Check if there are enough free rooms
+		if (Hotel.getTotalNumberOfFreeRooms(arrival, departure) < number)
+			throw new HotelException();
+		
+		Set<String> result = new HashSet<>();
+		
+		try {
+			while (number > 0) {
+				// this will throw an HotelException if there are not enough SINGLE rooms
+				String ref = Hotel.reserveRoom(Type.SINGLE, arrival, departure);
+				result.add(ref);
+				number--;
+			}
+		} catch (HotelException e) {
+			// if there are not enough SINGLE rooms, then we book DOUBLE rooms for the rest
+			while (number > 0) {
+				String ref = Hotel.reserveRoom(Type.DOUBLE, arrival, departure);
+				result.add(ref);
+				number--;
+			}
+		}
+
+		return result;
 	}
 
 }
