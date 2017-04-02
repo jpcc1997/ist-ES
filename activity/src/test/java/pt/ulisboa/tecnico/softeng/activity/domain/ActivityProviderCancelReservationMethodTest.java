@@ -1,9 +1,5 @@
 package pt.ulisboa.tecnico.softeng.activity.domain;
 
-import static org.junit.Assert.fail;
-
-import java.util.List;
-
 import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Assert;
@@ -50,7 +46,16 @@ public class ActivityProviderCancelReservationMethodTest {
 	
 	@Test(expected = ActivityException.class)
 	public void nonExistingReservationConfirmation() {
-		ActivityProvider.cancelReservation("res");
+		ActivityProvider.cancelReservation("nonExistingRef");
+	}
+	
+	@Test(expected = ActivityException.class)
+	public void doubleCancelation() {
+		String confirmation = ActivityProvider.reserveActivity(this.begin, this.end, AGE);
+		ActivityProvider.cancelReservation(confirmation);
+		Assert.assertEquals(0,this.offer.getNumberOfBookings());
+		Assert.assertEquals(1, this.provider.findOffer(this.begin, this.end, AGE).size());
+		ActivityProvider.cancelReservation(confirmation);
 	}
 	
 	@After
