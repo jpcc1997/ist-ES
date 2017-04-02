@@ -129,6 +129,9 @@ public class Hotel {
 	}
 
 	public static RoomBookingData getRoomBookingData(String reference) {
+		
+		if(reference == null)
+			throw new HotelException();
 		RoomBookingData rbd = new RoomBookingData();
 		Booking b = null;
 		for(Hotel hotel : Hotel.hotels) {

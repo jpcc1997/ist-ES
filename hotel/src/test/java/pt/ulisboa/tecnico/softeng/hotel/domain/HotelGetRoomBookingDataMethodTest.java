@@ -44,6 +44,11 @@ public class HotelGetRoomBookingDataMethodTest {
 		System.out.println(Hotel.getRoomBookingData("AOAOSJD"));
 	}
 	
+	@Test(expected=HotelException.class)
+	public void nullReference() {
+		Hotel.getRoomBookingData(null);
+	}
+	
 	@Test
 	public void twoRooms() {
 		this.room = new Room(hotel, "2", Type.SINGLE);
