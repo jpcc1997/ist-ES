@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.joda.time.LocalDate;
 
+import pt.ulisboa.tecnico.softeng.broker.exception.BrokerException;
 import pt.ulisboa.tecnico.softeng.broker.exception.RemoteAccessException;
 import pt.ulisboa.tecnico.softeng.broker.interfaces.HotelInterface;
 import pt.ulisboa.tecnico.softeng.hotel.dataobjects.RoomBookingData;
@@ -17,8 +18,8 @@ public class BulkRoomBooking {
 	private final LocalDate departure;
 	private boolean cancelled = false;
 	private int numberOfRemoteErrors = 0;
-	private static final int MAX_REMOTE_ERRORS = 10;
 	private int numberOfHotelExceptions = 0;
+	private static final int MAX_REMOTE_ERRORS = 10;
 	private static final int MAX_HOTEL_EXCEPTIONS = 3;
 
 	public BulkRoomBooking(int number, LocalDate arrival, LocalDate departure) {
@@ -26,27 +27,31 @@ public class BulkRoomBooking {
 		this.arrival = arrival;
 		this.departure = departure;
 	}
-	public int getNumberOfHotelExceptions()
-	{
-		return this.numberOfHotelExceptions;
-	}
+
 	public int getNumberOfRemoteErrors(){
 		return this.numberOfRemoteErrors;
 	}
+  
+	public int getNumberOfHotelExceptions(){
+		return this.numberOfHotelExceptions;
+	}
+
 	public Set<String> getReferences() {
 		return this.references;
 	}
-	
+  
+	public void addReference(String ref){
+		this.references.add(ref);
+	}
 
 	public int getNumber() {
 		return this.number;
 	}
-	public boolean getCancelled()
-	{
+	
+  public boolean getCancelled(){
 		return this.cancelled;
 	}
 	
-
 	public LocalDate getArrival() {
 		return this.arrival;
 	}
@@ -54,8 +59,13 @@ public class BulkRoomBooking {
 	public LocalDate getDeparture() {
 		return this.departure;
 	}
+	
+	public void setNumberOfRemoteErrors(int n){
+		this.numberOfRemoteErrors = n;
+	}
 
-	public void processBooking() {
+	
+  public void processBooking() {
 		if (this.cancelled) {
 			return;
 		}
@@ -82,7 +92,12 @@ public class BulkRoomBooking {
 		}
 	}
 
-	public String getReference(String type) {
+	
+  public String getReference(String type) {
+		if (type == null){
+			throw new BrokerException();
+		}
+		
 		if (this.cancelled) {
 			return null;
 		}
@@ -91,14 +106,14 @@ public class BulkRoomBooking {
 			RoomBookingData data = null;
 			try {
 				data = HotelInterface.getRoomBookingData(reference);
-				// this.numberOfRemoteErrors = 0;
+				this.numberOfRemoteErrors = 0;
 			} catch (HotelException he) {
-				// this.numberOfRemoteErrors = 0;
+				this.numberOfRemoteErrors = 0;
 			} catch (RemoteAccessException rae) {
-				// this.numberOfRemoteErrors++;
-				// if (this.numberOfRemoteErrors == MAX_REMOTE_ERRORS) {
-				// this.cancelled = true;
-				// }
+				this.numberOfRemoteErrors++;
+				if (this.numberOfRemoteErrors == MAX_REMOTE_ERRORS) {
+					this.cancelled = true;
+				}
 			}
 
 			if (data != null && data.getRoomType().equals(type)) {

@@ -84,7 +84,7 @@ public class ActivityProvider {
 			for (Activity activity : provider.activities) {
 				for (ActivityOffer offer : activity.getOffers()) {
 					for (Booking booking : offer.getBookings()) {
-						if (booking.getReference() == activityConfirmation) {
+						if ((booking.getReference() == activityConfirmation) && (booking.getCancelled() == null)) {
 							booking.setCancelled("canceled_"+activityConfirmation);
 							booking.setCancellationDate(LocalDate.now());
 							return booking.getCancelled();
