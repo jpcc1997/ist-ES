@@ -64,9 +64,6 @@ public class ActivityProvider extends ActivityProvider_Base {
 		return this.activities.size();
 	}
 
-	void addActivity(Activity activity) {
-		this.activities.add(activity);
-	}
 
 	public List<ActivityOffer> findOffer(LocalDate begin, LocalDate end, int age) {
 		List<ActivityOffer> result = new ArrayList<>();
