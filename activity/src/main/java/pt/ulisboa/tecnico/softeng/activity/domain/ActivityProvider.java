@@ -100,6 +100,17 @@ public class ActivityProvider extends ActivityProvider_Base {
 		}
 		return null;
 	}
+	
+	public Activity getActivityByCode(String code) {
+		
+		for(Activity activity : getActivitySet()){
+			if(activity.getCode().equals(code)){
+				return activity;
+			}
+		}
+		
+		return null;
+	} 
 
 	public static String reserveActivity(LocalDate begin, LocalDate end, int age) {
 		List<ActivityOffer> offers;
