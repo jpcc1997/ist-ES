@@ -5,6 +5,10 @@ class ActivityProvider {
 	String name;
 }
 
+class Activity {
+
+}
+
 relation DomainRootHasActivityProviderApplication {
 	.pt.ist.fenixframework.DomainRoot playsRole root {
 		multiplicity 1..1;
