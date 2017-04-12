@@ -29,6 +29,12 @@ public class ActivityProvider extends ActivityProvider_Base {
 
 		FenixFramework.getDomainRoot().addActivityProvider(this);
 	}
+	
+	public void delete() {
+		setRoot(null);
+
+		deleteDomainObject();
+	}
 
 	private void checkArguments(String code, String name) {
 		if (code == null || name == null || code.trim().equals("") || name.trim().equals("")) {
@@ -85,6 +91,15 @@ public class ActivityProvider extends ActivityProvider_Base {
 			Booking booking = provider.getBooking(reference);
 			if (booking != null) {
 				return booking;
+			}
+		}
+		return null;
+	}
+	
+	public static ActivityProvider getActivityProviderByCode(String code) {
+		for (ActivityProvider provider : FenixFramework.getDomainRoot().getActivityProviderSet()) {
+			if (provider.getCode().equals(code)) {
+				return provider;
 			}
 		}
 		return null;
