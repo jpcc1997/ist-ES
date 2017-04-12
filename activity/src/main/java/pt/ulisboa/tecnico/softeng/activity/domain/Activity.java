@@ -46,6 +46,12 @@ public class Activity extends Activity_Base {
 		}
 
 	}
+	
+	public void delete() {
+		setActivityProvider(null);
+
+		deleteDomainObject();
+	}
 
 	String getName() {
 		return this.name;
@@ -70,6 +76,8 @@ public class Activity extends Activity_Base {
 	int getNumberOfOffers() {
 		return this.offers.size();
 	}
+	
+	
 
 	void addOffer(ActivityOffer offer) {
 		this.offers.add(offer);
