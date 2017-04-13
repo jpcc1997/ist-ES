@@ -6,7 +6,11 @@ class ActivityProvider {
 }
 
 class Activity {
-
+	String code;
+	String name;
+	int minAge;
+	int maxAge;
+	int capacity;
 }
 
 relation DomainRootHasActivityProviderApplication {
