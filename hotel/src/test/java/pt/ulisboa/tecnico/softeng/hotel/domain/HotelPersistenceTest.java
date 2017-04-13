@@ -5,6 +5,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.After;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.Atomic.TxMode;
 import pt.ist.fenixframework.FenixFramework;
@@ -28,6 +31,11 @@ public class HotelPersistenceTest {
 	@Atomic(mode = TxMode.READ)
 	public void atomicAssert() {
 		assertEquals(1, FenixFramework.getDomainRoot().getHotelSet().size());
+		
+		List<Hotel> hotels = new ArrayList<>(FenixFramework.getDomainRoot().getHotelSet());
+
+		assertEquals(HOTEL_NAME, hotels.get(0).getName());
+		assertEquals(HOTEL_CODE, hotels.get(0).getCode());
 	}
 
 	@After
