@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 
 import pt.ulisboa.tecnico.softeng.bank.exception.BankException;
 
+
 public class Operation extends Operation_Base {
 	public static enum Type {
 		DEPOSIT, WITHDRAW
@@ -26,7 +27,13 @@ public class Operation extends Operation_Base {
 		this.value = value;
 		this.time = DateTime.now();
 
-		account.getBank().addLog(this);
+		//account.getBank().addLog(this);
+		setBank(Bank.getBankByCode(account.getBank().getCode()));
+	}
+	
+	public void delete() {
+		setBank(null);
+		deleteDomainObject();
 	}
 
 	private void checkArguments(Type type, Account account, int value) {
