@@ -7,12 +7,11 @@ import java.util.Set;
 
 import org.joda.time.LocalDate;
 
+import pt.ist.fenixframework.FenixFramework;
 import pt.ulisboa.tecnico.softeng.hotel.dataobjects.RoomBookingData;
 import pt.ulisboa.tecnico.softeng.hotel.exception.HotelException;
 
 public class Hotel extends Hotel_Base{
-	public static Set<Hotel> hotels = new HashSet<>();
-
 	static final int CODE_SIZE = 7;
 
 	private final String code;
@@ -24,7 +23,16 @@ public class Hotel extends Hotel_Base{
 
 		this.code = code;
 		this.name = name;
-		Hotel.hotels.add(this);
+		
+		setRoot(FenixFramework.getDomainRoot());
+	}
+	
+	public void delete() {
+		setRoot(null);
+		
+		// Delete Rooms here
+
+		deleteDomainObject();
 	}
 
 	private void checkArguments(String code, String name) {
@@ -36,7 +44,7 @@ public class Hotel extends Hotel_Base{
 			throw new HotelException();
 		}
 
-		for (Hotel hotel : hotels) {
+		for (Hotel hotel : FenixFramework.getDomainRoot().getHotelSet()) {
 			if (hotel.getCode().equals(code)) {
 				throw new HotelException();
 			}
@@ -106,7 +114,7 @@ public class Hotel extends Hotel_Base{
 	}
 
 	public static String reserveRoom(Room.Type type, LocalDate arrival, LocalDate departure) {
-		for (Hotel hotel : Hotel.hotels) {
+		for (Hotel hotel : FenixFramework.getDomainRoot().getHotelSet()) {
 			Room room = hotel.hasVacancy(type, arrival, departure);
 			if (room != null) {
 				return room.reserve(type, arrival, departure).getReference();
@@ -116,7 +124,7 @@ public class Hotel extends Hotel_Base{
 	}
 
 	public static String cancelBooking(String reference) {
-		for (Hotel hotel : hotels) {
+		for (Hotel hotel : FenixFramework.getDomainRoot().getHotelSet()) {
 			Booking booking = hotel.getBooking(reference);
 			if (booking != null) {
 				return booking.cancel();
@@ -126,7 +134,7 @@ public class Hotel extends Hotel_Base{
 	}
 
 	public static RoomBookingData getRoomBookingData(String reference) {
-		for (Hotel hotel : hotels) {
+		for (Hotel hotel : FenixFramework.getDomainRoot().getHotelSet()) {
 			for (Room room : hotel.rooms) {
 				Booking booking = room.getBooking(reference);
 				if (booking != null) {
@@ -157,7 +165,7 @@ public class Hotel extends Hotel_Base{
 
 	static List<Room> getAvailableRooms(int number, LocalDate arrival, LocalDate departure) {
 		List<Room> availableRooms = new ArrayList<>();
-		for (Hotel hotel : hotels) {
+		for (Hotel hotel : FenixFramework.getDomainRoot().getHotelSet()) {
 			availableRooms.addAll(hotel.getAvailableRooms(arrival, departure));
 			if (availableRooms.size() >= number) {
 				return availableRooms;
