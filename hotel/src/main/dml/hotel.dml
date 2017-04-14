@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.softeng.hotel.domain;
 
+
 class Hotel {
 	String code;
 	String name;
@@ -12,4 +13,7 @@ relation DomainRootHasHotelApplication {
 	Hotel playsRole hotel {
 		multiplicity 0..*;
 	}
+}
+
+class Room {
 }
