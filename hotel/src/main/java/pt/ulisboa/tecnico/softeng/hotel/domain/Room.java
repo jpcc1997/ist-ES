@@ -12,18 +12,26 @@ public class Room  extends Room_Base{
 		SINGLE, DOUBLE
 	}
 
-	private final Hotel hotel;
+
 	private final Set<Booking> bookings = new HashSet<>();
 
 	public Room(Hotel hotel, String number, Type type) {
 		checkArguments(hotel, number, type);
 
-		this.hotel = hotel;
+		hotel.addRoom(this);
 		setNumber(number);
 		setType(type);
 
-		this.hotel.addRoom(this);
 	}
+	
+	public void delete() {
+		setHotel(null);
+		
+		// Delete Bookings here
+
+		deleteDomainObject();
+	}
+
 
 	private void checkArguments(Hotel hotel, String number, Type type) {
 		if (hotel == null || number == null || number.trim().length() == 0 || type == null) {
@@ -33,11 +41,13 @@ public class Room  extends Room_Base{
 		if (!number.matches("\\d*")) {
 			throw new HotelException();
 		}
+		for (Room room : hotel.getRoomSet()) {
+			if (room.getNumber().equals(number)) {
+				throw new HotelException();
+			}
+		}
 	}
 
-	public Hotel getHotel() {
-		return this.hotel;
-	}
 
 	int getNumberOfBookings() {
 		return this.bookings.size();
@@ -66,7 +76,7 @@ public class Room  extends Room_Base{
 			throw new HotelException();
 		}
 
-		Booking booking = new Booking(this.hotel, arrival, departure);
+		Booking booking = new Booking(getHotel(), arrival, departure);
 		this.bookings.add(booking);
 
 		return booking;

@@ -14,7 +14,6 @@ import pt.ulisboa.tecnico.softeng.hotel.exception.HotelException;
 public class Hotel extends Hotel_Base{
 	static final int CODE_SIZE = 7;
 
-	private final Set<Room> rooms = new HashSet<>();
 
 	public Hotel(String code, String name) {
 		checkArguments(code, name);
@@ -28,8 +27,9 @@ public class Hotel extends Hotel_Base{
 	public void delete() {
 		setRoot(null);
 		
-		// Delete Rooms here
-
+		for(Room room: this.getRoomSet()){
+			room.delete();
+		}
 		deleteDomainObject();
 	}
 
@@ -54,7 +54,7 @@ public class Hotel extends Hotel_Base{
 			throw new HotelException();
 		}
 
-		for (Room room : this.rooms) {
+		for (Room room : this.getRoomSet()) {
 			if (room.isFree(type, arrival, departure)) {
 				return room;
 			}
@@ -64,7 +64,7 @@ public class Hotel extends Hotel_Base{
 
 	public Set<Room> getAvailableRooms(LocalDate arrival, LocalDate departure) {
 		Set<Room> availableRooms = new HashSet<>();
-		for (Room room : this.rooms) {
+		for (Room room : this.getRoomSet()) {
 			if (room.isFree(room.getType(), arrival, departure)) {
 				availableRooms.add(room);
 			}
@@ -72,20 +72,19 @@ public class Hotel extends Hotel_Base{
 		return availableRooms;
 	}
 
-	void addRoom(Room room) {
+	public void addRoom(Room room) {
 		if (hasRoom(room.getNumber())) {
 			throw new HotelException();
 		}
-
-		this.rooms.add(room);
+		this.getRoomSet().add(room);
 	}
 
 	int getNumberOfRooms() {
-		return this.rooms.size();
+		return this.getRoomSet().size();
 	}
 
 	public boolean hasRoom(String number) {
-		for (Room room : this.rooms) {
+		for (Room room : this.getRoomSet()) {
 			if (room.getNumber().equals(number)) {
 				return true;
 			}
@@ -94,7 +93,7 @@ public class Hotel extends Hotel_Base{
 	}
 
 	private Booking getBooking(String reference) {
-		for (Room room : this.rooms) {
+		for (Room room : this.getRoomSet()) {
 			Booking booking = room.getBooking(reference);
 			if (booking != null) {
 				return booking;
@@ -125,7 +124,7 @@ public class Hotel extends Hotel_Base{
 
 	public static RoomBookingData getRoomBookingData(String reference) {
 		for (Hotel hotel : FenixFramework.getDomainRoot().getHotelSet()) {
-			for (Room room : hotel.rooms) {
+			for (Room room : hotel.getRoomSet()) {
 				Booking booking = room.getBooking(reference);
 				if (booking != null) {
 					return new RoomBookingData(room, booking);
