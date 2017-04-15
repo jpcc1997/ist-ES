@@ -8,18 +8,18 @@ public class Booking extends Booking_Base{
 	
 	private static int counter = 0;
 
-	private final String reference;
-	private String cancellation;
-	private LocalDate cancellationDate;
-	private final LocalDate arrival;
-	private final LocalDate departure;
+	//private final String reference;
+	//private String cancellation;
+	//private LocalDate cancellationDate;
+	//private final LocalDate arrival;
+	//private final LocalDate departure;
 
 	Booking(Hotel hotel, LocalDate arrival, LocalDate departure) {
 		checkArguments(hotel, arrival, departure);
 
-		this.reference = hotel.getCode() + Integer.toString(++Booking.counter);
-		this.arrival = arrival;
-		this.departure = departure;
+		setReference(hotel.getCode() + Integer.toString(++Booking.counter));
+		setArrival(arrival);
+		setDeparture(departure);
 	}
 
 	private void checkArguments(Hotel hotel, LocalDate arrival, LocalDate departure) {
@@ -32,25 +32,6 @@ public class Booking extends Booking_Base{
 		}
 	}
 
-	public String getReference() {
-		return this.reference;
-	}
-
-	public String getCancellation() {
-		return this.cancellation;
-	}
-
-	public LocalDate getArrival() {
-		return this.arrival;
-	}
-
-	public LocalDate getDeparture() {
-		return this.departure;
-	}
-
-	public LocalDate getCancellationDate() {
-		return this.cancellationDate;
-	}
 
 	boolean conflict(LocalDate arrival, LocalDate departure) {
 		if (isCancelled()) {
@@ -65,16 +46,16 @@ public class Booking extends Booking_Base{
 			throw new HotelException();
 		}
 
-		if ((arrival.equals(this.arrival) || arrival.isAfter(this.arrival)) && arrival.isBefore(this.departure)) {
+		if ((arrival.equals(getArrival()) || arrival.isAfter(getArrival())) && arrival.isBefore(getDeparture())) {
 			return true;
 		}
 
-		if ((departure.equals(this.departure) || departure.isBefore(this.departure))
-				&& departure.isAfter(this.arrival)) {
+		if ((departure.equals(getDeparture()) || departure.isBefore(getDeparture()))
+				&& departure.isAfter(getArrival())) {
 			return true;
 		}
 
-		if ((arrival.isBefore(this.arrival) && departure.isAfter(this.departure))) {
+		if ((arrival.isBefore(getArrival()) && departure.isAfter(getDeparture()))) {
 			return true;
 		}
 
@@ -82,13 +63,13 @@ public class Booking extends Booking_Base{
 	}
 
 	public String cancel() {
-		this.cancellation = this.reference + "CANCEL";
-		this.cancellationDate = new LocalDate();
-		return this.cancellation;
+		setCancellation(getReference() + "CANCEL");
+		setCancellationDate(new LocalDate());
+		return getCancellation();
 	}
 
 	public boolean isCancelled() {
-		return this.cancellation != null;
+		return getCancellation() != null;
 	}
 
 }
