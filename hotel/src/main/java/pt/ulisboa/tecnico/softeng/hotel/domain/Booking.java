@@ -66,5 +66,10 @@ public class Booking extends Booking_Base{
 	public boolean isCancelled() {
 		return getCancellation() != null;
 	}
+	
+	public void delete(){
+		setRoom(null);
+		deleteDomainObject();
+	}
 
 }

@@ -13,8 +13,6 @@ public class Room  extends Room_Base{
 	}
 
 
-	private final Set<Booking> bookings = new HashSet<>();
-
 	public Room(Hotel hotel, String number, Type type) {
 		checkArguments(hotel, number, type);
 
@@ -27,7 +25,9 @@ public class Room  extends Room_Base{
 	public void delete() {
 		setHotel(null);
 		
-		// Delete Bookings here
+		for(Booking booking : this.getBookingSet()){
+			booking.delete();
+		}
 
 		deleteDomainObject();
 	}
@@ -50,7 +50,7 @@ public class Room  extends Room_Base{
 
 
 	int getNumberOfBookings() {
-		return this.bookings.size();
+		return this.getBookingSet().size();
 	}
 
 	boolean isFree(Type type, LocalDate arrival, LocalDate departure) {
@@ -58,7 +58,7 @@ public class Room  extends Room_Base{
 			return false;
 		}
 
-		for (Booking booking : this.bookings) {
+		for (Booking booking : this.getBookingSet()) {
 			if (booking.conflict(arrival, departure)) {
 				return false;
 			}
@@ -77,13 +77,13 @@ public class Room  extends Room_Base{
 		}
 
 		Booking booking = new Booking(getHotel(), arrival, departure);
-		this.bookings.add(booking);
+		this.getBookingSet().add(booking);
 
 		return booking;
 	}
 
 	public Booking getBooking(String reference) {
-		for (Booking booking : this.bookings) {
+		for (Booking booking : this.getBookingSet()) {
 			if (booking.getReference().equals(reference)
 					|| (booking.isCancelled() && booking.getCancellation().equals(reference))) {
 				return booking;
