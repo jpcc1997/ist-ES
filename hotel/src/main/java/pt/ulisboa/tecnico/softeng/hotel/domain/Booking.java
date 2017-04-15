@@ -8,11 +8,6 @@ public class Booking extends Booking_Base{
 	
 	private static int counter = 0;
 
-	//private final String reference;
-	//private String cancellation;
-	//private LocalDate cancellationDate;
-	//private final LocalDate arrival;
-	//private final LocalDate departure;
 
 	Booking(Hotel hotel, LocalDate arrival, LocalDate departure) {
 		checkArguments(hotel, arrival, departure);
