@@ -72,11 +72,12 @@ public class Hotel extends Hotel_Base{
 		return availableRooms;
 	}
 
+	@Override
 	public void addRoom(Room room) {
 		if (hasRoom(room.getNumber())) {
 			throw new HotelException();
 		}
-		this.getRoomSet().add(room);
+		super.addRoom(room);
 	}
 
 	int getNumberOfRooms() {
