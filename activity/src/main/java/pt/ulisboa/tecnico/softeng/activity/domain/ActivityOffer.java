@@ -20,7 +20,7 @@ public class ActivityOffer extends ActivityOffer_Base {
 		this.end = end;
 		this.capacity = activity.getCapacity();
 
-		activity.addOffer(this);
+		this.setActivity(activity);
 	}
 
 	private void checkArguments(Activity activity, LocalDate begin, LocalDate end) {
@@ -86,4 +86,9 @@ public class ActivityOffer extends ActivityOffer_Base {
 		return null;
 	}
 
+	public void delete() {
+		this.setActivity(null);
+
+		deleteDomainObject();
+	}
 }
