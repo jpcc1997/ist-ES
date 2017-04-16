@@ -6,12 +6,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ActivityOfferHasVacancyMethodTest {
+public class ActivityOfferHasVacancyMethodTest extends RollbackTestAbstractClass {
 	private ActivityProvider provider;
 	private ActivityOffer offer;
 
-	@Before
-	public void setUp() {
+	@Override
+	public void populate4Test() {
 		this.provider = new ActivityProvider("XtremX", "ExtremeAdventure");
 		Activity activity = new Activity(this.provider, "Bush Walking", 18, 80, 3);
 
@@ -61,11 +61,6 @@ public class ActivityOfferHasVacancyMethodTest {
 		new Booking(this.provider, this.offer);
 
 		Assert.assertFalse(this.offer.hasVacancy());
-	}
-
-	@After
-	public void tearDown() {
-		ActivityProvider.providers.clear();
 	}
 
 }
