@@ -13,8 +13,6 @@ public class Activity extends Activity_Base {
 
 	private static int counter = 0;
 
-	private final Set<ActivityOffer> offers = new HashSet<>();
-
 	public Activity(ActivityProvider provider, String name, int minAge, int maxAge, int capacity) {
 		checkArguments(provider, name, minAge, maxAge, capacity);
 
