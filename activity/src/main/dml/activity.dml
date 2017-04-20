@@ -49,3 +49,12 @@ relation ActivityHasActivityOffer {
 		multiplicity 0..*;
 	}
 }
+
+relation ActivityOfferHasBooking {
+	ActivityOffer playsRole offer {
+		multiplicity 1..1;
+	}
+	Booking playsRole booking {
+		multiplicity 0..*;
+	}
+}

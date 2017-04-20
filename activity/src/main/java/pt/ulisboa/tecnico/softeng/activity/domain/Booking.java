@@ -16,13 +16,19 @@ public class Booking extends Booking_Base {
 
 		this.reference = provider.getCode() + Integer.toString(++Booking.counter);
 
-		offer.addBooking(this);
+		this.setOffer(offer);
 	}
 
 	private void checkArguments(ActivityProvider provider, ActivityOffer offer) {
 		if (provider == null || offer == null) {
 			throw new ActivityException();
 		}
+	}
+	
+	public void delete() {
+		this.setOffer(null);
+		
+		deleteDomainObject();
 	}
 
 	public String getReference() {

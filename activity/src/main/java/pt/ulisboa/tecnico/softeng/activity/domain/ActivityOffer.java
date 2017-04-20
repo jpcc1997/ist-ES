@@ -8,7 +8,6 @@ import org.joda.time.LocalDate;
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
 
 public class ActivityOffer extends ActivityOffer_Base {
-	private final Set<Booking> bookings = new HashSet<>();
 
 	public ActivityOffer(Activity activity, LocalDate begin, LocalDate end) {
 		checkArguments(activity, begin, end);
@@ -31,22 +30,7 @@ public class ActivityOffer extends ActivityOffer_Base {
 	}
 
 	int getNumberOfBookings() {
-		int count = 0;
-		for (Booking booking : this.bookings) {
-			if (!booking.isCancelled()) {
-				count++;
-			}
-		}
-		return count;
-	}
-
-	void addBooking(Booking booking) {
-		if (this.getCapacity() == getNumberOfBookings()) {
-			throw new ActivityException();
-		}
-
-		this.bookings.add(booking);
-
+		return getBookingSet().size();
 	}
 
 	boolean available(LocalDate begin, LocalDate end) {
@@ -66,7 +50,7 @@ public class ActivityOffer extends ActivityOffer_Base {
 	}
 
 	public Booking getBooking(String reference) {
-		for (Booking booking : this.bookings) {
+		for (Booking booking : getBookingSet()) {
 			if (booking.getReference().equals(reference)
 					|| (booking.isCancelled() && booking.getCancellation().equals(reference))) {
 				return booking;
@@ -77,7 +61,10 @@ public class ActivityOffer extends ActivityOffer_Base {
 
 	public void delete() {
 		this.setActivity(null);
-
+		
+		for(Booking booking : getBookingSet())
+			booking.delete();
+		
 		deleteDomainObject();
 	}
 }
