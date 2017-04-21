@@ -30,9 +30,23 @@ public class ActivityOffer extends ActivityOffer_Base {
 	}
 
 	int getNumberOfBookings() {
-		return getBookingSet().size();
+		int count = 0;
+		for (Booking booking : getBookingSet()) {
+			if (!booking.isCancelled()) {
+				count++;
+			}
+		}
+		return count;
 	}
-
+	
+	void tryAddBooking(Booking booking) {
+		if (this.getCapacity() == getNumberOfBookings()) {
+ 			throw new ActivityException();
+ 		}
+		
+		this.addBooking(booking);
+	}
+	
 	boolean available(LocalDate begin, LocalDate end) {
 		return hasVacancy() && matchDate(begin, end);
 	}

@@ -16,7 +16,7 @@ public class Booking extends Booking_Base {
 
 		this.reference = provider.getCode() + Integer.toString(++Booking.counter);
 
-		this.setOffer(offer);
+		offer.tryAddBooking(this);
 	}
 
 	private void checkArguments(ActivityProvider provider, ActivityOffer offer) {
