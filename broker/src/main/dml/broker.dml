@@ -57,3 +57,6 @@ relation AdventureHasState {
 		multiplicity 1..1;
 	}
 }
+class BulkRoomBooking {
+
+}
