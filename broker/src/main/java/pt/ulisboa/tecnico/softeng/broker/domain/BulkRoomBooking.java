@@ -97,4 +97,12 @@ public class BulkRoomBooking extends BulkRoomBooking_Base{
 		}
 		return null;
 	}
+
+	public void delete() {
+		setBroker(null);
+		
+		//delete references
+		
+		deleteDomainObject();
+	}
 }
