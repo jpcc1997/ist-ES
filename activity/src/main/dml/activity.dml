@@ -1,0 +1,62 @@
+package pt.ulisboa.tecnico.softeng.activity.domain;
+
+class ActivityProvider {
+	String code;
+	String name;
+}
+
+class Activity {
+	String code;
+	String name;
+	int minAge;
+	int maxAge;
+	int capacity;
+}
+
+class ActivityOffer {
+	LocalDate begin;
+	LocalDate end;
+	int capacity;
+}
+
+class Booking {
+	String reference;
+	String cancel;
+	LocalDate cancellationDate;
+}
+
+relation DomainRootHasActivityProviderApplication {
+	.pt.ist.fenixframework.DomainRoot playsRole root {
+		multiplicity 1..1;
+	}
+	ActivityProvider playsRole activityProvider {
+		multiplicity 0..*;
+	}
+}
+
+relation ActivityProviderHasActivity {
+	ActivityProvider playsRole activityProvider {
+		multiplicity 1..1;
+	}
+	Activity playsRole activity {
+		multiplicity 0..*;
+	}
+}
+
+relation ActivityHasActivityOffer {
+	Activity playsRole activity {
+		multiplicity 1..1;
+	}
+	ActivityOffer playsRole activityOffer {
+		multiplicity 0..*;
+	}
+}
+
+relation ActivityOfferHasBooking {
+	ActivityOffer playsRole offer {
+		multiplicity 1..1;
+	}
+	Booking playsRole booking {
+		multiplicity 0..*;
+	}
+}
