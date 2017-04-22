@@ -1,4 +1,5 @@
 package pt.ulisboa.tecnico.softeng.bank.domain;
+enum pt.ulisboa.tecnico.softeng.bank.domain.Operation.Type as OperationType;
 
 class Bank {
 	String code;
@@ -6,6 +7,10 @@ class Bank {
 }
 
 class Operation {
+	String reference;
+	OperationType type;
+	int value;
+	DateTime time;
 }
 
 class Client {
@@ -51,6 +56,16 @@ relation BankHasAccount {
 	}
 	
 	Account playsRole account {
+		multiplicity 0..*;
+	}
+}
+
+relation AccountHasOperation {
+	Account playsRole account {
+		multiplicity 1..1;
+	}
+	
+	Operation playsRole operation {
 		multiplicity 0..*;
 	}
 }

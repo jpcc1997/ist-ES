@@ -12,18 +12,12 @@ import pt.ulisboa.tecnico.softeng.bank.exception.BankException;
 public class Bank extends Bank_Base {
 	public static final int CODE_SIZE = 4;
 
-	//private final String name;
-	//private final String code;
-
-	//private final List<Operation> log = new ArrayList<>();
-
 	public Bank(String name, String code) {
 		checkArguments(name, code);
 
 		setName(name);
 		setCode(code);
-		//this.name = name;
-		//this.code = code;
+
 
 		FenixFramework.getDomainRoot().addBank(this);
 	}
@@ -62,14 +56,6 @@ public class Bank extends Bank_Base {
 		}
 	}
 
-	/*String getName() {
-		return this.name;
-	}
-
-	String getCode() {
-		return this.code;
-	}*/
-
 	int getNumberOfAccounts() {
 		return getAccountSet().size();
 	}
@@ -78,17 +64,9 @@ public class Bank extends Bank_Base {
 		return this.getClientSet().size();
 	}
 
-
-
-
 	boolean hasClient(Client client) {
 		return this.getClientSet().contains(client);
 	}
-
-
-	/*void addLog(Operation operation) {
-		this.log.add(operation);
-	}*/
 
 	public Account getAccount(String IBAN) {
 		if (IBAN == null || IBAN.trim().equals("")) {
