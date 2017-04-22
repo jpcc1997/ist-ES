@@ -19,6 +19,10 @@ public class Client extends Client_Base{
 			throw new BankException();
 		}
 	}
+	
+	public int getCounter(){
+		return counter;
+	}
 
 	public void delete() {
 		setBank(null);
