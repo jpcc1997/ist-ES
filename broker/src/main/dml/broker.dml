@@ -58,5 +58,10 @@ relation AdventureHasState {
 	}
 }
 
+class BulkRoomBooking {
+
+}
+
 class Reference {
+
 }
