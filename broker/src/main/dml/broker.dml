@@ -57,3 +57,22 @@ relation AdventureHasState {
 		multiplicity 1..1;
 	}
 }
+
+class BulkRoomBooking {
+
+}
+
+
+relation BrokerHasBulkRoomBooking {
+	 Broker playsRole broker  {
+		multiplicity 0..1;
+	}
+	BulkRoomBooking playsRole bulkRoomBooking  {
+		 multiplicity 0..* ;
+	}
+}
+
+class Reference {
+
+}
+
