@@ -14,7 +14,7 @@ public class Bank extends Bank_Base {
 
 	//private final String name;
 	//private final String code;
-	private final Set<Account> accounts = new HashSet<>();
+
 	//private final List<Operation> log = new ArrayList<>();
 
 	public Bank(String name, String code) {
@@ -37,6 +37,10 @@ public class Bank extends Bank_Base {
 		
 		for (Client client : getClientSet()){
 			client.delete();
+		}
+		
+		for (Account account : getAccountSet()){
+			account.delete();
 		}
 
 		deleteDomainObject();
@@ -67,16 +71,15 @@ public class Bank extends Bank_Base {
 	}*/
 
 	int getNumberOfAccounts() {
-		return this.accounts.size();
+		return getAccountSet().size();
 	}
 
 	int getNumberOfClients() {
 		return this.getClientSet().size();
 	}
 
-	void addAccount(Account account) {
-		this.accounts.add(account);
-	}
+
+
 
 	boolean hasClient(Client client) {
 		return this.getClientSet().contains(client);
@@ -92,7 +95,7 @@ public class Bank extends Bank_Base {
 			throw new BankException();
 		}
 
-		for (Account account : this.accounts) {
+		for (Account account : getAccountSet()) {
 			if (account.getIBAN().equals(IBAN)) {
 				return account;
 			}
