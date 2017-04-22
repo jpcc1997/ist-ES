@@ -39,7 +39,15 @@ public class AccountPersistenceTest {
 		
 		List<Account> accounts = new ArrayList<Account>(bank.getAccountSet());
 		Account account = accounts.get(0);
-		assertEquals(0,account.getBalance());
+		assertEquals(0, account.getBalance());
+		
+		List<Client> clients = new ArrayList<Client>(bank.getClientSet());
+		Client client1 = clients.get(0);
+		assertEquals("Joao", client1.getName());
+		List<Account> clientAccounts = new ArrayList<Account>(client1.getAccountSet());
+		Account clientAccount = accounts.get(0);
+		assertEquals(1, clientAccounts.size());
+		assertEquals(0, clientAccount.getBalance());
 		
 	}
 
