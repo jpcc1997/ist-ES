@@ -46,7 +46,10 @@ public class HotelBulkBookingMethodTest extends RollbackTestAbstractClass{
 
 	@Test(expected = HotelException.class)
 	public void noRooms() {
-		FenixFramework.getDomainRoot().getHotelSet().clear(); // TODO Check if this is ok
+		//FenixFramework.getDomainRoot().getHotelSet().clear(); // TODO Check if this is ok
+		for (Hotel xhotel : FenixFramework.getDomainRoot().getHotelSet())
+			xhotel.delete();
+		
 		this.hotel = new Hotel("XPTO124", "Paris");
 
 		Hotel.bulkBooking(3, this.arrival, this.departure);
