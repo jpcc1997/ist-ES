@@ -5,7 +5,7 @@ import pt.ulisboa.tecnico.softeng.bank.exception.BankException;
 public class Account extends Account_Base{
 	private static int counter = 0;
 
-	private final Bank bank;
+	
 	
 	private final Client client;
 	
@@ -13,7 +13,9 @@ public class Account extends Account_Base{
 	public Account(Bank bank, Client client) {
 		checkArguments(bank, client);
 
-		this.bank = bank;
+		
+		
+		
 		setIBAN(bank.getCode() + Integer.toString(++Account.counter));
 		this.client = client;
 		setBalance(0);
