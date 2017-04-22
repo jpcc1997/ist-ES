@@ -29,5 +29,11 @@ relation HotelHasRoom {
 	}
 }
 
-class Booking {}
+class Booking {
+	String reference;
+	String cancellation;
+	LocalDate cancellationDate;
+	LocalDate arrival;
+	LocalDate departure;
+}
 
