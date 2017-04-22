@@ -62,7 +62,6 @@ class BulkRoomBooking {
 
 }
 
-
 relation BrokerHasBulkRoomBooking {
 	 Broker playsRole broker  {
 		multiplicity 0..1;
@@ -76,3 +75,11 @@ class Reference {
 
 }
 
+relation BulkRoomBookingHasReferences {
+	BulkRoomBooking playsRole bulkRoomBooking {
+		multiplicity 0..1;
+	}
+	Reference playsRole reference {
+		multiplicity 0..*;
+	}
+}

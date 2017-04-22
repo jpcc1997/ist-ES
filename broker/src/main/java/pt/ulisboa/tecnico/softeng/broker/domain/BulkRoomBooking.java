@@ -1,8 +1,5 @@
 package pt.ulisboa.tecnico.softeng.broker.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.joda.time.LocalDate;
 
 import pt.ulisboa.tecnico.softeng.broker.exception.RemoteAccessException;
@@ -14,7 +11,6 @@ public class BulkRoomBooking extends BulkRoomBooking_Base{
 	public static final int MAX_HOTEL_EXCEPTIONS = 3;
 	public static final int MAX_REMOTE_ERRORS = 10;
 
-	private final Set<String> references = new HashSet<>();
 	private final int number;
 	private final LocalDate arrival;
 	private final LocalDate departure;
@@ -27,9 +23,14 @@ public class BulkRoomBooking extends BulkRoomBooking_Base{
 		this.arrival = arrival;
 		this.departure = departure;
 	}
-
-	public Set<String> getReferences() {
-		return this.references;
+	
+	public void delete() {
+		setBroker(null);
+		
+		for (Reference reference : getReferenceSet())
+			reference.delete();
+		
+		deleteDomainObject();
 	}
 
 	public int getNumber() {
@@ -50,7 +51,8 @@ public class BulkRoomBooking extends BulkRoomBooking_Base{
 		}
 
 		try {
-			this.references.addAll(HotelInterface.bulkBooking(this.number, this.arrival, this.departure));
+			for (String reference : HotelInterface.bulkBooking(this.number, this.arrival, this.departure))
+				addReference(new Reference(reference));
 			this.numberOfHotelExceptions = 0;
 			this.numberOfRemoteErrors = 0;
 			return;
@@ -76,7 +78,8 @@ public class BulkRoomBooking extends BulkRoomBooking_Base{
 			return null;
 		}
 
-		for (String reference : this.references) {
+		for (Reference ref : getReferenceSet()) {
+			String reference = ref.getReference();
 			RoomBookingData data = null;
 			try {
 				data = HotelInterface.getRoomBookingData(reference);
@@ -91,18 +94,10 @@ public class BulkRoomBooking extends BulkRoomBooking_Base{
 			}
 
 			if (data != null && data.getRoomType().equals(type)) {
-				this.references.remove(reference);
+				ref.delete();
 				return reference;
 			}
 		}
 		return null;
-	}
-
-	public void delete() {
-		setBroker(null);
-		
-		//delete references
-		
-		deleteDomainObject();
 	}
 }
