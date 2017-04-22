@@ -100,7 +100,6 @@ public class Hotel {
 
 	public static String cancelBooking(String roomConfirmation) {
 
-		// TODO implement
 		if(roomConfirmation == null){
 			throw new HotelException();
 		}

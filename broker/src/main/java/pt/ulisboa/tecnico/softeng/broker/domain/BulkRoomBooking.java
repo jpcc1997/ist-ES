@@ -20,7 +20,7 @@ public class BulkRoomBooking {
 	private int numberOfRemoteErrors = 0;
 	private int numberOfHotelExceptions = 0;
 	private static final int MAX_REMOTE_ERRORS = 10;
-	private static final int MAX_HOTEL_EXCEPTIONS = 3;
+	static final int MAX_HOTEL_EXCEPTIONS = 3;
 
 	public BulkRoomBooking(int number, LocalDate arrival, LocalDate departure) {
 		this.number = number;

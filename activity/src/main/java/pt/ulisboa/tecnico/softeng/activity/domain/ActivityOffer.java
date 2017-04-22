@@ -41,7 +41,7 @@ public class ActivityOffer {
 		return this.end;
 	}
 
-	int getNumberOfBookings() {
+	public int getNumberOfBookings() {
 		int count = 0;
 		for (Booking booking : this.bookings) {
 			if (booking.getCancelled() != null) {
