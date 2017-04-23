@@ -32,7 +32,7 @@ public class BulkRoomBooking extends BulkRoomBooking_Base{
 		}
 
 		try {
-      for (String reference : HotelInterface.bulkBooking(this.number, this.arrival, this.departure))
+      for (String reference : HotelInterface.bulkBooking(getNumber(), getArrival(), getDeparture()))
 				addReference(new Reference(reference));
 			setNumberOfHotelExceptions(0);
 			setNumberOfRemoteErrors(0);
