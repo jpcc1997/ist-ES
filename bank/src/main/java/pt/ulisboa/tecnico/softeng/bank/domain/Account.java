@@ -28,8 +28,14 @@ public class Account extends Account_Base{
 
 	}
 	public void delete() {
+		
+		for (Operation operation : getOperationSet()){
+			operation.delete();
+		}
+		
 		setClient(null);
 		setBank(null);
+		
 		deleteDomainObject();
 	}
 	

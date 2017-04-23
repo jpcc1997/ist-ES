@@ -44,8 +44,6 @@ public class OperationPersistenceTest {
 		assertEquals(operation.getAccount(), Bank.getBankByCode(BANK_CODE).getAccount(iban));
 		assertTrue(operation.getReference().startsWith(BANK_CODE));
 		assertTrue(operation.getReference().length() > Bank.CODE_SIZE);
-		assertEquals(1000, operation.getValue());
-		assertTrue(operation.getTime() != null);
 	}
 
 	@After
