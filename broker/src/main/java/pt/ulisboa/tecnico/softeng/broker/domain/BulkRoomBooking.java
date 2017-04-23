@@ -11,17 +11,10 @@ public class BulkRoomBooking extends BulkRoomBooking_Base{
 	public static final int MAX_HOTEL_EXCEPTIONS = 3;
 	public static final int MAX_REMOTE_ERRORS = 10;
 
-	private final int number;
-	private final LocalDate arrival;
-	private final LocalDate departure;
-	private boolean cancelled = false;
-	private int numberOfHotelExceptions = 0;
-	private int numberOfRemoteErrors = 0;
-
 	public BulkRoomBooking(int number, LocalDate arrival, LocalDate departure) {
-		this.number = number;
-		this.arrival = arrival;
-		this.departure = departure;
+		setNumber(number);
+		setArrival(arrival);
+		setDeparture(departure);
 	}
 	
 	public void delete() {
@@ -32,49 +25,37 @@ public class BulkRoomBooking extends BulkRoomBooking_Base{
 		
 		deleteDomainObject();
 	}
-
-	public int getNumber() {
-		return this.number;
-	}
-
-	public LocalDate getArrival() {
-		return this.arrival;
-	}
-
-	public LocalDate getDeparture() {
-		return this.departure;
-	}
-
+	
 	public void processBooking() {
-		if (this.cancelled) {
+		if (getCancelled()) {
 			return;
 		}
 
 		try {
-			for (String reference : HotelInterface.bulkBooking(this.number, this.arrival, this.departure))
+      for (String reference : HotelInterface.bulkBooking(getNumber(), getArrival(), getDeparture()))
 				addReference(new Reference(reference));
-			this.numberOfHotelExceptions = 0;
-			this.numberOfRemoteErrors = 0;
+			setNumberOfHotelExceptions(0);
+			setNumberOfRemoteErrors(0);
 			return;
 		} catch (HotelException he) {
-			this.numberOfHotelExceptions++;
-			if (this.numberOfHotelExceptions == MAX_HOTEL_EXCEPTIONS) {
-				this.cancelled = true;
+			setNumberOfHotelExceptions(1+getNumberOfHotelExceptions());
+			if (getNumberOfHotelExceptions() == MAX_HOTEL_EXCEPTIONS) {
+				setCancelled(true);
 			}
-			this.numberOfRemoteErrors = 0;
+			setNumberOfRemoteErrors(0);
 			return;
 		} catch (RemoteAccessException rae) {
-			this.numberOfRemoteErrors++;
-			if (this.numberOfRemoteErrors == MAX_REMOTE_ERRORS) {
-				this.cancelled = true;
+			setNumberOfRemoteErrors(1 + getNumberOfRemoteErrors());
+			if (getNumberOfRemoteErrors() == MAX_REMOTE_ERRORS) {
+				setCancelled(true);
 			}
-			this.numberOfHotelExceptions = 0;
+			setNumberOfHotelExceptions(0);
 			return;
 		}
 	}
 
 	public String getReference(String type) {
-		if (this.cancelled) {
+		if (getCancelled()) {
 			return null;
 		}
 
@@ -83,13 +64,13 @@ public class BulkRoomBooking extends BulkRoomBooking_Base{
 			RoomBookingData data = null;
 			try {
 				data = HotelInterface.getRoomBookingData(reference);
-				this.numberOfRemoteErrors = 0;
+				setNumberOfRemoteErrors(0);
 			} catch (HotelException he) {
-				this.numberOfRemoteErrors = 0;
+				setNumberOfRemoteErrors(0);
 			} catch (RemoteAccessException rae) {
-				this.numberOfRemoteErrors++;
-				if (this.numberOfRemoteErrors == MAX_REMOTE_ERRORS) {
-					this.cancelled = true;
+				setNumberOfRemoteErrors(1+getNumberOfRemoteErrors());
+				if (getNumberOfRemoteErrors() == MAX_REMOTE_ERRORS) {
+					setCancelled(true);
 				}
 			}
 
