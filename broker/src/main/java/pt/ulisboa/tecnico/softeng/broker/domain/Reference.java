@@ -1,19 +1,17 @@
 package pt.ulisboa.tecnico.softeng.broker.domain;
 
 public class Reference extends Reference_Base{
-	private final String reference;
+	
+	
+//	private final String reference;
 	
 	public Reference(String ref) {
-		reference = ref;
+		setReference(ref);
 	}
 	
 	public void delete() {
 		setBulkRoomBooking(null);
 		
 		deleteDomainObject();
-	}
-
-	public String getReference() {
-		return reference;
 	}
 }

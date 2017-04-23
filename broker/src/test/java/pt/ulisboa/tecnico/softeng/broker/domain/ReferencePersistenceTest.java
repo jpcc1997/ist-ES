@@ -67,6 +67,8 @@ public class ReferencePersistenceTest {
 		
 		List<Reference> refs = new ArrayList<>(bulkRoomBookings.get(0).getReferenceSet());
 		assertEquals(1, refs.size());
+		
+		assertEquals("XPTO123",refs.get(0).getReference());
 	}
 
 	@After
