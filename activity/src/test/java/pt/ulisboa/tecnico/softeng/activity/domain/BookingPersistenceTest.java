@@ -16,6 +16,8 @@ public class BookingPersistenceTest {
 	private final LocalDate begin = new LocalDate(2016, 12, 19);
 	private final LocalDate end = new LocalDate(2016, 12, 23);
 	private static String code;
+	private Booking booking;
+	private String cancel;
 	
 	@Test
 	public void success() {
@@ -30,6 +32,10 @@ public class BookingPersistenceTest {
 		this.code = activity.getCode();
 		ActivityOffer offer = new ActivityOffer(activity, this.begin, this.end);
 		new Booking(provider, offer);
+		new Booking(provider, offer);
+		booking = new Booking(provider, offer);
+		cancel = booking.cancel();
+		new Booking(provider, offer);
 	}
 
 	@Atomic(mode = TxMode.READ)
@@ -37,12 +43,15 @@ public class BookingPersistenceTest {
 		Activity activity = ActivityProvider.getActivityProviderByCode(PROVIDER_CODE).getActivityByCode(this.code);
 		assertEquals(1, activity.getActivityOfferSet().size());
 		for (ActivityOffer offer : activity.getOffers()) {
-			assertEquals(1, offer.getBookingSet().size());
+			assertEquals(3, offer.getNumberOfBookings());
+			assertEquals(4, offer.getBookingSet().size());
 			for(Booking booking : offer.getBookingSet()) {
 				assertTrue(booking.getReference().contains(PROVIDER_CODE));
 				assertEquals(offer, booking.getOffer());
 			}
 		}
+		assertEquals(new LocalDate(), booking.getCancellationDate());
+		assertEquals("CANCEL" + booking.getReference(), cancel);
 	}
 
 	@After
