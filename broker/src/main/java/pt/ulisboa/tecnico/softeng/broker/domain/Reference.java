@@ -6,6 +6,12 @@ public class Reference extends Reference_Base{
 	public Reference(String ref) {
 		reference = ref;
 	}
+	
+	public void delete() {
+		setBulkRoomBooking(null);
+		
+		deleteDomainObject();
+	}
 
 	public String getReference() {
 		return reference;
