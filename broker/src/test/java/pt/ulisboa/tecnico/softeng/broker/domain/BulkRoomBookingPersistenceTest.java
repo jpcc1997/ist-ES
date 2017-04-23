@@ -2,6 +2,8 @@ package pt.ulisboa.tecnico.softeng.broker.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.joda.time.LocalDate;
 import org.junit.After;
@@ -47,7 +49,18 @@ public class BulkRoomBookingPersistenceTest {
 
 		List<BulkRoomBooking> bulkRoomBookings = new ArrayList<>(broker.getBulkRoomBookingSet());
 		assertEquals(1, bulkRoomBookings.size());
-
+		
+		BulkRoomBooking bb = bulkRoomBookings.get(0);
+		assertEquals(number,bb.getNumber());
+		assertEquals(arrival,bb.getArrival());
+		assertEquals(departure,bb.getDeparture());
+		
+		// nao foram adicionados quartos no hotel
+		// nao vai devolver nenhum quarto para reservar
+		// logo vai haver uma excepcao do hotel
+		assertEquals(1,bb.getNumberOfHotelExceptions());
+		assertEquals(0,bb.getNumberOfRemoteErrors());
+		assertFalse(bb.getCancelled());
 	}
 
 	@After
