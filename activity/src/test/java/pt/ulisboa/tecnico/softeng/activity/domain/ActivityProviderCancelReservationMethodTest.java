@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.joda.time.LocalDate;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
@@ -31,7 +29,7 @@ public class ActivityProviderCancelReservationMethodTest extends RollbackTestAbs
 		String cancel = ActivityProvider.cancelReservation(booking.getReference());
 
 		assertTrue(booking.isCancelled());
-		assertEquals(cancel, booking.getCancellation());
+		assertEquals(cancel, booking.getCancel());
 	}
 
 	@Test(expected = ActivityException.class)

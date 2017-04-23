@@ -1,8 +1,5 @@
 package pt.ulisboa.tecnico.softeng.activity.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.joda.time.LocalDate;
 
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
@@ -66,7 +63,7 @@ public class ActivityOffer extends ActivityOffer_Base {
 	public Booking getBooking(String reference) {
 		for (Booking booking : getBookingSet()) {
 			if (booking.getReference().equals(reference)
-					|| (booking.isCancelled() && booking.getCancellation().equals(reference))) {
+					|| (booking.isCancelled() && booking.getCancel().equals(reference))) {
 				return booking;
 			}
 		}
