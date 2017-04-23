@@ -1,4 +1,4 @@
-package pt.ulisboa.tecnico.softeng.bank.domain;
+package pt.ulisboa.tecnico.softeng.activity.domain;
 
 import static org.junit.Assert.assertEquals;
 
@@ -9,8 +9,8 @@ import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.Atomic.TxMode;
 import pt.ist.fenixframework.FenixFramework;
 
-public class BankPersistenceTest {
-	private static final String BANK_CODE = "BK01";
+public class ActivityProviderPersistenceTest {
+	private static final String PROVIDER_CODE = "Xtreme";
 
 	@Test
 	public void success() {
@@ -20,24 +20,21 @@ public class BankPersistenceTest {
 
 	@Atomic(mode = TxMode.WRITE)
 	public void atomicProcess() {
-		new Bank("Money", BANK_CODE);
+		new ActivityProvider(PROVIDER_CODE, "Rappel");
 	}
 
 	@Atomic(mode = TxMode.READ)
 	public void atomicAssert() {
-		
-		assertEquals(1, FenixFramework.getDomainRoot().getBankSet().size());
-		
-		Bank bank = Bank.getBankByCode(BANK_CODE);
+		ActivityProvider provider = ActivityProvider.getActivityProviderByCode(PROVIDER_CODE);
 
-		assertEquals("Money", bank.getName());
+		assertEquals("Rappel", provider.getName());
 	}
 
 	@After
 	@Atomic(mode = TxMode.WRITE)
 	public void tearDown() {
-		for (Bank bank : FenixFramework.getDomainRoot().getBankSet()) {
-			bank.delete();
+		for (ActivityProvider provider: FenixFramework.getDomainRoot().getActivityProviderSet()) {
+			provider.delete();
 		}
 	}
 

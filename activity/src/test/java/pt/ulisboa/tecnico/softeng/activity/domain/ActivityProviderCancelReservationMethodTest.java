@@ -4,18 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.joda.time.LocalDate;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
 
-public class ActivityProviderCancelReservationMethodTest {
+public class ActivityProviderCancelReservationMethodTest extends RollbackTestAbstractClass {
 	private ActivityProvider provider;
 	private ActivityOffer offer;
 
-	@Before
-	public void setUp() {
+	@Override
+	public void populate4Test() {
 		this.provider = new ActivityProvider("XtremX", "ExtremeAdventure");
 		Activity activity = new Activity(this.provider, "Bush Walking", 18, 80, 3);
 
@@ -31,7 +29,7 @@ public class ActivityProviderCancelReservationMethodTest {
 		String cancel = ActivityProvider.cancelReservation(booking.getReference());
 
 		assertTrue(booking.isCancelled());
-		assertEquals(cancel, booking.getCancellation());
+		assertEquals(cancel, booking.getCancel());
 	}
 
 	@Test(expected = ActivityException.class)
@@ -40,10 +38,4 @@ public class ActivityProviderCancelReservationMethodTest {
 
 		ActivityProvider.cancelReservation("XPTO");
 	}
-
-	@After
-	public void tearDown() {
-		ActivityProvider.providers.clear();
-	}
-
 }
