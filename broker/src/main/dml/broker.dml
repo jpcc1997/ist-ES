@@ -57,3 +57,38 @@ relation AdventureHasState {
 		multiplicity 1..1;
 	}
 }
+
+class BulkRoomBooking {
+
+	int number;
+	LocalDate arrival;
+	LocalDate departure;
+	boolean cancelled;
+	int numberOfHotelExceptions;
+	int numberOfRemoteErrors;
+
+}
+
+relation BrokerHasBulkRoomBooking {
+	 Broker playsRole broker  {
+		multiplicity 0..1;
+	}
+	BulkRoomBooking playsRole bulkRoomBooking  {
+		 multiplicity 0..* ;
+	}
+}
+
+class Reference {
+
+	String reference;
+
+}
+
+relation BulkRoomBookingHasReferences {
+	BulkRoomBooking playsRole bulkRoomBooking {
+		multiplicity 0..1;
+	}
+	Reference playsRole reference {
+		multiplicity 0..*;
+	}
+}
