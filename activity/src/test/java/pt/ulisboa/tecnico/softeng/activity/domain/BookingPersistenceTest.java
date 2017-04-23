@@ -49,6 +49,7 @@ public class BookingPersistenceTest {
 				assertEquals(offer, booking.getOffer());
 			}
 		}
+		assertEquals(new LocalDate(), booking.getCancellationDate());
 	}
 
 	@After
