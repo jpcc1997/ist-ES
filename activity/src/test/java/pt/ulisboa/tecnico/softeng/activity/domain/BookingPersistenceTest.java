@@ -17,6 +17,7 @@ public class BookingPersistenceTest {
 	private final LocalDate end = new LocalDate(2016, 12, 23);
 	private static String code;
 	private Booking booking;
+	private String cancel;
 	
 	@Test
 	public void success() {
@@ -33,7 +34,7 @@ public class BookingPersistenceTest {
 		new Booking(provider, offer);
 		new Booking(provider, offer);
 		booking = new Booking(provider, offer);
-		booking.cancel();
+		cancel = booking.cancel();
 		new Booking(provider, offer);
 	}
 
@@ -50,6 +51,7 @@ public class BookingPersistenceTest {
 			}
 		}
 		assertEquals(new LocalDate(), booking.getCancellationDate());
+		assertEquals("CANCEL" + booking.getReference(), cancel);
 	}
 
 	@After
