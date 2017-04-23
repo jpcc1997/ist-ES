@@ -33,7 +33,6 @@ public class BulkRoomBookingPersistenceTest {
 	@Atomic(mode = TxMode.WRITE)
 	public void atomicProcess() {
 		Broker broker = new Broker(BROKER_CODE, BROKER_NAME);
-		new BulkRoomBooking(number, arrival, departure);
 		broker.bulkBooking(number, arrival, departure);
 	}
 
