@@ -1,6 +1,10 @@
 package pt.ulisboa.tecnico.softeng.hotel.services.local.dataobjects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import pt.ulisboa.tecnico.softeng.hotel.domain.Hotel;
+import pt.ulisboa.tecnico.softeng.hotel.domain.Room;
 
 public class HotelData {
 	public static enum CopyDepth {
@@ -8,7 +12,7 @@ public class HotelData {
 	};
 	private String code;
 	private String name;
-	// TODO private List<String> rooms = new ArrayList<String>();
+	private List<RoomData> rooms = new ArrayList<RoomData>();
 	public HotelData() {
 	}
 
@@ -18,12 +22,11 @@ public class HotelData {
 		
 		
 		switch (depth) {
-		// TODO Implement RoomData dataobject class
-		/*case ROOMS:
+		case ROOMS:
 			for (Room room : hotel.getRoomSet()) {
-				this.rooms.add(new RoomData(room));
+				this.rooms.add(new RoomData(hotel, room, RoomData.CopyDepth.SHALLOW));
 			}
-			break;*/
+			break;
 		case SHALLOW:
 			break;
 		default:
@@ -47,12 +50,11 @@ public class HotelData {
 		this.code = code;
 	}
 
-	// TODO Implement RoomData dataobject class
-	/*public List<RoomData> getRooms() {
+	public List<RoomData> getRooms() {
 		return rooms;
 	}
 	
-	public void setRooms(List<String> rooms) {
+	public void setRooms(List<RoomData> rooms) {
 		this.rooms = rooms;
-	}*/
+	}
 }
