@@ -13,7 +13,7 @@ public class RoomData {
 	};
 	private Hotel hotel;
 	private String number;
-	private String type;
+	private Room.Type type;
 	private List<RoomBookingData> bookings = new ArrayList<RoomBookingData>();
 	public RoomData() {
 	}
@@ -21,7 +21,7 @@ public class RoomData {
 	public RoomData(Hotel hotel, Room room, CopyDepth depth) {
 		this.setHotel(hotel);
 		this.setNumber(room.getNumber());
-		this.setType(room.getType().toString());
+		this.setType(room.getType());
 		
 		
 		switch (depth) {
@@ -45,11 +45,11 @@ public class RoomData {
 		this.hotel = hotel;
 	}
 
-	public String getType() {
+	public Room.Type getType() {
 		return this.type;
 	}
 
-	public void setType(String type) {
+	public void setType(Room.Type type) {
 		this.type = type;
 	}
 

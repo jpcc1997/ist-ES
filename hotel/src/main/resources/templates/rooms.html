@@ -21,10 +21,10 @@
 		<p class="text-danger" th:text="${error}">Error</p>
 		<form class="form-inline" th:action="@{/hotels/{code}/rooms(code=${hotel.code})}" th:object="${room}" method="post">
 	 		<label>Number: </label> <input class="form-control" type="number" th:field="*{number}" required="required" min="1"/>
-	 		<select type="type" th:field="*{type}" required="required">
-			  <option value="SINGLE">Single</option>
-			  <option value="DOUBLE">Double</option>
-			</select>  
+	 		<select class="form-control" th:field="*{type}" >
+       			<option th:each="type : ${T(pt.ulisboa.tecnico.softeng.hotel.domain.Room.Type).values()}" th:value="${type}" th:text="${type}">
+   				</option>
+			</select>
 			<input class="btn btn-primary" type="submit" value="Submit" />
 		</form>
 		<br/>

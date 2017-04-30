@@ -38,12 +38,7 @@ public class HotelInterface {
 
 	@Atomic(mode = TxMode.WRITE)
 	public static void createRoom(String hotelCode, RoomData roomData) {
-		if(roomData.getType().equals("SINGLE")){
-			new Room(getHotelByCode(hotelCode), roomData.getNumber(), Room.Type.SINGLE);
-		}
-		else{
-			new Room(getHotelByCode(hotelCode), roomData.getNumber(), Room.Type.DOUBLE);
-		}
+		new Room(getHotelByCode(hotelCode), roomData.getNumber(), roomData.getType());
 	}
 	
 	
