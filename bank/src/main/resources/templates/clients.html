@@ -38,7 +38,7 @@
 					<td th:text="${client.name}">name</td>
  					<td th:text="${client.ID}">ID</td>
 					<td><a
-						th:href="@{/banks/{bcode}/client/{cid}/accounts(bcode=${bank.code},cid=${client.ID})}">Link</a></td>
+						th:href="@{/banks/{bcode}/clients/{cid}/accounts(bcode=${bank.code},cid=${client.ID})}">Link</a></td>
 				</tr>
 			</tbody>
 		</table>
