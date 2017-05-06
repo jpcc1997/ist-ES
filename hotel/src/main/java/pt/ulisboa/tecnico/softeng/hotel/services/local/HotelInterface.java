@@ -30,6 +30,16 @@ public class HotelInterface {
 		return hotels;
 	}
 	
+	@Atomic(mode = TxMode.READ)
+	public static List<RoomData> getRooms(String hotelCode) {
+		List<RoomData> rooms = new ArrayList<>();
+		Hotel hotel = getHotelByCode(hotelCode);
+		for (Room room : hotel.getRoomSet()) {
+			rooms.add(new RoomData(hotel, room ,RoomData.CopyDepth.SHALLOW));
+		}
+		return rooms;
+	}
+	
 	
 	@Atomic(mode = TxMode.WRITE)
 	public static void createHotel(HotelData hotelData) {
@@ -39,6 +49,12 @@ public class HotelInterface {
 	@Atomic(mode = TxMode.WRITE)
 	public static void createRoom(String hotelCode, RoomData roomData) {
 		new Room(getHotelByCode(hotelCode), roomData.getNumber(), roomData.getType());
+	}
+	
+	@Atomic(mode = TxMode.WRITE)
+	public static void createBooking(String hotelCode, String roomNr, RoomBookingData bookingData) {
+		Room room = getHotelByCode(hotelCode).getRoombyNr(roomNr);
+		room.reserve(room.getType(), bookingData.getArrival(), bookingData.getDeparture());
 	}
 	
 	
@@ -52,6 +68,21 @@ public class HotelInterface {
 			return null;
 		}
 	}
+	
+	
+	@Atomic(mode = TxMode.READ)
+	public static RoomData getRoomDataByNr(String hotelCode, String roomNr, RoomData.CopyDepth depth) {
+		Hotel hotel = getHotelByCode(hotelCode);
+
+		if (hotel != null) {
+			Room room = hotel.getRoombyNr(roomNr);
+			if (room != null) {
+				return new RoomData(hotel, room, depth);
+			}
+			else { return null; }
+		} else { return null; }
+	}
+	
 	
 	@Atomic(mode = TxMode.WRITE)
 	public static String reserveRoom(Room.Type type, LocalDate arrival, LocalDate departure) {
