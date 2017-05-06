@@ -53,14 +53,11 @@ public class BookingController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String submitRoom(Model model, @PathVariable String hotelCode, @PathVariable String roomNr, @ModelAttribute RoomBookingData bookingData) {
-		logger.info("cenas");
 		logger.info("submitRoom arrival:{}, departure:{}", bookingData.getArrival() , bookingData.getDeparture());
 	
 		try {
-			logger.info("fez cenas 2");
 			HotelInterface.createBooking(hotelCode, roomNr, bookingData);
 		} catch (HotelException he) {
-			logger.info("deu erro");
 			model.addAttribute("error", "Error: it was not possible to reserve the room");
 			model.addAttribute("booking", bookingData);
 			model.addAttribute("room", HotelInterface.getRoomDataByNr(hotelCode, roomNr, RoomData.CopyDepth.BOOKINGS));
