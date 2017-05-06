@@ -5,6 +5,7 @@ import java.util.List;
 
 import pt.ulisboa.tecnico.softeng.bank.domain.Bank;
 import pt.ulisboa.tecnico.softeng.bank.domain.Client;
+import pt.ulisboa.tecnico.softeng.bank.domain.Operation;
 
 public class BankData {
 	public static enum CopyDepth {
@@ -15,15 +16,7 @@ public class BankData {
 	private String name;
 	
 	private List<ClientData> clients = new ArrayList<ClientData>();
-	//TODO private List<BankOperationData> operations = new ArrayList<BankOperationData>();
-	
-	public List<ClientData> getClients() {
-		return clients;
-	}
-
-	public void setClients(List<ClientData> clients) {
-		this.clients = clients;
-	}
+	private List<BankOperationData> operations = new ArrayList<BankOperationData>();
 
 	public BankData() {
 	}
@@ -38,12 +31,11 @@ public class BankData {
 				this.clients.add(new ClientData(client, ClientData.CopyDepth.SHALLOW));
 			}
 			break;
-//		TODO
-//		case OPERATIONS:
-//			for (Operation operation : bank.getOperationSet()) {
-//				this.operations.add(new BankOperationData(operation));
-//			}
-//			break;
+		case OPERATIONS:
+			for (Operation operation : bank.getOperationSet()) {
+				this.operations.add(new BankOperationData(operation));
+			}
+			break;
 		case SHALLOW:
 			break;
 		default:
@@ -65,5 +57,21 @@ public class BankData {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+	
+	public List<ClientData> getClients() {
+		return clients;
+	}
+
+	public void setClients(List<ClientData> clients) {
+		this.clients = clients;
+	}
+
+	public List<BankOperationData> getOperations() {
+		return operations;
+	}
+
+	public void setOperations(List<BankOperationData> operations) {
+		this.operations = operations;
 	}
 }
