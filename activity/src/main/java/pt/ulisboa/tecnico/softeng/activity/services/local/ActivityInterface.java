@@ -1,5 +1,6 @@
 package pt.ulisboa.tecnico.softeng.activity.services.local;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -12,6 +13,8 @@ import pt.ulisboa.tecnico.softeng.activity.domain.ActivityOffer;
 import pt.ulisboa.tecnico.softeng.activity.domain.ActivityProvider;
 import pt.ulisboa.tecnico.softeng.activity.domain.Booking;
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
+import pt.ulisboa.tecnico.softeng.activity.services.local.dataobjects.ActivityProviderData;
+import pt.ulisboa.tecnico.softeng.activity.services.local.dataobjects.ActivityProviderData.CopyDepth;
 import pt.ulisboa.tecnico.softeng.activity.services.local.dataobjects.ActivityReservationData;
 
 public class ActivityInterface {
@@ -61,5 +64,19 @@ public class ActivityInterface {
 		}
 		return null;
 	}
+	@Atomic(mode = TxMode.READ)
+	 public static List<ActivityProviderData> getActivityProviders() {
+	 		List<ActivityProviderData> aps = new ArrayList<>();
+	 		for (ActivityProvider ap : FenixFramework.getDomainRoot().getActivityProviderSet()) {
+	 			aps.add(new ActivityProviderData(ap, CopyDepth.SHALLOW));
+	 		}
+	 		return aps;
+	 	}
+	 	
+	 	@Atomic(mode = TxMode.WRITE)
+	 	public static void createActivityProvider(ActivityProviderData ActivityProviderData) {
+	 		new ActivityProvider(ActivityProviderData.getCode(), ActivityProviderData.getName());
+	 	}
+	 	
 
 }
