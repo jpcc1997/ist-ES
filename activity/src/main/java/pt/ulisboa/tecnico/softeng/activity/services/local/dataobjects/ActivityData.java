@@ -34,7 +34,7 @@ public class ActivityData {
 		switch (depth) {
 		case ACTIVITYOFFERS:
 			for (ActivityOffer activityOffer : activity.getActivityOfferSet()) {
-				this.activityOffers.add(new ActivityOfferData(activityOffer, ActivityOfferData.CopyDepth.SHALLOW));
+				this.activityOffers.add(new ActivityOfferData(activityOffer, ActivityOfferData.CopyDepth.BOOKINGS));
 			}
 			break;
 		case SHALLOW:
