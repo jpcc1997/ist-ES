@@ -126,6 +126,11 @@ public class BankInterface {
 	public static void deposit(String bankCode, String clientID, String iban, int value) {
 		getAccountByIBAN(iban, clientID, bankCode).deposit(value);
 	}
+	
+	@Atomic(mode = TxMode.WRITE)
+	public static void withdraw(String bankCode, String clientID, String iban, int value) {
+		getAccountByIBAN(iban, clientID, bankCode).withdraw(value);
+	}
 
 	private static Operation getOperationByReference(String reference) {
 		for (Bank bank : FenixFramework.getDomainRoot().getBankSet()) {
