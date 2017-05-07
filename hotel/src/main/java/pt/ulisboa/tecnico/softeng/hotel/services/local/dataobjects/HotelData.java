@@ -24,7 +24,7 @@ public class HotelData {
 		switch (depth) {
 		case ROOMS:
 			for (Room room : hotel.getRoomSet()) {
-				this.rooms.add(new RoomData(hotel, room, RoomData.CopyDepth.SHALLOW));
+				this.rooms.add(new RoomData(room, RoomData.CopyDepth.SHALLOW));
 			}
 			break;
 		case SHALLOW:

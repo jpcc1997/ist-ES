@@ -35,7 +35,7 @@ public class HotelInterface {
 		List<RoomData> rooms = new ArrayList<>();
 		Hotel hotel = getHotelByCode(hotelCode);
 		for (Room room : hotel.getRoomSet()) {
-			rooms.add(new RoomData(hotel, room ,RoomData.CopyDepth.SHALLOW));
+			rooms.add(new RoomData(room ,RoomData.CopyDepth.SHALLOW));
 		}
 		return rooms;
 	}
@@ -77,7 +77,7 @@ public class HotelInterface {
 		if (hotel != null) {
 			Room room = hotel.getRoombyNr(roomNr);
 			if (room != null) {
-				return new RoomData(hotel, room, depth);
+				return new RoomData(room, depth);
 			}
 			else { return null; }
 		} else { return null; }
