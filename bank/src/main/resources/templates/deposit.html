@@ -20,7 +20,7 @@
 		<h3>Deposit</h3>
 		<p class="text-danger" th:text="${error}">Error</p>
 		<form class="form-inline" th:action="@{/banks/{bcode}/clients/{cid}/accounts/{iban}/deposit(bcode=${bank.code},cid=${client.ID}, iban=${account.IBAN})}" th:object="${operation}" method="post">
-	 		<label>Value: </label> <input class="form-control" type="number" th:field="*{value}" /> 
+	 		<label>Value: </label> <input class="form-control" type="number" min="1" th:field="*{value}" required="required" /> 
 			<input class="btn btn-primary" type="submit" value="Submit" />
 		</form>
 		<br/>
