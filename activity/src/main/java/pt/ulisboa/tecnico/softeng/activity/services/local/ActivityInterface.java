@@ -13,6 +13,7 @@ import pt.ulisboa.tecnico.softeng.activity.domain.ActivityOffer;
 import pt.ulisboa.tecnico.softeng.activity.domain.ActivityProvider;
 import pt.ulisboa.tecnico.softeng.activity.domain.Booking;
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
+import pt.ulisboa.tecnico.softeng.activity.services.local.dataobjects.ActivityData;
 import pt.ulisboa.tecnico.softeng.activity.services.local.dataobjects.ActivityProviderData;
 import pt.ulisboa.tecnico.softeng.activity.services.local.dataobjects.ActivityProviderData.CopyDepth;
 import pt.ulisboa.tecnico.softeng.activity.services.local.dataobjects.ActivityReservationData;
@@ -64,6 +65,7 @@ public class ActivityInterface {
 		}
 		return null;
 	}
+	
 	@Atomic(mode = TxMode.READ)
 	 public static List<ActivityProviderData> getActivityProviders() {
 	 		List<ActivityProviderData> aps = new ArrayList<>();
@@ -73,10 +75,36 @@ public class ActivityInterface {
 	 		return aps;
 	 	}
 	 	
-	 	@Atomic(mode = TxMode.WRITE)
-	 	public static void createActivityProvider(ActivityProviderData ActivityProviderData) {
-	 		new ActivityProvider(ActivityProviderData.getCode(), ActivityProviderData.getName());
-	 	}
-	 	
-
+ 	@Atomic(mode = TxMode.WRITE)
+ 	public static void createActivityProvider(ActivityProviderData ActivityProviderData) {
+ 		new ActivityProvider(ActivityProviderData.getCode(), ActivityProviderData.getName());
+ 	}
+ 	
+ 	@Atomic(mode = TxMode.READ)
+ 	public static ActivityProviderData getActivityProviderDataByCode(String activityProviderCode, CopyDepth depth) {
+ 		ActivityProvider activityProvider = getActivityProviderDataByCode(activityProviderCode);
+ 	 
+ 	 	if (activityProviderCode != null) {
+ 	 		return new ActivityProviderData(activityProvider, depth);
+ 	 	} 
+ 	 	else {
+ 	 		return null;
+ 	 	}
+ 	}
+ 	
+ 	private static ActivityProvider getActivityProviderDataByCode(String code) {
+ 		for (ActivityProvider activityProvider : FenixFramework.getDomainRoot().getActivityProviderSet()) {
+ 			if (activityProvider.getCode().equals(code)) {
+ 				return activityProvider;
+ 			}
+ 		}
+ 		return null;
+ 	}
+ 	
+ 	@Atomic(mode = TxMode.WRITE)
+ 	public static void createActivity(String activityProviderCode, ActivityData activityData) {
+ 	 	new Activity(getActivityProviderDataByCode(activityProviderCode), activityData.getName(), activityData.getMinAge(), 
+ 	 			activityData.getMaxAge(), activityData.getCapacity());
+ 	}	
+ 	
 }

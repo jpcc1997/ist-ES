@@ -13,7 +13,7 @@ public class ActivityProviderData {
 	};
 	private String code;
 	private String name;
-	//private List<ActivityData> activities = new ArrayList<ActivityData>();
+	private List<ActivityData> activities = new ArrayList<ActivityData>();
 	public ActivityProviderData() {
 	}
 
@@ -24,13 +24,11 @@ public class ActivityProviderData {
 		
 		
 		switch (depth) {
-		// TODO Implement ActivityData dataobject class
-		/*case ACTIVITIES:
+		case ACTIVITIES:
 			for (Activity activity : ap.getActivitySet()) {
-				this.activities.add(new ActivityData(activity));
+				this.activities.add(new ActivityData(ap, activity, ActivityData.CopyDepth.SHALLOW));
 			}
 			break;
-		*/
 		case SHALLOW:
 			break;
 		default:
@@ -54,12 +52,12 @@ public class ActivityProviderData {
 		this.code = code;
 	}
 
-	// TODO Implement ActivityData dataobject class
-	/*public List<ActivityData> getActivities() {
+	
+	public List<ActivityData> getActivities() {
 		return this.activities;
 	}
 	
 	public void setActivities(List<ActivityData> activities) {
 		this.activities = activities;
-	}*/
+	}
 }

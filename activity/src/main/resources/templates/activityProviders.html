@@ -35,7 +35,7 @@
 				<tr th:each="activityProvider: ${activityProviders}">
 					<td th:text="${activityProvider.code}">Code</td>
 					<td th:text="${activityProvider.name}">Name</td>
-					<td><a th:href="@{/activityProvider/{code}/activities(code=${activityProvider.code})}">Link</a></td>
+					<td><a th:href="@{/activityProviders/{code}/activities(code=${activityProvider.code})}">Link</a></td>
 				</tr>
 			</tbody>
 		</table>
