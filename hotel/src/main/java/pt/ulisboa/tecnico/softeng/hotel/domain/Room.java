@@ -36,6 +36,12 @@ public class Room extends Room_Base {
 		if (!number.matches("\\d*")) {
 			throw new HotelException();
 		}
+		
+		for (Room room : hotel.getRoomSet()) {
+			if (room.getNumber()==number) {
+				throw new HotelException();
+			}
+		}
 	}
 
 	boolean isFree(Type type, LocalDate arrival, LocalDate departure) {

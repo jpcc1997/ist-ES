@@ -103,5 +103,14 @@ public class Hotel extends Hotel_Base {
 		}
 		return null;
 	}
+	
+	public Room getRoombyNr(String number) {
+		for (Room room : getRoomSet()) {
+			if (room.getNumber().equals(number)) {
+				return room;
+			}
+		}
+		return null;
+	}
 
 }
