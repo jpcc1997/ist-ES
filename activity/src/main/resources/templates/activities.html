@@ -18,10 +18,10 @@
 		<h3>Create Activity</h3>
 		<p class="text-danger" th:text="${error}">Error</p>
 		<form class="form-inline" th:action="@{/activityProviders/{code}/activities(code=${activityProvider.code})}" th:object="${activity}" method="post">
-			<label>Name: </label> <input class="form-control" type="text" th:field="*{name}" />  
-			<label>MinAge: </label> <input class="form-control" type="number" th:field="*{minAge}" />
-			<label>MaxAge: </label> <input class="form-control" type="number" th:field="*{maxAge}" /> 
-			<label>Capacity: </label> <input class="form-control" type="number" th:field="*{capacity}" />
+			<label>Name: </label> <input class="form-control" type="text" th:field="*{name}" required="required"/>  
+			<label>MinAge: </label> <input class="form-control" type="number" th:field="*{minAge}" required="required"/>
+			<label>MaxAge: </label> <input class="form-control" type="number" th:field="*{maxAge}" required="required"/> 
+			<label>Capacity: </label> <input class="form-control" type="number" th:field="*{capacity}" required="required" min="1"/>
 			<input class="btn btn-primary" type="submit" value="Submit" />
 		</form>
 		<br/>
