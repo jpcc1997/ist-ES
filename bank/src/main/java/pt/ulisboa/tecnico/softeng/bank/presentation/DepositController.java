@@ -53,6 +53,7 @@ public class DepositController {
 			BankInterface.deposit(bankCode, clientID, iban, operationData.getValue());
 		} catch (BankException be) {
 			model.addAttribute("error", "Error: could not deposit specified ammount");
+			model.addAttribute("operation", new BankOperationData());
 			model.addAttribute("account", BankInterface.getAccountDataByIBAN(iban, clientID, bankCode));
 			model.addAttribute("bank", BankInterface.getBankDataByCode(bankCode, BankData.CopyDepth.CLIENTS));
 			model.addAttribute("client", BankInterface.getClientDataByID(clientID, bankCode, ClientData.CopyDepth.ACCOUNTS));
