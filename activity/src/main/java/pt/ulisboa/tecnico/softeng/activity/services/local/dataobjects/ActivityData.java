@@ -1,9 +1,10 @@
 package pt.ulisboa.tecnico.softeng.activity.services.local.dataobjects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import pt.ulisboa.tecnico.softeng.activity.domain.Activity;
 import pt.ulisboa.tecnico.softeng.activity.domain.ActivityOffer;
-import pt.ulisboa.tecnico.softeng.activity.domain.ActivityProvider;
-
 
 public class ActivityData {
 	
@@ -11,20 +12,18 @@ public class ActivityData {
 		SHALLOW, ACTIVITYOFFERS
 	};
 	
-	private ActivityProvider activityProvider;
 	private String code;
 	private String name;
 	private int minAge;
 	private int maxAge;
 	private int capacity;
 	
-	//TODO private List<ActivityOfferData> activityOffers = new ArrayList<ActivityOfferData>();
+	private List<ActivityOfferData> activityOffers = new ArrayList<ActivityOfferData>();
 
 	public ActivityData() {
 	}
 
-	public ActivityData(ActivityProvider provider, Activity activity, CopyDepth depth) {
-		this.setActivityProvider(activity.getActivityProvider());
+	public ActivityData(Activity activity, CopyDepth depth) {
 		this.setCode(activity.getCode());
 		this.setName(activity.getName());
 		this.setCode(activity.getCode());
@@ -33,24 +32,16 @@ public class ActivityData {
 		this.setCapacity(activity.getCapacity());
 		
 		switch (depth) {
-		/*TODO case ACTIVITYOFFERS:
+		case ACTIVITYOFFERS:
 			for (ActivityOffer activityOffer : activity.getActivityOfferSet()) {
-				this.activityOffers.add(new ActivityOfferData(activity, activityOffer, ActivityOfferData.CopyDepth.SHALLOW));
+				this.activityOffers.add(new ActivityOfferData(activityOffer, ActivityOfferData.CopyDepth.SHALLOW));
 			}
-			break;*/
+			break;
 		case SHALLOW:
 			break;
 		default:
 			break;
 		}
-	}
-
-	public ActivityProvider getActivityProvider() {
-		return activityProvider;
-	}
-
-	public void setActivityProvider(ActivityProvider activityProvider) {
-		this.activityProvider = activityProvider;
 	}
 
 	public String getCode() {
@@ -93,14 +84,13 @@ public class ActivityData {
 		this.capacity = capacity;
 	}
 	
-	// TODO Implement ActivityOffer dataobject class
-		/*public List<ActivityOffer> getActivityOffers() {
-			return activityOffers;
-		}
-		
-		public void setActivityOffers(List<ActivityOffer> activityOffers) {
-			this.activityOffers = activityOffers;
-		}*/
+	public List<ActivityOfferData> getActivityOffers() {
+		return activityOffers;
+	}
+	
+	public void setActivityOffers(List<ActivityOfferData> activityOffers) {
+		this.activityOffers = activityOffers;
+	}
 
 	
 }

@@ -14,6 +14,7 @@ import pt.ulisboa.tecnico.softeng.activity.domain.ActivityProvider;
 import pt.ulisboa.tecnico.softeng.activity.domain.Booking;
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
 import pt.ulisboa.tecnico.softeng.activity.services.local.dataobjects.ActivityData;
+import pt.ulisboa.tecnico.softeng.activity.services.local.dataobjects.ActivityOfferData;
 import pt.ulisboa.tecnico.softeng.activity.services.local.dataobjects.ActivityProviderData;
 import pt.ulisboa.tecnico.softeng.activity.services.local.dataobjects.ActivityProviderData.CopyDepth;
 import pt.ulisboa.tecnico.softeng.activity.services.local.dataobjects.ActivityReservationData;
@@ -82,9 +83,9 @@ public class ActivityInterface {
  	
  	@Atomic(mode = TxMode.READ)
  	public static ActivityProviderData getActivityProviderDataByCode(String activityProviderCode, CopyDepth depth) {
- 		ActivityProvider activityProvider = getActivityProviderDataByCode(activityProviderCode);
+ 		ActivityProvider activityProvider = getActivityProviderByCode(activityProviderCode);
  	 
- 	 	if (activityProviderCode != null) {
+ 	 	if (activityProvider != null) {
  	 		return new ActivityProviderData(activityProvider, depth);
  	 	} 
  	 	else {
@@ -92,7 +93,7 @@ public class ActivityInterface {
  	 	}
  	}
  	
- 	private static ActivityProvider getActivityProviderDataByCode(String code) {
+ 	private static ActivityProvider getActivityProviderByCode(String code) {
  		for (ActivityProvider activityProvider : FenixFramework.getDomainRoot().getActivityProviderSet()) {
  			if (activityProvider.getCode().equals(code)) {
  				return activityProvider;
@@ -103,8 +104,36 @@ public class ActivityInterface {
  	
  	@Atomic(mode = TxMode.WRITE)
  	public static void createActivity(String activityProviderCode, ActivityData activityData) {
- 	 	new Activity(getActivityProviderDataByCode(activityProviderCode), activityData.getName(), activityData.getMinAge(), 
+ 	 	new Activity(getActivityProviderByCode(activityProviderCode), activityData.getName(), activityData.getMinAge(), 
  	 			activityData.getMaxAge(), activityData.getCapacity());
- 	}	
+ 	}
+ 	
+ 	@Atomic(mode = TxMode.READ)
+ 	public static ActivityData getActivityDataByCode(String activityCode, String activityProviderCode, ActivityData.CopyDepth depth) {
+ 		Activity activity = getActivityByCode(activityCode, activityProviderCode);
+ 	 
+ 	 	if (activity != null) {
+ 	 		return new ActivityData(activity, depth);
+ 	 	} 
+ 	 	else {
+ 	 		return null;
+ 	 	}
+ 	}
+ 	
+ 	@Atomic(mode = TxMode.WRITE)
+ 	public static void createActivityOffer(String activityProviderCode, String activityCode, ActivityOfferData activityOfferData) {
+ 	 	new ActivityOffer(getActivityByCode(activityCode, activityProviderCode), activityOfferData.getBegin(), activityOfferData.getEnd());
+ 	}
+
+	private static Activity getActivityByCode(String activityCode, String activityProviderCode) {
+		ActivityProvider activityProvider = getActivityProviderByCode(activityProviderCode);
+		
+		for (Activity activity : activityProvider.getActivitySet()) {
+ 			if (activity.getCode().equals(activityCode)) {
+ 				return activity;
+ 			}
+ 		}
+ 		return null;
+	}
  	
 }
