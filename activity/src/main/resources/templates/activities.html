@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Activity Provider's Manager Welcome</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>
+			Welcome to ActivityProvider <span th:text="${activityProvider.name}">Name</span> Activities
+		</h2>
+		<a class="btn btn-default pull-right" th:href="@{/activityProviders}">activityProviders</a>
+		<br/>
+		<h3>Create Activity</h3>
+		<p class="text-danger" th:text="${error}">Error</p>
+		<form class="form-inline" th:action="@{/activityProviders/{code}/activities(code=${activityProvider.code})}" th:object="${activity}" method="post">
+			<label>Name: </label> <input class="form-control" type="text" th:field="*{name}" required="required"/>  
+			<label>MinAge: </label> <input class="form-control" type="number" th:field="*{minAge}" required="required"/>
+			<label>MaxAge: </label> <input class="form-control" type="number" th:field="*{maxAge}" required="required"/> 
+			<label>Capacity: </label> <input class="form-control" type="number" th:field="*{capacity}" required="required" min="1"/>
+			<input class="btn btn-primary" type="submit" value="Submit" />
+		</form>
+		<br/>
+		<h3>Activities</h3>
+ 		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Code</th>
+ 					<th>Name</th>
+					<th>MinAge</th>
+					<th>MaxAge</th>
+					<th>Capacity</th>
+					<th>ActivityOffers</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="activity: ${activityProvider.activities}">
+					<td th:text="${activity.code}">code</td>
+ 					<td th:text="${activity.name}">name</td>
+					<td th:text="${activity.minAge}">minAge</td>
+					<td th:text="${activity.maxAge}">maxAge</td>
+					<td th:text="${activity.capacity}">capacity</td>
+					<td><a th:href="@{/activityProviders/{code}/activities/{codetwo}/activityOffers(code=${activityProvider.code}, codetwo=${activity.code})}">Link</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

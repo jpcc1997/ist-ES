@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Activity Offers Manager</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" />
+
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>
+			Welcome to Activity <span th:text="${activity.name}">Name</span> Offers
+		</h2>
+		<a class="btn btn-default pull-right" th:href="@{/activityProviders/{code}/activities(code=${activityProvider.code})}">Activities</a>
+		<br/>
+		<h3>Create Offer</h3>
+		<p class="text-danger" th:text="${error}">Error</p>
+		<form class="form-inline" th:action="@{/activityProviders/{code}/activities/{codetwo}/activityOffers(code=${activityProvider.code},codetwo=${activity.code})}" th:object="${activityOffer}" method="post">
+	 		<label>Begin: </label> <input class="form-control" type="date" th:field="*{begin}" required="required"/> 
+			<label>End: </label> <input class="form-control" type="date" th:field="*{end}" required="required"/>
+			<input class="btn btn-primary" type="submit" value="Submit" />
+		</form>
+		<br/>
+		<h3>Offers</h3>
+ 		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Capacity</th>
+ 					<th>Begin Date</th>
+ 					<th>End Date</th>
+ 					<th>Booking References</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="activityOffer: ${activity.activityOffers}">
+					<td th:text="${activityOffer.capacity}">capacity</td>
+					<td th:text="${activityOffer.begin}">begin</td>
+					<td th:text="${activityOffer.end}">end</td>
+					<td><p th:each="booking: ${activityOffer.bookings}"><span th:text="${booking.reference}">reference</span></p></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
