@@ -11,6 +11,7 @@ import pt.ulisboa.tecnico.softeng.bank.domain.Bank;
 import pt.ulisboa.tecnico.softeng.bank.domain.Client;
 import pt.ulisboa.tecnico.softeng.bank.domain.Operation;
 import pt.ulisboa.tecnico.softeng.bank.exception.BankException;
+import pt.ulisboa.tecnico.softeng.bank.services.local.dataobjects.AccountData;
 import pt.ulisboa.tecnico.softeng.bank.services.local.dataobjects.BankData;
 import pt.ulisboa.tecnico.softeng.bank.services.local.dataobjects.BankOperationData;
 import pt.ulisboa.tecnico.softeng.bank.services.local.dataobjects.ClientData;
@@ -73,7 +74,26 @@ public class BankInterface {
 		new Account(getBankByCode(bankCode),getClientByID(clientID, bankCode));
 	}
 	
+	@Atomic(mode = TxMode.READ)
+	public static AccountData getAccountDataByIBAN(String iban, String clientID, String bankCode) {
+		Account account = getAccountByIBAN(iban, clientID, bankCode);
+
+		if (account != null) {
+			return new AccountData(account);
+		} else {
+			return null;
+		}
+	}
 	
+	@Atomic(mode = TxMode.READ)
+	public static List<AccountData> getAccounts(String clientID, String bankCode) {
+		List<AccountData> accounts = new ArrayList<>();
+		for (Account account : getClientByID(clientID, bankCode).getAccountSet()) {
+			accounts.add(new AccountData(account));
+		}
+		return accounts;
+	}
+
 	@Atomic(mode = TxMode.WRITE)
 	public static String processPayment(String IBAN, int amount) {
 		for (Bank bank : FenixFramework.getDomainRoot().getBankSet()) {
@@ -101,6 +121,11 @@ public class BankInterface {
 		}
 		throw new BankException();
 	}
+	
+	@Atomic(mode = TxMode.WRITE)
+	public static void deposit(String bankCode, String clientID, String iban, int value) {
+		getAccountByIBAN(iban, clientID, bankCode).deposit(value);
+	}
 
 	private static Operation getOperationByReference(String reference) {
 		for (Bank bank : FenixFramework.getDomainRoot().getBankSet()) {
@@ -125,6 +150,15 @@ public class BankInterface {
 		for (Client client : getBankByCode(code).getClientSet()) {
 			if (client.getID().equals(ID)) {
 				return client;
+			}
+		}
+		return null;
+	}
+	
+	private static Account getAccountByIBAN(String iban, String clientID, String bankCode) {
+		for (Account account : getClientByID(clientID, bankCode).getAccountSet()) {
+			if (account.getIBAN().equals(iban)) {
+				return account;
 			}
 		}
 		return null;
