@@ -15,7 +15,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="projectHome" elementType="Argument">
             <stringProp name="Argument.name">projectHome</stringProp>
-            <stringProp name="Argument.value">/home/pedro/Desktop/ESdavid/es17al_20-project/</stringProp>
+            <stringProp name="Argument.value">/home/david/es17al_20-project/</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="brokerServer" elementType="Argument">
@@ -191,130 +191,6 @@
         </HTTPSamplerProxy>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Create Client" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">10</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1495279802000</longProp>
-        <longProp name="ThreadGroup.end_time">1495279802000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Define Client Data" enabled="true">
-          <stringProp name="filename">${projectHome}/jmeter/data/client.txt</stringProp>
-          <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="variableNames">bankCode,clientName</stringProp>
-          <boolProp name="ignoreFirstLine">false</boolProp>
-          <stringProp name="delimiter">,</stringProp>
-          <boolProp name="quotedData">false</boolProp>
-          <boolProp name="recycle">true</boolProp>
-          <boolProp name="stopThread">false</boolProp>
-          <stringProp name="shareMode">shareMode.all</stringProp>
-        </CSVDataSet>
-        <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Create Clients" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="bank" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">${bankCode}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">bank</stringProp>
-              </elementProp>
-              <elementProp name="name" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">${clientName}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">name</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain">${brokerServer}</stringProp>
-          <stringProp name="HTTPSampler.port">${bankPort}</stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/banks/${bankCode}/clients</stringProp>
-          <stringProp name="HTTPSampler.method">GET</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-        </HTTPSamplerProxy>
-        <hashTree/>
-      </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Create Account" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">10</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1495281951000</longProp>
-        <longProp name="ThreadGroup.end_time">1495281951000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </ThreadGroup>
-      <hashTree>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Define Account Data" enabled="true">
-          <stringProp name="filename">${projectHome}/jmeter/data/account.txt</stringProp>
-          <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="variableNames">bankCode,clientName</stringProp>
-          <boolProp name="ignoreFirstLine">false</boolProp>
-          <stringProp name="delimiter">,</stringProp>
-          <boolProp name="quotedData">false</boolProp>
-          <boolProp name="recycle">true</boolProp>
-          <boolProp name="stopThread">false</boolProp>
-          <stringProp name="shareMode">shareMode.all</stringProp>
-        </CSVDataSet>
-        <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Create Accounts" enabled="true">
-          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="bank" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">${bankCode}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">bank</stringProp>
-              </elementProp>
-              <elementProp name="client" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">${clientName}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">client</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="HTTPSampler.domain">${brokerServer}</stringProp>
-          <stringProp name="HTTPSampler.port">${bankPort}</stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/banks/${bankCode}/clients/${clientName}/accounts</stringProp>
-          <stringProp name="HTTPSampler.method">POST</stringProp>
-          <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-          <stringProp name="HTTPSampler.response_timeout"></stringProp>
-        </HTTPSamplerProxy>
-        <hashTree/>
-      </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Process Adventure" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
@@ -345,7 +221,7 @@
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Define Client Data" enabled="true">
           <stringProp name="filename">${projectHome}/jmeter/data/client.txt</stringProp>
           <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="variableNames">bankCode,clientName</stringProp>
+          <stringProp name="variableNames">bankCode</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
           <stringProp name="delimiter">,</stringProp>
           <boolProp name="quotedData">false</boolProp>
@@ -355,9 +231,9 @@
         </CSVDataSet>
         <hashTree/>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Define Account Data" enabled="true">
-          <stringProp name="filename">${projectHome}/jmeter/data/client.txt</stringProp>
+          <stringProp name="filename">${projectHome}/jmeter/data/account.txt</stringProp>
           <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="variableNames">bankCode,clientName</stringProp>
+          <stringProp name="variableNames">bankCode,clientId</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
           <stringProp name="delimiter">,</stringProp>
           <boolProp name="quotedData">false</boolProp>
@@ -491,7 +367,7 @@
             <stringProp name="HTTPSampler.port">${bankPort}</stringProp>
             <stringProp name="HTTPSampler.protocol"></stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/banks/${bankCode}/clients/${clientName}/accounts</stringProp>
+            <stringProp name="HTTPSampler.path">/banks/${bankCode}/clients/${clientId}/accounts</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -559,7 +435,7 @@
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
           </HTTPSamplerProxy>
           <hashTree/>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Read Acitivty" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Read Actitivty" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
@@ -583,7 +459,7 @@
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
             <stringProp name="HTTPSampler.domain">${brokerServer}</stringProp>
-            <stringProp name="HTTPSampler.port">&amp;{activityPort}</stringProp>
+            <stringProp name="HTTPSampler.port">${activityPort}</stringProp>
             <stringProp name="HTTPSampler.protocol"></stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
             <stringProp name="HTTPSampler.path">/providers/${providerCode}/activities/${activityCode}/offers</stringProp>
