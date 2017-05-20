@@ -178,4 +178,11 @@ public class BankInterface {
 		return account;
 	}
 
+	
+	@Atomic(mode = TxMode.WRITE)
+	public static void deleteBanks() {
+		for (Bank bank : FenixFramework.getDomainRoot().getBankSet()) {
+			bank.delete();
+		}
+	}
 }
