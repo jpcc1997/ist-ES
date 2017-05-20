@@ -1,10 +1,1 @@
-B121,João
-B121,Ana
-B121,Daniel
-B121,Pedro
-B121,Miguel
-B121,Renda
-B121,Manuel
-B121,Galamba
-B121,Orvalho
-B121,Oeiras
+BK12,1
