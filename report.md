@@ -5,8 +5,13 @@
 - Os testes de 30 Writes e 100 Writes foram feitos com o objetivo final de ter 100 Adventures no estado Confirmed.
 - Escolhemos analisar os resultados com base nos valores de latência e do throughput por serem os parâmetros mais representativos do impacto da politica otimista da FenixFramework nas chamadas aos serviços remotos.
 - Não executámos os testes com 2000 utilizadores porque a carga na memória era demasiado elevada e os resultados que obtivémos com 100 utilizadores foram suficientes para a nossa análise.
+- Considerámos que Sample Time = Latência + Processing Time
+- Google Docs com todos os resultados da análise (gráficos e tabelas): [Link][excel_docs]
+
+[excel_docs]: https://docs.google.com/spreadsheets/d/1Tj_yJG4dggk3l8PDhk1ShXtQ7RpXYbAV8tZyG9x9ZhA/edit?usp=sharing
 
 <h2>100 Reads</h2>
+<p>Este teste evidencia uma situação em que a politica otimista implementada pela FenixFramework produz maior aumento de desempenho, sem grandes consequências negativas ao nivel da latência.</p>
 <h3>Sequência de operações deste teste:</h3>
 
 1. Read Brokers
@@ -23,12 +28,23 @@
 <h3>Throughput</h3>
 
 <h4>Conclusões sobre o throughput</h4>
-
+<p>
+Podemos concluir que aumentando o número de utilizadores conseguimos aumentar significativamente o desempenho (throughput) do sistema sem prejudicar de forma significativa a latência.
+</p>
 
 <h3>Latência</h3>
 
-<h4>Conclusões sobre a latência</h4>
 
+<h4>Conclusões sobre a latência</h4>
+<p>
+Podemos observar que, para a maioria das operações, os valores da latência não são muito influenciados pelo aumento de utilizadores, visto que não ocorrem conflictos nas operações de READ e não é necessário abortar/reiniciar transações.
+</p>
+<p>
+Comparando o Sample Time com a Latency verificámos que estes tempos são muito semelhantes para cada operação nas mesmas condições de teste: isto indica-nos que o tempo de processamento das instruções é muito baixo (Sample Time = Latency + Processing Time), o que corresponde ao que seria de esperar numa operação de READ.
+</p>
+
+<h3>Erros</h3>
+<p>Como neste teste só são executadas operações de READ, não existem conflitos nas transações de cada utilizador, logo, a taxa de erros para cada operação é de 0%.</p>
 
 
 <h2>30 Writes</h2>
