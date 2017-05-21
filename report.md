@@ -26,6 +26,8 @@
 10. Read Offers
 
 <h3>Throughput</h3>
+<h4>Gráfico dos resultados</h4>
+<img src="/images/100reads_throughput.png" height="350" width="650"/>
 
 <h4>Conclusões sobre o throughput</h4>
 <p>
@@ -37,7 +39,7 @@ Podemos concluir que aumentando o número de utilizadores conseguimos aumentar s
 
 <h4>Conclusões sobre a latência</h4>
 <p>
-Podemos observar que, para a maioria das operações, os valores da latência não são muito influenciados pelo aumento de utilizadores, visto que não ocorrem conflictos nas operações de READ e não é necessário abortar/reiniciar transações.
+Observámos que para a maioria das operações os valores da latência não são muito influenciados pelo aumento de utilizadores, visto que não ocorrem conflictos nas operações de READ e não é necessário abortar/reiniciar transações.
 </p>
 <p>
 Comparando o Sample Time com a Latency verificámos que estes tempos são muito semelhantes para cada operação nas mesmas condições de teste: isto indica-nos que o tempo de processamento das instruções é muito baixo (Sample Time = Latency + Processing Time), o que corresponde ao que seria de esperar numa operação de READ.
