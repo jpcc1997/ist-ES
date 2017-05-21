@@ -88,12 +88,29 @@ Comparando o Sample Time com a Latency verificámos que estes tempos são muito 
 <img src="/images/100writes_throughput.png" height="300" width="500"/>
 
 <h4>Conclusões sobre o throughput</h4>
+<p>Observámos que o throughput aumenta naturalmente com a 
+diminuição do número de utilizadores, visto que se reduz o número de conflitos 
+entre as operações de escrita concorrentes e consequentes restarts.</p>
 
+<p>Adicionalmente, verificámos também que com 10 e 4 utilizadores o throughput
+atingiu os valores mais elevados. Julgamos que isto se deva à distribuição do
+processamento pelos cores do processador, visto que utilizámos para os testes um
+computador com 4 cores.</p>
 
 <h3>Latência</h3>
 <h4>Gráfico dos resultados</h4>
 <img src="/images/100writes_latency.png" height="300" width="500"/>
 
 <h4>Conclusões sobre a latência</h4>
+<p>De acordo com a política otimista da Fénix Framework, quando se faz uma
+escrita na base de dados esta é iniciada imediatamente e apenas no final é
+feito um teste de validação. Quando este teste falha, a operação de escrita é
+reiniciada. </p>
 
+<p>
+Consequentemente, com muitos utilizadores, e respetivas escritas
+concorrentes, é expectável que existam mais falhas nos testes de validação, o
+que obriga a vários recomeços de transações. Isto traduz-se no aumento da
+latência quando aumenta o número de utilizadores como se pode observar
+facilmente no gráfico acima.</p>
 
