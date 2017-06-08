@@ -24,7 +24,7 @@ public class Application implements InitializingBean {
 		if (hotel == null) {
 			hotel = new Hotel("HT12345", "XPTO");
 
-			for (int i = 0; i < 10000; i++) {
+			for (int i = 0; i < 500; i++) {
 				new Room(hotel, Integer.toString(i), Type.SINGLE);
 			}
 		}
