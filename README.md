@@ -1,5 +1,13 @@
 # Adventure Builder
 
+IST
+
+LEIC-A
+
+Engenharia de Software - 3º ano 2016-2017
+
+Nota: 19/20
+
 To run tests execute: mvn clean install
 
 To launch a server execute in the module's top directory: mvn clean spring-boot:run
