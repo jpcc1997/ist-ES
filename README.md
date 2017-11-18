@@ -1,10 +1,10 @@
 # Adventure Builder
 
-IST
+[IST](https://tecnico.ulisboa.pt/pt/) 
 
-LEIC-A
+[LEIC-A](https://fenix.tecnico.ulisboa.pt/cursos/leic-a/descricao)
 
-Engenharia de Software - 3º ano 2016-2017
+[Engenharia de Software](https://fenix.tecnico.ulisboa.pt/disciplinas/ESof9645111326/2016-2017/2-semestre) - 3º ano 2016-2017
 
 Nota: 19/20
 
