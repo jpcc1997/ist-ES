@@ -1,34 +1,34 @@
 package pt.ulisboa.tecnico.softeng.bank.domain;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import pt.ist.fenixframework.FenixFramework;
-import pt.ulisboa.tecnico.softeng.bank.dataobjects.BankOperationData;
 import pt.ulisboa.tecnico.softeng.bank.exception.BankException;
 
 public class Bank extends Bank_Base {
 	public static final int CODE_SIZE = 4;
 
-	private final String name;
-	private final String code;
-	private final Set<Account> accounts = new HashSet<>();
-	private final Set<Client> clients = new HashSet<>();
-	private final List<Operation> log = new ArrayList<>();
-
 	public Bank(String name, String code) {
 		checkArguments(name, code);
 
-		this.name = name;
-		this.code = code;
+		setName(name);
+		setCode(code);
 
 		FenixFramework.getDomainRoot().addBank(this);
 	}
 
 	public void delete() {
 		setRoot(null);
+
+		for (Client client : getClientSet()) {
+			client.delete();
+		}
+
+		for (Account account : getAccountSet()) {
+			account.delete();
+		}
+
+		for (Operation operation : getOperationSet()) {
+			operation.delete();
+		}
 
 		deleteDomainObject();
 	}
@@ -49,36 +49,25 @@ public class Bank extends Bank_Base {
 		}
 	}
 
-	String getName() {
-		return this.name;
+	@Override
+	public int getClientCounter() {
+		int counter = super.getClientCounter() + 1;
+		setClientCounter(counter);
+		return counter;
 	}
 
-	String getCode() {
-		return this.code;
+	@Override
+	public int getAccountCounter() {
+		int counter = super.getAccountCounter() + 1;
+		setAccountCounter(counter);
+		return counter;
 	}
 
-	int getNumberOfAccounts() {
-		return this.accounts.size();
-	}
-
-	int getNumberOfClients() {
-		return this.clients.size();
-	}
-
-	void addAccount(Account account) {
-		this.accounts.add(account);
-	}
-
-	boolean hasClient(Client client) {
-		return this.clients.contains(client);
-	}
-
-	void addClient(Client client) {
-		this.clients.add(client);
-	}
-
-	void addLog(Operation operation) {
-		this.log.add(operation);
+	@Override
+	public int getOperationCounter() {
+		int counter = super.getOperationCounter() + 1;
+		setOperationCounter(counter);
+		return counter;
 	}
 
 	public Account getAccount(String IBAN) {
@@ -86,7 +75,7 @@ public class Bank extends Bank_Base {
 			throw new BankException();
 		}
 
-		for (Account account : this.accounts) {
+		for (Account account : getAccountSet()) {
 			if (account.getIBAN().equals(IBAN)) {
 				return account;
 			}
@@ -96,7 +85,7 @@ public class Bank extends Bank_Base {
 	}
 
 	public Operation getOperation(String reference) {
-		for (Operation operation : this.log) {
+		for (Operation operation : getOperationSet()) {
 			if (operation.getReference().equals(reference)) {
 				return operation;
 			}
@@ -104,48 +93,17 @@ public class Bank extends Bank_Base {
 		return null;
 	}
 
-	public static Bank getBankByCode(String code) {
-		for (Bank bank : FenixFramework.getDomainRoot().getBankSet()) {
-			if (bank.getCode().equals(code)) {
-				return bank;
-			}
-		}
-		return null;
-	}
-
-	public static Operation getOperationByReference(String reference) {
-		for (Bank bank : FenixFramework.getDomainRoot().getBankSet()) {
-			Operation operation = bank.getOperation(reference);
-			if (operation != null) {
+	public Operation getOperationbyAdventureId(String adventureId) {
+		for (Operation operation : getOperationSet()) {
+			if (operation.getAdventureId() != null && operation.getAdventureId().equals(adventureId)) {
 				return operation;
 			}
 		}
 		return null;
 	}
 
-	public static String processPayment(String IBAN, int amount) {
-		for (Bank bank : FenixFramework.getDomainRoot().getBankSet()) {
-			if (bank.getAccount(IBAN) != null) {
-				return bank.getAccount(IBAN).withdraw(amount);
-			}
-		}
-		throw new BankException();
-	}
-
-	public static String cancelPayment(String paymentConfirmation) {
-		Operation operation = getOperationByReference(paymentConfirmation);
-		if (operation != null) {
-			return operation.revert();
-		}
-		throw new BankException();
-	}
-
-	public static BankOperationData getOperationData(String reference) {
-		Operation operation = getOperationByReference(reference);
-		if (operation != null) {
-			return new BankOperationData(operation);
-		}
-		throw new BankException();
+	public Client getClientById(String id) {
+		return getClientSet().stream().filter(c -> c.getID().equals(id)).findFirst().orElse(null);
 	}
 
 }

@@ -1,21 +1,19 @@
 package pt.ulisboa.tecnico.softeng.activity.domain;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
 
-public class ActivityConstructorMethodTest {
+public class ActivityConstructorMethodTest extends RollbackTestAbstractClass {
 	private static final String PROVIDER_NAME = "Bush Walking";
 	private static final int MIN_AGE = 25;
 	private static final int MAX_AGE = 50;
 	private static final int CAPACITY = 30;
 	private ActivityProvider provider;
 
-	@Before
-	public void setUp() {
+	@Override
+	public void populate4Test() {
 		this.provider = new ActivityProvider("XtremX", "ExtremeAdventure");
 	}
 
@@ -29,8 +27,8 @@ public class ActivityConstructorMethodTest {
 		Assert.assertEquals(MIN_AGE, activity.getMinAge());
 		Assert.assertEquals(MAX_AGE, activity.getMaxAge());
 		Assert.assertEquals(CAPACITY, activity.getCapacity());
-		Assert.assertEquals(0, activity.getNumberOfOffers());
-		Assert.assertEquals(1, this.provider.getNumberOfActivities());
+		Assert.assertEquals(0, activity.getActivityOfferSet().size());
+		Assert.assertEquals(1, this.provider.getActivitySet().size());
 	}
 
 	@Test(expected = ActivityException.class)
@@ -58,8 +56,8 @@ public class ActivityConstructorMethodTest {
 		Assert.assertEquals(18, activity.getMinAge());
 		Assert.assertEquals(MAX_AGE, activity.getMaxAge());
 		Assert.assertEquals(CAPACITY, activity.getCapacity());
-		Assert.assertEquals(0, activity.getNumberOfOffers());
-		Assert.assertEquals(1, this.provider.getNumberOfActivities());
+		Assert.assertEquals(0, activity.getActivityOfferSet().size());
+		Assert.assertEquals(1, this.provider.getActivitySet().size());
 	}
 
 	@Test(expected = ActivityException.class)
@@ -77,8 +75,8 @@ public class ActivityConstructorMethodTest {
 		Assert.assertEquals(MIN_AGE, activity.getMinAge());
 		Assert.assertEquals(99, activity.getMaxAge());
 		Assert.assertEquals(CAPACITY, activity.getCapacity());
-		Assert.assertEquals(0, activity.getNumberOfOffers());
-		Assert.assertEquals(1, this.provider.getNumberOfActivities());
+		Assert.assertEquals(0, activity.getActivityOfferSet().size());
+		Assert.assertEquals(1, this.provider.getActivitySet().size());
 	}
 
 	@Test(expected = ActivityException.class)
@@ -96,8 +94,8 @@ public class ActivityConstructorMethodTest {
 		Assert.assertEquals(MIN_AGE, activity.getMinAge());
 		Assert.assertEquals(MIN_AGE, activity.getMaxAge());
 		Assert.assertEquals(CAPACITY, activity.getCapacity());
-		Assert.assertEquals(0, activity.getNumberOfOffers());
-		Assert.assertEquals(1, this.provider.getNumberOfActivities());
+		Assert.assertEquals(0, activity.getActivityOfferSet().size());
+		Assert.assertEquals(1, this.provider.getActivitySet().size());
 	}
 
 	@Test(expected = ActivityException.class)
@@ -120,18 +118,13 @@ public class ActivityConstructorMethodTest {
 		Assert.assertEquals(MIN_AGE, activity.getMinAge());
 		Assert.assertEquals(MAX_AGE, activity.getMaxAge());
 		Assert.assertEquals(1, activity.getCapacity());
-		Assert.assertEquals(0, activity.getNumberOfOffers());
-		Assert.assertEquals(1, this.provider.getNumberOfActivities());
+		Assert.assertEquals(0, activity.getActivityOfferSet().size());
+		Assert.assertEquals(1, this.provider.getActivitySet().size());
 	}
 
 	@Test(expected = ActivityException.class)
 	public void zeroCapacity() {
 		new Activity(this.provider, PROVIDER_NAME, MIN_AGE, MAX_AGE, 0);
-	}
-
-	@After
-	public void tearDown() {
-		ActivityProvider.providers.clear();
 	}
 
 }

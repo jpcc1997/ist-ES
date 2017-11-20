@@ -3,8 +3,6 @@ package pt.ulisboa.tecnico.softeng.broker.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.util.Arrays;
-
 import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,10 +11,10 @@ import mockit.Delegate;
 import mockit.Mocked;
 import mockit.StrictExpectations;
 import mockit.integration.junit4.JMockit;
-import pt.ulisboa.tecnico.softeng.broker.exception.RemoteAccessException;
-import pt.ulisboa.tecnico.softeng.broker.interfaces.HotelInterface;
-import pt.ulisboa.tecnico.softeng.hotel.dataobjects.RoomBookingData;
-import pt.ulisboa.tecnico.softeng.hotel.exception.HotelException;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.HotelInterface;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.dataobjects.RoomBookingData;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.HotelException;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessException;
 
 @RunWith(JMockit.class)
 public class BulkRoomBookingGetReferenceMethodTest extends RollbackTestAbstractClass {
@@ -31,8 +29,9 @@ public class BulkRoomBookingGetReferenceMethodTest extends RollbackTestAbstractC
 
 	@Override
 	public void populate4Test() {
-		this.bulk = new BulkRoomBooking(NUMBER, arrival, departure);
-		this.bulk.getReferences().addAll(Arrays.asList(REF_1, REF_2));
+		this.bulk = new BulkRoomBooking(new Broker("BK1111", "Traveling"), NUMBER, arrival, departure);
+		new Reference(this.bulk, REF_1);
+		new Reference(this.bulk, REF_2);
 	}
 
 	@Test

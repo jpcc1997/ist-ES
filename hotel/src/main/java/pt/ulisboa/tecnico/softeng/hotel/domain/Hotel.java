@@ -1,30 +1,33 @@
 package pt.ulisboa.tecnico.softeng.hotel.domain;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.joda.time.LocalDate;
 
-import pt.ulisboa.tecnico.softeng.hotel.dataobjects.RoomBookingData;
+import pt.ist.fenixframework.FenixFramework;
 import pt.ulisboa.tecnico.softeng.hotel.exception.HotelException;
 
-public class Hotel {
-	public static Set<Hotel> hotels = new HashSet<>();
-
+public class Hotel extends Hotel_Base {
 	static final int CODE_SIZE = 7;
-
-	private final String code;
-	private final String name;
-	private final Set<Room> rooms = new HashSet<>();
 
 	public Hotel(String code, String name) {
 		checkArguments(code, name);
 
-		this.code = code;
-		this.name = name;
-		Hotel.hotels.add(this);
+		setCode(code);
+		setName(name);
+
+		FenixFramework.getDomainRoot().addHotel(this);
+	}
+
+	public void delete() {
+		setRoot(null);
+
+		for (Room room : getRoomSet()) {
+			room.delete();
+		}
+
+		deleteDomainObject();
 	}
 
 	private void checkArguments(String code, String name) {
@@ -36,11 +39,18 @@ public class Hotel {
 			throw new HotelException();
 		}
 
-		for (Hotel hotel : hotels) {
+		for (Hotel hotel : FenixFramework.getDomainRoot().getHotelSet()) {
 			if (hotel.getCode().equals(code)) {
 				throw new HotelException();
 			}
 		}
+	}
+
+	@Override
+	public int getBookingCounter() {
+		int counter = super.getBookingCounter() + 1;
+		setBookingCounter(counter);
+		return counter;
 	}
 
 	public Room hasVacancy(Room.Type type, LocalDate arrival, LocalDate departure) {
@@ -48,7 +58,7 @@ public class Hotel {
 			throw new HotelException();
 		}
 
-		for (Room room : this.rooms) {
+		for (Room room : getRoomSet()) {
 			if (room.isFree(type, arrival, departure)) {
 				return room;
 			}
@@ -58,7 +68,7 @@ public class Hotel {
 
 	public Set<Room> getAvailableRooms(LocalDate arrival, LocalDate departure) {
 		Set<Room> availableRooms = new HashSet<>();
-		for (Room room : this.rooms) {
+		for (Room room : getRoomSet()) {
 			if (room.isFree(room.getType(), arrival, departure)) {
 				availableRooms.add(room);
 			}
@@ -66,28 +76,17 @@ public class Hotel {
 		return availableRooms;
 	}
 
-	public String getCode() {
-		return this.code;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	void addRoom(Room room) {
+	@Override
+	public void addRoom(Room room) {
 		if (hasRoom(room.getNumber())) {
 			throw new HotelException();
 		}
 
-		this.rooms.add(room);
-	}
-
-	int getNumberOfRooms() {
-		return this.rooms.size();
+		super.addRoom(room);
 	}
 
 	public boolean hasRoom(String number) {
-		for (Room room : this.rooms) {
+		for (Room room : getRoomSet()) {
 			if (room.getNumber().equals(number)) {
 				return true;
 			}
@@ -95,8 +94,8 @@ public class Hotel {
 		return false;
 	}
 
-	private Booking getBooking(String reference) {
-		for (Room room : this.rooms) {
+	public Booking getBooking(String reference) {
+		for (Room room : getRoomSet()) {
 			Booking booking = room.getBooking(reference);
 			if (booking != null) {
 				return booking;
@@ -105,65 +104,15 @@ public class Hotel {
 		return null;
 	}
 
-	public static String reserveRoom(Room.Type type, LocalDate arrival, LocalDate departure) {
-		for (Hotel hotel : Hotel.hotels) {
-			Room room = hotel.hasVacancy(type, arrival, departure);
-			if (room != null) {
-				return room.reserve(type, arrival, departure).getReference();
-			}
-		}
-		throw new HotelException();
+	public Room getRoomByNumber(String number) {
+		return getRoomSet().stream().filter(r -> r.getNumber().equals(number)).findFirst().orElse(null);
 	}
 
-	public static String cancelBooking(String reference) {
-		for (Hotel hotel : hotels) {
-			Booking booking = hotel.getBooking(reference);
-			if (booking != null) {
-				return booking.cancel();
-			}
-		}
-		throw new HotelException();
-	}
+	public Booking getBooking4AdventureId(String adventureId) {
+		return getRoomSet().stream().flatMap(r -> r.getBookingSet().stream())
+				.filter(b -> b.getAdventureId() != null && b.getAdventureId().equals(adventureId)).findFirst()
+				.orElse(null);
 
-	public static RoomBookingData getRoomBookingData(String reference) {
-		for (Hotel hotel : hotels) {
-			for (Room room : hotel.rooms) {
-				Booking booking = room.getBooking(reference);
-				if (booking != null) {
-					return new RoomBookingData(room, booking);
-				}
-			}
-		}
-		throw new HotelException();
-	}
-
-	public static Set<String> bulkBooking(int number, LocalDate arrival, LocalDate departure) {
-		if (number < 1) {
-			throw new HotelException();
-		}
-
-		List<Room> rooms = getAvailableRooms(number, arrival, departure);
-		if (rooms.size() < number) {
-			throw new HotelException();
-		}
-
-		Set<String> references = new HashSet<>();
-		for (int i = 0; i < number; i++) {
-			references.add(rooms.get(i).reserve(rooms.get(i).getType(), arrival, departure).getReference());
-		}
-
-		return references;
-	}
-
-	static List<Room> getAvailableRooms(int number, LocalDate arrival, LocalDate departure) {
-		List<Room> availableRooms = new ArrayList<>();
-		for (Hotel hotel : hotels) {
-			availableRooms.addAll(hotel.getAvailableRooms(arrival, departure));
-			if (availableRooms.size() >= number) {
-				return availableRooms;
-			}
-		}
-		return availableRooms;
 	}
 
 }

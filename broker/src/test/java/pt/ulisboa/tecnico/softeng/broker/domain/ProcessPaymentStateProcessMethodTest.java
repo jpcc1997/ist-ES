@@ -10,10 +10,10 @@ import mockit.Injectable;
 import mockit.Mocked;
 import mockit.StrictExpectations;
 import mockit.integration.junit4.JMockit;
-import pt.ulisboa.tecnico.softeng.bank.exception.BankException;
 import pt.ulisboa.tecnico.softeng.broker.domain.Adventure.State;
-import pt.ulisboa.tecnico.softeng.broker.exception.RemoteAccessException;
-import pt.ulisboa.tecnico.softeng.broker.interfaces.BankInterface;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.BankInterface;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.BankException;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessException;
 
 @RunWith(JMockit.class)
 public class ProcessPaymentStateProcessMethodTest extends RollbackTestAbstractClass {
@@ -37,7 +37,7 @@ public class ProcessPaymentStateProcessMethodTest extends RollbackTestAbstractCl
 	public void success(@Mocked final BankInterface bankInterface) {
 		new StrictExpectations() {
 			{
-				BankInterface.processPayment(IBAN, AMOUNT);
+				BankInterface.processPayment(IBAN, AMOUNT, this.anyString);
 				this.result = PAYMENT_CONFIRMATION;
 			}
 		};
@@ -51,7 +51,7 @@ public class ProcessPaymentStateProcessMethodTest extends RollbackTestAbstractCl
 	public void bankException(@Mocked final BankInterface bankInterface) {
 		new StrictExpectations() {
 			{
-				BankInterface.processPayment(IBAN, AMOUNT);
+				BankInterface.processPayment(IBAN, AMOUNT, this.anyString);
 				this.result = new BankException();
 			}
 		};
@@ -65,7 +65,7 @@ public class ProcessPaymentStateProcessMethodTest extends RollbackTestAbstractCl
 	public void singleRemoteAccessException(@Mocked final BankInterface bankInterface) {
 		new StrictExpectations() {
 			{
-				BankInterface.processPayment(IBAN, AMOUNT);
+				BankInterface.processPayment(IBAN, AMOUNT, this.anyString);
 				this.result = new RemoteAccessException();
 			}
 		};
@@ -79,7 +79,7 @@ public class ProcessPaymentStateProcessMethodTest extends RollbackTestAbstractCl
 	public void maxRemoteAccessException(@Mocked final BankInterface bankInterface) {
 		new StrictExpectations() {
 			{
-				BankInterface.processPayment(IBAN, AMOUNT);
+				BankInterface.processPayment(IBAN, AMOUNT, this.anyString);
 				this.result = new RemoteAccessException();
 				this.times = ProcessPaymentState.MAX_REMOTE_ERRORS;
 			}
@@ -96,7 +96,7 @@ public class ProcessPaymentStateProcessMethodTest extends RollbackTestAbstractCl
 	public void maxMinusOneRemoteAccessException(@Mocked final BankInterface bankInterface) {
 		new StrictExpectations() {
 			{
-				BankInterface.processPayment(IBAN, AMOUNT);
+				BankInterface.processPayment(IBAN, AMOUNT, this.anyString);
 				this.result = new RemoteAccessException();
 				this.times = ProcessPaymentState.MAX_REMOTE_ERRORS - 1;
 			}
@@ -112,7 +112,7 @@ public class ProcessPaymentStateProcessMethodTest extends RollbackTestAbstractCl
 	public void twoRemoteAccessExceptionOneSuccess(@Mocked final BankInterface bankInterface) {
 		new StrictExpectations() {
 			{
-				BankInterface.processPayment(IBAN, AMOUNT);
+				BankInterface.processPayment(IBAN, AMOUNT, this.anyString);
 				this.result = new Delegate() {
 					int i = 0;
 
@@ -141,7 +141,7 @@ public class ProcessPaymentStateProcessMethodTest extends RollbackTestAbstractCl
 	public void oneRemoteAccessExceptionOneBankException(@Mocked final BankInterface bankInterface) {
 		new StrictExpectations() {
 			{
-				BankInterface.processPayment(IBAN, AMOUNT);
+				BankInterface.processPayment(IBAN, AMOUNT, this.anyString);
 
 				this.result = new Delegate() {
 					int i = 0;

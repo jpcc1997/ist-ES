@@ -4,16 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.joda.time.LocalDate;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-public class ActivityOfferGetBookingMethodTest {
+public class ActivityOfferGetBookingMethodTest extends RollbackTestAbstractClass {
 	private ActivityProvider provider;
 	private ActivityOffer offer;
 
-	@Before
-	public void setUp() {
+	@Override
+	public void populate4Test() {
 		this.provider = new ActivityProvider("XtremX", "ExtremeAdventure");
 		Activity activity = new Activity(this.provider, "Bush Walking", 18, 80, 3);
 
@@ -25,29 +23,24 @@ public class ActivityOfferGetBookingMethodTest {
 
 	@Test
 	public void success() {
-		Booking booking = new Booking(this.provider, this.offer);
+		Booking booking = new Booking(this.offer);
 
 		assertEquals(booking, this.offer.getBooking(booking.getReference()));
 	}
 
 	@Test
 	public void successCancelled() {
-		Booking booking = new Booking(this.provider, this.offer);
+		Booking booking = new Booking(this.offer);
 		booking.cancel();
 
-		assertEquals(booking, this.offer.getBooking(booking.getCancellation()));
+		assertEquals(booking, this.offer.getBooking(booking.getCancel()));
 	}
 
 	@Test
 	public void doesNotExist() {
-		new Booking(this.provider, this.offer);
+		new Booking(this.offer);
 
 		assertNull(this.offer.getBooking("XPTO"));
-	}
-
-	@After
-	public void tearDown() {
-		ActivityProvider.providers.clear();
 	}
 
 }

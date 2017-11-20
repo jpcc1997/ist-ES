@@ -1,31 +1,33 @@
 package pt.ulisboa.tecnico.softeng.activity.domain;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.joda.time.LocalDate;
 
-import pt.ulisboa.tecnico.softeng.activity.dataobjects.ActivityReservationData;
+import pt.ist.fenixframework.FenixFramework;
 import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
 
-public class ActivityProvider {
-	public static Set<ActivityProvider> providers = new HashSet<>();
-
+public class ActivityProvider extends ActivityProvider_Base {
 	static final int CODE_SIZE = 6;
-
-	private final String name;
-	private final String code;
-	private final Set<Activity> activities = new HashSet<>();
 
 	public ActivityProvider(String code, String name) {
 		checkArguments(code, name);
 
-		this.code = code;
-		this.name = name;
+		setCode(code);
+		setName(name);
 
-		ActivityProvider.providers.add(this);
+		FenixFramework.getDomainRoot().addActivityProvider(this);
+	}
+
+	public void delete() {
+		setRoot(null);
+
+		for (Activity activity : getActivitySet()) {
+			activity.delete();
+		}
+
+		deleteDomainObject();
 	}
 
 	private void checkArguments(String code, String name) {
@@ -37,39 +39,37 @@ public class ActivityProvider {
 			throw new ActivityException();
 		}
 
-		for (ActivityProvider activityProvider : providers) {
+		for (ActivityProvider activityProvider : FenixFramework.getDomainRoot().getActivityProviderSet()) {
 			if (activityProvider.getCode().equals(code) || activityProvider.getName().equals(name)) {
 				throw new ActivityException();
 			}
 		}
 	}
 
-	public String getName() {
-		return this.name;
+	@Override
+	public int getActivityCounter() {
+		int counter = super.getActivityCounter() + 1;
+		setActivityCounter(counter);
+		return counter;
 	}
 
-	public String getCode() {
-		return this.code;
-	}
-
-	int getNumberOfActivities() {
-		return this.activities.size();
-	}
-
-	void addActivity(Activity activity) {
-		this.activities.add(activity);
+	@Override
+	public int getBookingCounter() {
+		int counter = super.getBookingCounter() + 1;
+		setBookingCounter(counter);
+		return counter;
 	}
 
 	public List<ActivityOffer> findOffer(LocalDate begin, LocalDate end, int age) {
 		List<ActivityOffer> result = new ArrayList<>();
-		for (Activity activity : this.activities) {
+		for (Activity activity : getActivitySet()) {
 			result.addAll(activity.getOffers(begin, end, age));
 		}
 		return result;
 	}
 
-	private Booking getBooking(String reference) {
-		for (Activity activity : this.activities) {
+	public Booking getBooking(String reference) {
+		for (Activity activity : getActivitySet()) {
 			Booking booking = activity.getBooking(reference);
 			if (booking != null) {
 				return booking;
@@ -78,47 +78,11 @@ public class ActivityProvider {
 		return null;
 	}
 
-	private static Booking getBookingByReference(String reference) {
-		for (ActivityProvider provider : ActivityProvider.providers) {
-			Booking booking = provider.getBooking(reference);
-			if (booking != null) {
-				return booking;
-			}
-		}
-		return null;
-	}
-
-	public static String reserveActivity(LocalDate begin, LocalDate end, int age) {
-		List<ActivityOffer> offers;
-		for (ActivityProvider provider : ActivityProvider.providers) {
-			offers = provider.findOffer(begin, end, age);
-			if (!offers.isEmpty()) {
-				return new Booking(provider, offers.get(0)).getReference();
-			}
-		}
-		throw new ActivityException();
-	}
-
-	public static String cancelReservation(String reference) {
-		Booking booking = getBookingByReference(reference);
-		if (booking != null) {
-			return booking.cancel();
-		}
-		throw new ActivityException();
-	}
-
-	public static ActivityReservationData getActivityReservationData(String reference) {
-		for (ActivityProvider provider : ActivityProvider.providers) {
-			for (Activity activity : provider.activities) {
-				for (ActivityOffer offer : activity.getOffers()) {
-					Booking booking = offer.getBooking(reference);
-					if (booking != null) {
-						return new ActivityReservationData(provider, offer, booking);
-					}
-				}
-			}
-		}
-		throw new ActivityException();
+	public Booking getBookingByAdventureId(String adventureId) {
+		return getActivitySet().stream().flatMap(a -> a.getActivityOfferSet().stream())
+				.flatMap(o -> o.getBookingSet().stream())
+				.filter(b -> b.getAdventureId() != null && b.getAdventureId().equals(adventureId)).findFirst()
+				.orElse(null);
 	}
 
 }

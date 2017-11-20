@@ -1,17 +1,15 @@
 package pt.ulisboa.tecnico.softeng.activity.domain;
 
 import org.joda.time.LocalDate;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-public class ActivityOfferHasVacancyMethodTest {
+public class ActivityOfferHasVacancyMethodTest extends RollbackTestAbstractClass {
 	private ActivityProvider provider;
 	private ActivityOffer offer;
 
-	@Before
-	public void setUp() {
+	@Override
+	public void populate4Test() {
 		this.provider = new ActivityProvider("XtremX", "ExtremeAdventure");
 		Activity activity = new Activity(this.provider, "Bush Walking", 18, 80, 3);
 
@@ -23,30 +21,30 @@ public class ActivityOfferHasVacancyMethodTest {
 
 	@Test
 	public void success() {
-		new Booking(this.provider, this.offer);
+		new Booking(this.offer);
 		Assert.assertTrue(this.offer.hasVacancy());
 	}
 
 	@Test
 	public void bookingIsFull() {
-		new Booking(this.provider, this.offer);
-		new Booking(this.provider, this.offer);
-		new Booking(this.provider, this.offer);
+		new Booking(this.offer);
+		new Booking(this.offer);
+		new Booking(this.offer);
 		Assert.assertFalse(this.offer.hasVacancy());
 	}
 
 	@Test
 	public void bookingIsFullMinusOne() {
-		new Booking(this.provider, this.offer);
-		new Booking(this.provider, this.offer);
+		new Booking(this.offer);
+		new Booking(this.offer);
 		Assert.assertTrue(this.offer.hasVacancy());
 	}
 
 	@Test
 	public void hasCancelledBookings() {
-		new Booking(this.provider, this.offer);
-		new Booking(this.provider, this.offer);
-		Booking booking = new Booking(this.provider, this.offer);
+		new Booking(this.offer);
+		new Booking(this.offer);
+		Booking booking = new Booking(this.offer);
 		booking.cancel();
 
 		Assert.assertTrue(this.offer.hasVacancy());
@@ -54,18 +52,13 @@ public class ActivityOfferHasVacancyMethodTest {
 
 	@Test
 	public void hasCancelledBookingsButFull() {
-		new Booking(this.provider, this.offer);
-		new Booking(this.provider, this.offer);
-		Booking booking = new Booking(this.provider, this.offer);
+		new Booking(this.offer);
+		new Booking(this.offer);
+		Booking booking = new Booking(this.offer);
 		booking.cancel();
-		new Booking(this.provider, this.offer);
+		new Booking(this.offer);
 
 		Assert.assertFalse(this.offer.hasVacancy());
-	}
-
-	@After
-	public void tearDown() {
-		ActivityProvider.providers.clear();
 	}
 
 }

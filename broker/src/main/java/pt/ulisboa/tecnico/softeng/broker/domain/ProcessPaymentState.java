@@ -1,9 +1,9 @@
 package pt.ulisboa.tecnico.softeng.broker.domain;
 
-import pt.ulisboa.tecnico.softeng.bank.exception.BankException;
 import pt.ulisboa.tecnico.softeng.broker.domain.Adventure.State;
-import pt.ulisboa.tecnico.softeng.broker.exception.RemoteAccessException;
-import pt.ulisboa.tecnico.softeng.broker.interfaces.BankInterface;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.BankInterface;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.BankException;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessException;
 
 public class ProcessPaymentState extends ProcessPaymentState_Base {
 	public static final int MAX_REMOTE_ERRORS = 3;
@@ -16,8 +16,8 @@ public class ProcessPaymentState extends ProcessPaymentState_Base {
 	@Override
 	public void process() {
 		try {
-			getAdventure().setPaymentConfirmation(
-					BankInterface.processPayment(getAdventure().getIBAN(), getAdventure().getAmount()));
+			getAdventure().setPaymentConfirmation(BankInterface.processPayment(getAdventure().getIBAN(),
+					getAdventure().getAmount(), getAdventure().getID()));
 		} catch (BankException be) {
 			getAdventure().setState(State.CANCELLED);
 			return;

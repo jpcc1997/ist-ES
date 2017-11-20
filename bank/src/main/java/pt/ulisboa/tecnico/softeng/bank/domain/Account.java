@@ -2,23 +2,27 @@ package pt.ulisboa.tecnico.softeng.bank.domain;
 
 import pt.ulisboa.tecnico.softeng.bank.exception.BankException;
 
-public class Account {
-	private static int counter = 0;
-
-	private final Bank bank;
-	private final String IBAN;
-	private final Client client;
-	private int balance;
+public class Account extends Account_Base {
 
 	public Account(Bank bank, Client client) {
 		checkArguments(bank, client);
 
-		this.bank = bank;
-		this.IBAN = bank.getCode() + Integer.toString(++Account.counter);
-		this.client = client;
-		this.balance = 0;
+		setIBAN(bank.getCode() + Integer.toString(bank.getAccountCounter()));
+		setBalance(0);
 
-		bank.addAccount(this);
+		setClient(client);
+		setBank(bank);
+	}
+
+	public void delete() {
+		setBank(null);
+		setClient(null);
+
+		for (Operation operation : getOperationSet()) {
+			operation.delete();
+		}
+
+		deleteDomainObject();
 	}
 
 	private void checkArguments(Bank bank, Client client) {
@@ -26,47 +30,30 @@ public class Account {
 			throw new BankException();
 		}
 
-		if (!bank.hasClient(client)) {
+		if (!bank.getClientSet().contains(client)) {
 			throw new BankException();
 		}
 
 	}
 
-	Bank getBank() {
-		return this.bank;
-	}
-
-	public String getIBAN() {
-		return this.IBAN;
-	}
-
-	public Client getClient() {
-		return this.client;
-	}
-
-	public int getBalance() {
-		return this.balance;
-	}
-
-	public String deposit(int amount) {
+	public Operation deposit(int amount) {
 		if (amount <= 0) {
 			throw new BankException();
 		}
 
-		this.balance = this.balance + amount;
+		setBalance(getBalance() + amount);
 
-		Operation operation = new Operation(Operation.Type.DEPOSIT, this, amount);
-		return operation.getReference();
+		return new Operation(Operation.Type.DEPOSIT, this, amount);
 	}
 
-	public String withdraw(int amount) {
-		if (amount <= 0 || amount > this.balance) {
+	public Operation withdraw(int amount) {
+		if (amount <= 0 || amount > getBalance()) {
 			throw new BankException();
 		}
 
-		this.balance = this.balance - amount;
+		setBalance(getBalance() - amount);
 
-		return new Operation(Operation.Type.WITHDRAW, this, amount).getReference();
+		return new Operation(Operation.Type.WITHDRAW, this, amount);
 	}
 
 }

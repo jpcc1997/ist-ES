@@ -1,9 +1,9 @@
 package pt.ulisboa.tecnico.softeng.broker.domain;
 
-import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
 import pt.ulisboa.tecnico.softeng.broker.domain.Adventure.State;
-import pt.ulisboa.tecnico.softeng.broker.exception.RemoteAccessException;
-import pt.ulisboa.tecnico.softeng.broker.interfaces.ActivityInterface;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.ActivityInterface;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.ActivityException;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessException;
 
 public class ReserveActivityState extends ReserveActivityState_Base {
 	public static final int MAX_REMOTE_ERRORS = 5;
@@ -17,7 +17,7 @@ public class ReserveActivityState extends ReserveActivityState_Base {
 	public void process() {
 		try {
 			getAdventure().setActivityConfirmation(ActivityInterface.reserveActivity(getAdventure().getBegin(),
-					getAdventure().getEnd(), getAdventure().getAge()));
+					getAdventure().getEnd(), getAdventure().getAge(), getAdventure().getID()));
 		} catch (ActivityException ae) {
 			getAdventure().setState(State.UNDO);
 			return;

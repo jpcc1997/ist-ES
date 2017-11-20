@@ -2,7 +2,10 @@
 .project
 .settings
 target
+fenix-framework.properties
 jmeter.log
+*.jtl
+*.log
+*.hprof
 infer-out
 .DS_Store
-fenix-framework.properties

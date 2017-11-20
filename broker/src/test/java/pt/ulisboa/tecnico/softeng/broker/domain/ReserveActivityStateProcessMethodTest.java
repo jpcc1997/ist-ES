@@ -10,10 +10,10 @@ import mockit.Injectable;
 import mockit.Mocked;
 import mockit.StrictExpectations;
 import mockit.integration.junit4.JMockit;
-import pt.ulisboa.tecnico.softeng.activity.exception.ActivityException;
 import pt.ulisboa.tecnico.softeng.broker.domain.Adventure.State;
-import pt.ulisboa.tecnico.softeng.broker.exception.RemoteAccessException;
-import pt.ulisboa.tecnico.softeng.broker.interfaces.ActivityInterface;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.ActivityInterface;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.ActivityException;
+import pt.ulisboa.tecnico.softeng.broker.services.remote.exception.RemoteAccessException;
 
 @RunWith(JMockit.class)
 public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractClass {
@@ -41,7 +41,7 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 
 		new StrictExpectations() {
 			{
-				ActivityInterface.reserveActivity(begin, begin, AGE);
+				ActivityInterface.reserveActivity(begin, begin, AGE, this.anyString);
 				this.result = ACTIVITY_CONFIRMATION;
 			}
 		};
@@ -55,7 +55,7 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	public void successBookRoom(@Mocked final ActivityInterface activityInterface) {
 		new StrictExpectations() {
 			{
-				ActivityInterface.reserveActivity(begin, end, AGE);
+				ActivityInterface.reserveActivity(begin, end, AGE, this.anyString);
 				this.result = ACTIVITY_CONFIRMATION;
 			}
 		};
@@ -69,7 +69,7 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	public void activityException(@Mocked final ActivityInterface activityInterface) {
 		new StrictExpectations() {
 			{
-				ActivityInterface.reserveActivity(begin, end, AGE);
+				ActivityInterface.reserveActivity(begin, end, AGE, this.anyString);
 				this.result = new ActivityException();
 			}
 		};
@@ -83,7 +83,7 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	public void singleRemoteAccessException(@Mocked final ActivityInterface activityInterface) {
 		new StrictExpectations() {
 			{
-				ActivityInterface.reserveActivity(begin, end, AGE);
+				ActivityInterface.reserveActivity(begin, end, AGE, this.anyString);
 				this.result = new RemoteAccessException();
 			}
 		};
@@ -97,7 +97,7 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	public void maxRemoteAccessException(@Mocked final ActivityInterface activityInterface) {
 		new StrictExpectations() {
 			{
-				ActivityInterface.reserveActivity(begin, end, AGE);
+				ActivityInterface.reserveActivity(begin, end, AGE, this.anyString);
 				this.result = new RemoteAccessException();
 				this.times = ReserveActivityState.MAX_REMOTE_ERRORS;
 			}
@@ -116,7 +116,7 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	public void maxMinusOneRemoteAccessException(@Mocked final ActivityInterface activityInterface) {
 		new StrictExpectations() {
 			{
-				ActivityInterface.reserveActivity(begin, end, AGE);
+				ActivityInterface.reserveActivity(begin, end, AGE, this.anyString);
 				this.result = new RemoteAccessException();
 				this.times = ReserveActivityState.MAX_REMOTE_ERRORS - 1;
 			}
@@ -134,7 +134,7 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	public void twoRemoteAccessExceptionOneSuccess(@Mocked final ActivityInterface activityInterface) {
 		new StrictExpectations() {
 			{
-				ActivityInterface.reserveActivity(begin, end, AGE);
+				ActivityInterface.reserveActivity(begin, end, AGE, this.anyString);
 				this.result = new Delegate() {
 					int i = 0;
 
@@ -163,7 +163,7 @@ public class ReserveActivityStateProcessMethodTest extends RollbackTestAbstractC
 	public void oneRemoteAccessExceptionOneActivityException(@Mocked final ActivityInterface activityInterface) {
 		new StrictExpectations() {
 			{
-				ActivityInterface.reserveActivity(begin, end, AGE);
+				ActivityInterface.reserveActivity(begin, end, AGE, this.anyString);
 				this.result = new Delegate() {
 					int i = 0;
 
